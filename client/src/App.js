@@ -4,22 +4,22 @@ import Axios from 'axios'
 
 function App() {
 
-const [movieName, setMoiveName] = useState('')
-const [review, setReview] = useState('')
-const [movieReviewList, setMovieList] = useState([])
+const [Listings, setListings] = useState('')
+const [descr, setDescr] = useState('')
+const [DescrList, setDescrList] = useState([])
 
-const[newReview, setNewReview] = useState("")
+const[newDescr, setNewDescr] = useState("")
 
 useEffect(() => {
   Axios.get("http://localhost:3001/api/get").then((Response)=> {
-    setMovieList(Response.data)
+    setDescrList(Response.data)
   });
 }, [])
 
 const submitReview = () => {
-  Axios.post("http://localhost:3001/api/insert", {movieName : movieName, movieReview : review});
+  Axios.post("http://localhost:3001/api/insert", {movieName : Listings, movieReview : descr});
 
-    setMovieList([...movieReviewList,{movieName: movieName, movieReview: review}]);
+    setDescrList([...DescrList,{movieName: Listings, movieReview: descr}]);
 };// using axios
 
 const deleteReview = (movie) => {
@@ -27,7 +27,7 @@ const deleteReview = (movie) => {
 };
 
 const updateReview = (movie) => {
-  Axios.put("http://localhost:3001/api/update/", {movieName : movie, movieReview : newReview});
+  Axios.put("http://localhost:3001/api/update/", {movieName : movie, movieReview : newDescr});
   //setNewReview("") //clear it for new review
 };
 
@@ -41,18 +41,18 @@ const updateReview = (movie) => {
       <h1>Hello</h1>
       
       <div className='form'> 
-        <label>Movie name:</label>
+        <label>Listings:</label>
         <input type="text" name="movieName" onChange={(e)=> {
-          setMoiveName(e.target.value)
+          setListings(e.target.value)
         }}/>
-        <label>Review:</label>
+        <label>Job description:</label>
         <input type="text" name="review" onChange={(e)=> {
-          setReview(e.target.value)
+          setDescr(e.target.value)
         }}/>
 
         <button onClick={submitReview}>Submit</button>
 
-        {movieReviewList.map((val) => {
+        {DescrList.map((val) => {
           return(
             <div className="card">
             <h1>{val.movieName}</h1>
@@ -60,10 +60,11 @@ const updateReview = (movie) => {
 
             <button onClick={() => {deleteReview(val.movieName)}}>Delete</button>
             <input type="text" id ="updateinput" onChange={(e) => {
-              setNewReview(e.target.value)
+              setNewDescr(e.target.value)
             }}/>
             <button onClick={() => {updateReview(val.movieName)}}>Update</button>
             </div>
+            
           );
            } )}
         
