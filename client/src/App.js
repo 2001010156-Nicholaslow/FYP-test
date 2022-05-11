@@ -46,6 +46,13 @@ function App() {
 function App() {
   return(
   <div className="App">
+    <ul>
+      <li><Link to="/">Home</Link></li>
+      <li><Link to="/login">Login</Link></li>
+      <li><Link to="/partnerRegister">Register for partners</Link></li>
+      <li><Link to="/youthRegister">Register</Link></li>
+      <li><Link to="/profile">My Profile</Link></li>
+    </ul>
     <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -55,5 +62,6 @@ function App() {
         </Routes>
     </div>);
 }
+
 
 export default App;

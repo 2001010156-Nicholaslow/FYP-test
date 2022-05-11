@@ -1,9 +1,18 @@
 import React from "react";
+import PartnerRegister from './PartnerRegister';
+import {Link} from "react-router-dom";
 
 function YouthRegister(){
     return(
-        <div>
+        <div className="YouthRegister">
             <h1>This is the Youth Register page</h1>
+
+            <input type="text" placeholder="Full name"/>
+            <input type="text" placeholder="Email"/>
+            <input type="password" placeholder="Password"/>
+            <button>Login</button>
+
+            <ul><li><Link to="/partnerRegister">Register for partners</Link></li></ul>
         </div>
     );
 }

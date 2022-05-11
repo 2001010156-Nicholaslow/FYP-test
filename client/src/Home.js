@@ -7,5 +7,7 @@ function Home(){
         </div>
     );
 }
+
+  
 // delete all of this
 export default Home;
