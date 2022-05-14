@@ -2,9 +2,9 @@ import React from 'react';
 import './App.css';
 import Home from './Home';
 import Login from './Login';
-import PartnerRegister from './PartnerRegister';
+import PartnerRegister from './Register/PartnerRegister';
 import Profile from './Profile';
-import YouthRegister from './YouthRegister'; //import from the js file
+import YouthRegister from './Register/YouthRegister'; //import from the js file
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 /*
 function App() {
@@ -49,16 +49,15 @@ function App() {
     <ul>
       <li><Link to="/">Home</Link></li>
       <li><Link to="/login">Login</Link></li>
-      <li><Link to="/partnerRegister">Register for partners</Link></li>
-      <li><Link to="/youthRegister">Register</Link></li>
+      <li><Link to="/Register/youthRegister">Register</Link></li>
       <li><Link to="/profile">My Profile</Link></li>
     </ul>
     <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/partnerRegister" element={<PartnerRegister />} />
+          <Route path="/Register/partnerRegister" element={<PartnerRegister />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/youthRegister" element={<YouthRegister />} />
+          <Route path="/Register/youthRegister" element={<YouthRegister />} />
         </Routes>
     </div>);
 }
