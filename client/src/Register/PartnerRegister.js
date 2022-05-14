@@ -12,5 +12,5 @@ function PartnerRegister(){
     </div>
     );
 }
-// delete all of this
+
 export default PartnerRegister;
