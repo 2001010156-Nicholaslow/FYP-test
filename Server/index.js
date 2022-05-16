@@ -1,18 +1,10 @@
-const express = require('express')
-const cors = require('cors')
-const app = express()
-const port = 3001
-app.use(cors())
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.post('/api/:id', (req, res) => {
-    req.params
-    res.send('Hello World!')
-  })
-
-  
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+const express = require("express");
+const app = express();
+const mysql = require("mysql");
+const cors = require("cors");
+const db = mysql.createConnection({
+  user: "root",
+  host: "localhost",
+  password: "password",
+  database: "fyp_db",
+});
