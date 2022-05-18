@@ -1,0 +1,16 @@
+.card{
+    border: #ffffff;
+}
+
+.card1{
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+}
+
+.card2{
+    text-align: left;
+    margin: auto;
+    width: 50%;
+    background-color: #dddddd;
+}

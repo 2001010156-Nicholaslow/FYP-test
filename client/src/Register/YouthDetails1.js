@@ -1,21 +1,29 @@
 import React, { Component } from 'react';
 import {Link} from "react-router-dom";
 import { Form, Button, Container } from 'react-bootstrap';
-
-
+import validator from "validator";
 
 class YouthDetails1 extends Component{
     
-
+    
     back  = (e) => {
         e.preventDefault();
         this.props.prevStep();
     }
 
+
+
     saveAndContinue = (e) => {
-        e.preventDefault(); 
-        this.props.nextStep();
-    };
+        if(
+            !validator.isEmpty(this.props.inputValues.email) &
+            validator.isEmail(this.props.inputValues.email) &
+            !validator.isEmpty(this.props.inputValues.fullname) &
+            !validator.isEmpty(this.props.inputValues.password)
+        ){
+            e.preventDefault();
+            this.props.nextStep();
+        }
+   };
 
 
     render() {
@@ -23,7 +31,7 @@ class YouthDetails1 extends Component{
             <h1>This is the Youth Register page</h1>
             <br></br>
                     <Form>
-                        <Form.Group controlId="formEmail" style={{ marginTop: 10}} required >
+                        <Form.Group controlId="formEmail" style={{ marginTop: 10}} >
                                 <Form.Label className="label">Email Address</Form.Label>
                                 <Form.Control
                                 type="email"
@@ -53,6 +61,7 @@ class YouthDetails1 extends Component{
                             defaultValue={this.props.inputValues.password}
                             name="password"
                             required
+                            minlength="8"
                             onChange={this.props.handleChange}
                             />
                         </Form.Group>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Container, Card } from 'react-bootstrap';
+import './Confirmation.css';
 
 class Confirmation extends Component{
 
@@ -17,12 +18,12 @@ class Confirmation extends Component{
         const {inputValues: { email, fullname, password, dob, gender, num, levelOfEducation, citizenship, address, country, postalcode }} = this.props;
 
         return(
-            <Container>
+            <Container classname='card1'>
                 <h1>Confirm your Details</h1>
                 <p>Confirm if the following details are correct.</p>
                 
-                <Card style={{ marginTop: 10, width: 400, textAlign: "left"}}>
-                    <Card.Body>
+                <Card classname='card1'>
+                    <Card.Body className='card2'>
                          <p>Email : {email}</p>
                          <p>Full Name : {fullname}</p>
                          <p>Password : {password}</p>
@@ -37,8 +38,8 @@ class Confirmation extends Component{
                         <p>Postal Code : {postalcode}</p>
                         </Card.Body>
                     </Card>
-                <Button variant="secondary" onClick={this.back}>Back</Button>{' '}
-                <Button variant="primary">Confirm</Button>
+                <Button variant="secondary" onClick={this.back} style={{ marginTop: 10}}>Back</Button>{' '}
+                <Button variant="primary" style={{ marginTop: 10}}>Confirm</Button>
             </Container>
         )
     }

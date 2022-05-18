@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
-
+import validator from "validator";
 
 class YouthDetails2 extends Component{
 
@@ -10,8 +10,16 @@ class YouthDetails2 extends Component{
     }
 
     saveAndContinue = (e) => {
-        e.preventDefault();
-        this.props.nextStep();
+        if(
+            !validator.isEmpty(this.props.inputValues.dob) &
+            !validator.isEmpty(this.props.inputValues.gender) &
+            !validator.isEmpty(this.props.inputValues.num) &
+            !validator.isEmpty(this.props.inputValues.levelOfEducation) &
+            validator.isInt(this.props.inputValues.num)
+        ){
+            e.preventDefault();
+            this.props.nextStep();
+        }
     };
 
 
@@ -31,7 +39,7 @@ class YouthDetails2 extends Component{
 
                         <Form.Group controlId="formGender" style={{ marginTop: 10}}>
                             <Form.Label>Gender</Form.Label>
-                            <Form.Control as="select" name="gender" defaultValue={this.props.inputValues.gender} onChange={this.props.handleChange}>
+                            <Form.Control as="select" name="gender" defaultValue={this.props.inputValues.gender} onChange={this.props.handleChange} required>
                                     <option selected disabled value="">Please select a option</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -45,6 +53,7 @@ class YouthDetails2 extends Component{
                                 defaultValue={this.props.inputValues.num}
                                 name="num"
                                 required
+                                minlength="8"
                                 onChange={this.props.handleChange}
                             />
                         </Form.Group>
@@ -52,7 +61,7 @@ class YouthDetails2 extends Component{
 
                         <Form.Group controlId="formlevelOfEducation" style={{ marginTop: 10}}>
                             <Form.Label>Highest Level Of Education</Form.Label>
-                            <Form.Control as="select" name="levelOfEducation" defaultValue={this.props.inputValues.levelOfEducation} onChange={this.props.handleChange}>
+                            <Form.Control as="select" name="levelOfEducation" defaultValue={this.props.inputValues.levelOfEducation} onChange={this.props.handleChange} required>
                                     <option selected disabled value="">Please select a option</option>
                                     <option value="None">None</option>
                                     <option value="O-level">GCE 'O' Level</option>
@@ -67,7 +76,7 @@ class YouthDetails2 extends Component{
                         
 
                         <Button variant="secondary" onClick={this.back} style={{ marginTop: 25}}>Back</Button>{' '}
-                        <Button variant="primary" onClick={this.saveAndContinue} style={{ marginTop: 25}}>Next</Button>
+                        <Button type = "submit" variant="primary" onClick={this.saveAndContinue} style={{ marginTop: 25}}>Next</Button>
                     </Form>
                 </Container>
         );
