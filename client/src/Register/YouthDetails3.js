@@ -76,7 +76,6 @@ class YouthDetails3 extends Component{
                                 defaultValue={this.props.inputValues.postalcode}
                                 name="postalcode"
                                 required minLength={6}
-                                minlength="6"
                                 maxLength="6"
                                 onChange={this.props.handleChange}
                                 />

@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
 import { Button, Container, Card } from 'react-bootstrap';
+import Axios from "axios";
 import './Confirmation.css';
 
 class Confirmation extends Component{
+
+    Youthregister = (e) =>{
+        Axios.post('http://localhost:3001/YouthConfirmation' , {
+            email: this.props.inputValues.email,
+            fullname : this.props.inputValues.fullname,
+            password : this.props.inputValues.password
+          
+        }).then((Response) => {
+            console.log(Response)
+        })
+    }
 
     back  = (e) => {
         e.preventDefault();
@@ -39,7 +51,7 @@ class Confirmation extends Component{
                         </Card.Body>
                     </Card>
                 <Button variant="secondary" onClick={this.back} style={{ marginTop: 10}}>Back</Button>{' '}
-                <Button variant="primary" style={{ marginTop: 10}}>Confirm</Button>
+                <Button variant="primary" onClick={this.Youthregister} style={{ marginTop: 10}}>Confirm</Button>
             </Container>
         )
     }

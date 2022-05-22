@@ -4,7 +4,7 @@ import YouthDetails2 from './YouthDetails2';
 import YouthDetails3 from './YouthDetails3';
 import Confirmation from './Confirmation';
 
-class MultiStepForm extends Component {
+class YouthForm extends Component {
 
     state = {
         step: 1,
@@ -76,4 +76,4 @@ class MultiStepForm extends Component {
     }
 }
 
-export default MultiStepForm;
+export default YouthForm;

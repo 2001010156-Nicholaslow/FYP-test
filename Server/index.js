@@ -52,6 +52,20 @@ app.post("/login", (req, res) => {
   );
 });
 
+//Client - YouthRegister
+app.post("/YouthConfirmation", (req,res) => {
+  const fullname = req.body.fullname
+  const password = req.body.password
+  const email = req.body.email
+
+  db.query("INSERT INTO users (full_name, password, email) VALUES (?,?,?)", [fullname,password,email],
+  (err,result) => {
+    console.log(err);
+    console.log(result);
+  });
+});
+
+
 app.listen(3001, () => {
   console.log("running server");
 });
