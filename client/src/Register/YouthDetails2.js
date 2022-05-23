@@ -23,7 +23,8 @@ class YouthDetails2 extends Component{
 
 
     render() {
-        return( <Container>
+        return( 
+        <Container>
                     <Form>
                         <Form.Group controlId="formDOB" style={{ marginTop: 10}}>
                             <Form.Label>Date of birth</Form.Label>

@@ -9,7 +9,15 @@ class Confirmation extends Component{
         Axios.post('http://localhost:3001/YouthConfirmation' , {
             email: this.props.inputValues.email,
             fullname : this.props.inputValues.fullname,
-            password : this.props.inputValues.password
+            password : this.props.inputValues.password,
+            dob : this.props.inputValues.dob,
+            gender : this.props.inputValues.gender,
+            num : this.props.inputValues.num,
+            levelOfEducation : this.props.inputValues.levelOfEducation,
+            citizenship : this.props.inputValues.citizenship,
+            address : this.props.inputValues.address,
+            country : this.props.inputValues.country,
+            postalcode : this.props.inputValues.postalcode
           
         }).then((Response) => {
             console.log(Response)
