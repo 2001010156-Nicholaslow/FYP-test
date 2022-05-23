@@ -52,6 +52,16 @@ app.post("/login", (req, res) => {
   );
 });
 
+app.get("/users", (req, res) => {
+  db.query("SELECT * FROM users", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
 app.listen(3001, () => {
   console.log("running server");
 });
