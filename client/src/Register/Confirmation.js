@@ -1,8 +1,28 @@
 import React, { Component } from 'react';
 import { Button, Container, Card } from 'react-bootstrap';
+import Axios from "axios";
 import './Confirmation.css';
 
 class Confirmation extends Component{
+
+    Youthregister = (e) =>{
+        Axios.post('http://localhost:3001/YouthConfirmation' , {
+            email: this.props.inputValues.email,
+            fullname : this.props.inputValues.fullname,
+            password : this.props.inputValues.password,
+            dob : this.props.inputValues.dob,
+            gender : this.props.inputValues.gender,
+            num : this.props.inputValues.num,
+            levelOfEducation : this.props.inputValues.levelOfEducation,
+            citizenship : this.props.inputValues.citizenship,
+            address : this.props.inputValues.address,
+            country : this.props.inputValues.country,
+            postalcode : this.props.inputValues.postalcode
+          
+        }).then((Response) => {
+            console.log(Response)
+        })
+    }
 
     back  = (e) => {
         e.preventDefault();
@@ -18,11 +38,11 @@ class Confirmation extends Component{
         const {inputValues: { email, fullname, password, dob, gender, num, levelOfEducation, citizenship, address, country, postalcode }} = this.props;
 
         return(
-            <Container classname='card1'>
+            <Container className='card1'>
                 <h1>Confirm your Details</h1>
                 <p>Confirm if the following details are correct.</p>
                 
-                <Card classname='card1'>
+                <Card className='details'>
                     <Card.Body className='card2'>
                          <p>Email : {email}</p>
                          <p>Full Name : {fullname}</p>
@@ -38,8 +58,8 @@ class Confirmation extends Component{
                         <p>Postal Code : {postalcode}</p>
                         </Card.Body>
                     </Card>
-                <Button variant="secondary" onClick={this.back} style={{ marginTop: 10}}>Back</Button>{' '}
-                <Button variant="primary" style={{ marginTop: 10}}>Confirm</Button>
+                <Button variant="secondary" onClick={this.back} className='button'>Back</Button>{' '}
+                <Button variant="primary" onClick={this.Youthregister} className='button'>Confirm</Button>
             </Container>
         )
     }

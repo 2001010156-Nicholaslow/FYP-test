@@ -14,8 +14,7 @@ class YouthDetails2 extends Component{
             !validator.isEmpty(this.props.inputValues.dob) &
             !validator.isEmpty(this.props.inputValues.gender) &
             !validator.isEmpty(this.props.inputValues.num) &
-            !validator.isEmpty(this.props.inputValues.levelOfEducation) &
-            validator.isInt(this.props.inputValues.num)
+            !validator.isEmpty(this.props.inputValues.levelOfEducation)
         ){
             e.preventDefault();
             this.props.nextStep();
@@ -24,11 +23,12 @@ class YouthDetails2 extends Component{
 
 
     render() {
-        return( <Container>
+        return( 
+        <Container>
                     <Form>
                         <Form.Group controlId="formDOB" style={{ marginTop: 10}}>
                             <Form.Label>Date of birth</Form.Label>
-                            <Form.Control
+                            <Form.Control style={{ width: 300}}
                                 type="date"
                                 defaultValue={this.props.inputValues.dob}
                                 name="dob"
@@ -49,11 +49,11 @@ class YouthDetails2 extends Component{
                         <Form.Group controlId="formNum" style={{ marginTop: 10}}>
                             <Form.Label>Contact Number</Form.Label>
                             <Form.Control
-                                type="num"
+                                type="number"
                                 defaultValue={this.props.inputValues.num}
                                 name="num"
-                                required
-                                minlength="8"
+                                required minLength={8}
+                                min = "0"
                                 onChange={this.props.handleChange}
                             />
                         </Form.Group>
@@ -63,7 +63,6 @@ class YouthDetails2 extends Component{
                             <Form.Label>Highest Level Of Education</Form.Label>
                             <Form.Control as="select" name="levelOfEducation" defaultValue={this.props.inputValues.levelOfEducation} onChange={this.props.handleChange} required>
                                     <option selected disabled value="">Please select a option</option>
-                                    <option value="None">None</option>
                                     <option value="O-level">GCE 'O' Level</option>
                                     <option value="N-level">GCE 'N' Level</option>
                                     <option value="A-level">GCE 'A' Level</option>

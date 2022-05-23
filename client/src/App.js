@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Home from './Home';
-import Login from './Login';
+import Login from './Login/Login';
 import PartnerRegister from './Register/PartnerRegister';
 import Profile from './Profile';
 import YouthRegister from './Register/YouthRegister'; //import from the js file
@@ -46,16 +46,16 @@ function App() {
 
 function App() {
   return(
-  <div className="App">
-    <ul>
+  <div>
+    <ul className="App">
       <li><Link to="/">Home</Link></li>
-      <li><Link to="/login">Login</Link></li>
+      <li><Link to="Login/login">Login</Link></li>
       <li><Link to="/Register/youthRegister">Register</Link></li>
       <li><Link to="/profile">My Profile</Link></li>
     </ul>
     <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="Login/login" element={<Login />} />
           <Route path="/Register/partnerRegister" element={<PartnerRegister />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/Register/youthRegister" element={<YouthRegister />} />
