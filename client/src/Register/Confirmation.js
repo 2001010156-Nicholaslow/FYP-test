@@ -38,11 +38,11 @@ class Confirmation extends Component{
         const {inputValues: { email, fullname, password, dob, gender, num, levelOfEducation, citizenship, address, country, postalcode }} = this.props;
 
         return(
-            <Container classname='card1'>
+            <Container className='card1'>
                 <h1>Confirm your Details</h1>
                 <p>Confirm if the following details are correct.</p>
                 
-                <Card classname='card1'>
+                <Card className='details'>
                     <Card.Body className='card2'>
                          <p>Email : {email}</p>
                          <p>Full Name : {fullname}</p>
@@ -58,8 +58,8 @@ class Confirmation extends Component{
                         <p>Postal Code : {postalcode}</p>
                         </Card.Body>
                     </Card>
-                <Button variant="secondary" onClick={this.back} style={{ marginTop: 10}}>Back</Button>{' '}
-                <Button variant="primary" onClick={this.Youthregister} style={{ marginTop: 10}}>Confirm</Button>
+                <Button variant="secondary" onClick={this.back} className='button'>Back</Button>{' '}
+                <Button variant="primary" onClick={this.Youthregister} className='button'>Confirm</Button>
             </Container>
         )
     }

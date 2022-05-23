@@ -1,16 +1,27 @@
-.card{
-    border: #ffffff;
-}
-
 .card1{
     margin-left: auto;
     margin-right: auto;
     width: 40%;
+
+}
+
+.details{
+    border: 1px solid;
+    background-color: #8eb7ea;
 }
 
 .card2{
     text-align: left;
-    margin: auto;
-    width: 50%;
-    background-color: #dddddd;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.button{
+    align-items: flex-start;
+    writing-mode: horizontal-tb;
+    flex-direction: row;
+    display:block;
+    margin-top: 10px
 }

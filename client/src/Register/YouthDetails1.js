@@ -33,7 +33,7 @@ class YouthDetails1 extends Component{
                     <Form>
                         <Form.Group controlId="formEmail" style={{ marginTop: 10}} >
                                 <Form.Label className="label">Email Address</Form.Label>
-                                <Form.Control
+                                <Form.Control style={{ width: 300}}
                                 type="email"
                                 defaultValue={this.props.inputValues.email}
                                 name="email"
@@ -70,7 +70,7 @@ class YouthDetails1 extends Component{
 
                     </Form>
                     
-                    <Link to="../login" style={{ marginTop: 20}}>Already a Youth?</Link>
+                    <Link to="../Login/login" style={{ marginTop: 20}}>Already a Youth?</Link>
                     
                 </Container>
         );

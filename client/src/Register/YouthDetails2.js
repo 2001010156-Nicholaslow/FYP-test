@@ -28,7 +28,7 @@ class YouthDetails2 extends Component{
                     <Form>
                         <Form.Group controlId="formDOB" style={{ marginTop: 10}}>
                             <Form.Label>Date of birth</Form.Label>
-                            <Form.Control
+                            <Form.Control style={{ width: 300}}
                                 type="date"
                                 defaultValue={this.props.inputValues.dob}
                                 name="dob"
@@ -52,8 +52,8 @@ class YouthDetails2 extends Component{
                                 type="number"
                                 defaultValue={this.props.inputValues.num}
                                 name="num"
-                                required
-                                minLength={8}
+                                required minLength={8}
+                                min = "0"
                                 onChange={this.props.handleChange}
                             />
                         </Form.Group>

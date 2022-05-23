@@ -67,7 +67,7 @@ app.post("/YouthConfirmation", (req,res) => {
   const postalcode = req.body.postalcode
 
 
-  db.query("INSERT INTO users (full_name, password, email, dob, gender, num, levelOfEducation, citizenship, address, country, postalcode) VALUES (?,?,?,?,?,?,?,?,?,?)", [fullname,password,email,dob,gender,num,levelOfEducation,citizenship,address,country,postalcode],
+  db.query("INSERT INTO users (full_name, password, email, dob, gender, contact_number, education, citizenship, address, country, postalcode) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [fullname,password,email,dob,gender,num,levelOfEducation,citizenship,address,country,postalcode],
   (err,result) => {
     console.log(err);
     console.log(result);

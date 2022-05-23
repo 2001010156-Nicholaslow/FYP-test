@@ -29,7 +29,7 @@ class YouthDetails3 extends Component{
                     <Form>
                         <Form.Group controlId="formCitizenship" style={{ marginTop: 10}}>
                             <Form.Label>Citizenship</Form.Label>
-                                <Form.Control as="select" name="citizenship" defaultValue={this.props.inputValues.citizenship} onChange={this.props.handleChange} required>
+                                <Form.Control as="select" name="citizenship" defaultValue={this.props.inputValues.citizenship} onChange={this.props.handleChange} required style={{ width: 300}}>
                                     <option selected disabled value="">Please select a option</option>
                                     <option value="Singaporean">Singaporean</option>
                                     <option value="PR">Permanent Resident</option>
