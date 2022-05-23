@@ -14,10 +14,21 @@ class YouthDetails2 extends Component{
             !validator.isEmpty(this.props.inputValues.dob) &
             !validator.isEmpty(this.props.inputValues.gender) &
             !validator.isEmpty(this.props.inputValues.num) &
-            !validator.isEmpty(this.props.inputValues.levelOfEducation)
+            !validator.isEmpty(this.props.inputValues.levelOfEducation) &
+            validator.isLength(this.props.inputValues.num, {min:8})
         ){
             e.preventDefault();
             this.props.nextStep();
+        } else{
+            var required = document.querySelectorAll("input[required]");
+
+            required.forEach(function (element) {
+                if (element.value.trim() === "") {
+                    element.style.backgroundColor = "#ffcccb";
+                } else {
+                    element.style.backgroundColor = "white";
+                }
+            });
         }
     };
 
@@ -52,7 +63,8 @@ class YouthDetails2 extends Component{
                                 type="number"
                                 defaultValue={this.props.inputValues.num}
                                 name="num"
-                                required minLength={8}
+                                required
+                                minlength="8"
                                 min = "0"
                                 onChange={this.props.handleChange}
                             />

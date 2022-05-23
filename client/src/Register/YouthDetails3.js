@@ -16,10 +16,21 @@ class YouthDetails3 extends Component{
             !validator.isEmpty(this.props.inputValues.levelOfEducation) &
             !validator.isEmpty(this.props.inputValues.country) &
             !validator.isEmpty(this.props.inputValues.postalcode) &
-            validator.isInt(this.props.inputValues.postalcode)
+            validator.isInt(this.props.inputValues.postalcode) &
+            validator.isPostalCode(this.props.inputValues.postalcode, 'SG')
         ){
             e.preventDefault();
             this.props.nextStep();
+        }else{
+            var required = document.querySelectorAll("input[required]");
+
+            required.forEach(function (element) {
+                if (element.value.trim() === "") {
+                    element.style.backgroundColor = "#ffcccb";
+                } else {
+                    element.style.backgroundColor = "white";
+                }
+            });
         }
     };
 
@@ -54,15 +65,15 @@ class YouthDetails3 extends Component{
                                 <Form.Label>Country</Form.Label>
                                 <Form.Control as="select" name="country" defaultValue={this.props.inputValues.country} onChange={this.props.handleChange} required>
                                     <option selected disabled value="">Please choose a country</option>
-                                    <option value="SG">Singapore</option>
-                                    <option value="ML">Malaysia</option>
-                                    <option value="KR">Korea</option>
-                                    <option value="JP">Japan</option>
-                                    <option value="SK">South Korea</option>
-                                    <option value="LK">Sri Lanka</option>
-                                    <option value="IN">India</option>
-                                    <option value="ID">Indonesia</option>
-                                    <option value="PH">Philippines</option>
+                                    <option value="Singapore">Singapore</option>
+                                    <option value="Malaysia">Malaysia</option>
+                                    <option value="Korea">Korea</option>
+                                    <option value="Japan">Japan</option>
+                                    <option value="South Korea">South Korea</option>
+                                    <option value="Sri Lanka">Sri Lanka</option>
+                                    <option value="India">India</option>
+                                    <option value="Indonesia">Indonesia</option>
+                                    <option value="Philippines">Philippines</option>
                                     <option value="USA">USA</option>
                                     <option value="EU">Europe</option>
                                 </Form.Control>
