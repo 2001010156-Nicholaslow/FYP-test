@@ -23,28 +23,23 @@ class PartnerRegister extends Component {
 
   saveAndContinue = (e) => {
     if (
-        !validator.isEmpty(this.props.inputValues.email) &
-        validator.isEmail(this.props.inputValues.email) &
-        !validator.isEmpty(this.props.inputValues.fullname) &
-        !validator.isEmpty(this.props.inputValues.num) &
+        console.log(this.state),
+        !validator.isEmpty(this.state.email) &
+        validator.isEmail(this.state.email) &
+        !validator.isEmpty(this.state.fullname) &
+        !validator.isEmpty(this.state.num) &
         //validator.isLength(this.props.inputValues.num, {min:8}) &
-        !validator.isEmpty(this.props.inputValues.businessname) &
-        !validator.isEmpty(this.props.inputValues.password)
+        !validator.isEmpty(this.state.businessname) &
+        !validator.isEmpty(this.state.password)
         //validator.isLength(this.props.inputValues.password, { min: 8 })
 
     ) {
-        e.preventDefault();
-        Axios.post('http://localhost:3001/PartnerConfirmation' , {
-          email: this.props.inputValues.email,
-          businessname : this.props.inputValues.businessname,
-          fullname : this.props.inputValues.fullname,
-          num : this.props.inputValues.num,
-          password : this.props.inputValues.password
-    }).then((Response) => {
+        e.preventDefault()
+        console.log(this.state)
+        Axios.post('http://localhost:3001/PartnerConfirmation' , this.state).then((Response) => {
             console.log(Response)
         })
     } else {
-
         var required = document.querySelectorAll("input[required]");
 
         required.forEach(function (element) {
@@ -132,7 +127,7 @@ class PartnerRegister extends Component {
             />
           </Form.Group>
 
-          <Button type="submit" variant="primary" onClick={this.register} style={{ marginTop: 25, marginLeft: 120 }}>Next</Button>
+          <Button type="submit" variant="primary" onClick={this.saveAndContinue} style={{ marginTop: 25, marginLeft: 120 }}>Next</Button>
           
         </Form>
 
