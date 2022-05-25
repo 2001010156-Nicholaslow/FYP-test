@@ -84,6 +84,22 @@ app.post("/YouthConfirmation", (req,res) => {
   });
 });
 
+//Client - PartnerRegister
+app.post("/PartnerConfirmation", (req,res) => {
+  const email = req.body.email
+  const fullname = req.body.fullname
+  const password = req.body.password
+  const num = req.body.num
+  const businessname = req.body.businessname
+
+
+  db.query("INSERT INTO partners (email, company_name, contact_name, contact_number, password) VALUES (?,?,?,?,?)", [email,businessname,fullname,num,password],
+  (err,result) => {
+    console.log(err);
+    console.log(result);
+  });
+});
+
 
 app.listen(3001, () => {
   console.log("running server");
