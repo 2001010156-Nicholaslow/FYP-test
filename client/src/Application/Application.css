@@ -1,0 +1,9 @@
+.Application{
+    margin: 0 auto;
+    width: 40%;
+    height: 100%;
+    text-align: center;
+    display: block;
+    padding: 8px;
+    background-color: #8eb7ea;
+}
