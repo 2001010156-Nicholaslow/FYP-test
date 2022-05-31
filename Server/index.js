@@ -84,7 +84,25 @@ app.post("/YouthConfirmation", (req, res) => {
     });
 });
 
-//Login 
+//youth emailcheck
+app.post("/EmailCheck", (req, res) => {
+  const email = req.body.email
+
+  db.query("SELECT * FROM users WHERE email = ?", [email],
+    (err, result) => {
+      if (err) {
+        res.send({err:err})
+      } else {
+        if (result.length > 0) {
+          res.send(result);
+        } else {
+          res.send({message: "This email is already in used. Try another Email."});
+        }
+      }
+    });
+});
+
+//Login - client
 app.post("/ClientLogin", (req, res) => {
   const email = req.body.email
   const password = req.body.password
