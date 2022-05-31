@@ -63,7 +63,7 @@ app.get("/users", (req, res) => {
 });
 
 //Client - YouthRegister
-app.post("/YouthConfirmation", (req,res) => {
+app.post("/YouthConfirmation", (req, res) => {
   const fullname = req.body.fullname
   const password = req.body.password
   const email = req.body.email
@@ -77,15 +77,34 @@ app.post("/YouthConfirmation", (req,res) => {
   const postalcode = req.body.postalcode
 
 
-  db.query("INSERT INTO users (full_name, password, email, dob, gender, contact_number, education, citizenship, address, country, postalcode) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [fullname,password,email,dob,gender,num,levelOfEducation,citizenship,address,country,postalcode],
-  (err,result) => {
-    console.log(err);
-    console.log(result);
-  });
+  db.query("INSERT INTO users (full_name, password, email, dob, gender, contact_number, education, citizenship, address, country, postalcode) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [fullname, password, email, dob, gender, num, levelOfEducation, citizenship, address, country, postalcode],
+    (err, result) => {
+      console.log(err);
+      console.log(result);
+    });
+});
+
+//Login 
+app.post("/ClientLogin", (req, res) => {
+  const email = req.body.email
+  const password = req.body.password
+
+  db.query("SELECT * FROM users WHERE email = ? AND password = ?", [email, password],
+    (err, result) => {
+      if (err) {
+        res.send({err:err})
+      } else {
+        if (result.length > 0) {
+          res.send(result);
+        } else {
+          res.send({ message: "Wrong Email/Password combination!" });
+        }
+      }
+    });
 });
 
 //Client - PartnerRegister
-app.post("/PartnerConfirmation", (req,res) => {
+app.post("/PartnerConfirmation", (req, res) => {
   const email = req.body.email
   const fullname = req.body.fullname
   const password = req.body.password
@@ -93,14 +112,14 @@ app.post("/PartnerConfirmation", (req,res) => {
   const businessname = req.body.businessname
 
 
-  db.query("INSERT INTO partners (email, company_name, contact_name, contact_number, password) VALUES (?,?,?,?,?)", [email,businessname,fullname,num,password],
-  (err,result) => {
-    console.log(err);
-    console.log(result);
-  });
+  db.query("INSERT INTO partners (email, company_name, contact_name, contact_number, password) VALUES (?,?,?,?,?)", [email, businessname, fullname, num, password],
+    (err, result) => {
+      console.log(err);
+      console.log(result);
+    });
 });
 
-
+// listen App
 app.listen(3001, () => {
   console.log("running server");
 });
