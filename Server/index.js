@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
 const JWTKey = "abc";
 const db = mysql.createConnection({
   user: "root",
@@ -13,6 +14,7 @@ const db = mysql.createConnection({
 });
 
 app.use(express.json());
+app.use(fileUpload());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -62,6 +64,49 @@ app.get("/users", (req, res) => {
   });
 });
 
+//Client - Application
+app.get("/opportunity/:id", (req, res) => {
+  const id = req.params.id
+
+  db.query("SELECT * FROM opportunity WHERE opp_id='" + id + "'", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      if(results.length == 0) // not found
+        res.status(404).send();
+      res.status(200).send(results[0]);
+    }
+  });
+});
+
+app.post("/opportunity/:id/apply", (req,res) => {
+  const id = req.params.id;
+  const f = req.files;
+
+  console.log(f);
+
+  if(f == null)
+    res.status(406).send("no file");
+
+  console.log(f.file.name);
+
+  db.query("INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
+    [
+      f.file.data,
+      "0",
+      "1",
+      id
+    ],
+    (err,result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send("okay");
+      }     
+    }
+  )
+});
+
 //Client - YouthRegister
 app.post("/YouthConfirmation", (req,res) => {
   const fullname = req.body.fullname
@@ -99,7 +144,6 @@ app.post("/PartnerConfirmation", (req,res) => {
     console.log(result);
   });
 });
-
 
 app.listen(3001, () => {
   console.log("running server");
