@@ -7,6 +7,7 @@ import Profile from './Profile';
 import YouthRegister from './Register/YouthRegister'; //import from the js file
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Partner from './Partner/Partner';
 /*
 function App() {
   return(
@@ -45,21 +46,26 @@ function App() {
 */
 
 function App() {
-  return(
-  <div>
-    <ul className="App">
-      <li><Link to="/">Home</Link></li>
-      <li><Link to="Login/login">Login</Link></li>
-      <li><Link to="/Register/youthRegister">Register</Link></li>
-      <li><Link to="/profile">My Profile</Link></li>
-    </ul>
-    <Routes>
+  return (
+    <div>
+      <ul className="App">
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="Login/login">Login</Link></li>
+        <li><Link to="/Register/youthRegister">Register</Link></li>
+        <li><Link to="/profile">My Profile</Link></li>
+      </ul>
+      <div className='Style_page'>
+
+        <Routes>
           <Route path="/" element={<Home />} />
           <Route path="Login/login" element={<Login />} />
           <Route path="/Register/partnerRegister" element={<PartnerRegister />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/Register/youthRegister" element={<YouthRegister />} />
+          <Route path="/Partner/Partner" element={<Partner />} />
         </Routes>
+      </div>
+
     </div>);
 }
 

@@ -6,67 +6,110 @@ import Axios from "axios";
 
 class PartnerRegister extends Component {
 
-
-
   state = {
-      email: '',
-      fullname: '',
-      num: '',
-      businessname: '',
-      password: '',
-    }
-  
+    email: '',
+    fullname: '',
+    num: '',
+    businessname: '',
+    password: '',
+    LoginStatus: ''
+  }
 
-    handleChange = (event) => {
-      this.setState({[event.target.name]: event.target.value})
+
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
   }
 
   saveAndContinue = (e) => {
     if (
-        console.log(this.state),
-        !validator.isEmpty(this.state.email) &
-        validator.isEmail(this.state.email) &
-        !validator.isEmpty(this.state.fullname) &
-        !validator.isEmpty(this.state.num) &
-        //validator.isLength(this.props.inputValues.num, {min:8}) &
-        !validator.isEmpty(this.state.businessname) &
-        !validator.isEmpty(this.state.password)
-        //validator.isLength(this.props.inputValues.password, { min: 8 })
+      console.log(this.state),
+      !validator.isEmpty(this.state.email) &
+      validator.isEmail(this.state.email) &
+      !validator.isEmpty(this.state.fullname) &
+      !validator.isEmpty(this.state.num) &
+      !validator.isEmpty(this.state.businessname) &
+      !validator.isEmpty(this.state.password)
 
     ) {
-        e.preventDefault()
-        console.log(this.state)
-        Axios.post('http://localhost:3001/PartnerConfirmation' , this.state).then((Response) => {
-            console.log(Response)
-        })
+      e.preventDefault();
+      console.log(this.state)
+      Axios.post("http://localhost:3001/EmailCheck1", {
+        email: this.state.email
+      }).then((response) => {
+        if (response.data.message) {
+          Axios.post('http://localhost:3001/PartnerConfirmation', this.state).then((Response) => {
+            console.log(" ")
+          })
+          this.setState({ LoginStatus: "Account successfully created!" })
+        } else {
+          this.setState({ LoginStatus: "This email is already in used. Try another Email." })
+          
+          //alert("This email is already in used. Try another Email.");
+        }
+      });
     } else {
-        var required = document.querySelectorAll("input[required]");
 
-        required.forEach(function (element) {
-            if (element.value.trim() === "") {
-                element.style.backgroundColor = "#ffcccb";
-            } else {
-                element.style.backgroundColor = "white";
-            }
-        });
+      var required = document.querySelectorAll("input[required]");
+
+      required.forEach(function (element) {
+        if (element.value.trim() === "") {
+          element.style.backgroundColor = "#ffcccb";
+        } else {
+          element.style.backgroundColor = "white";
+        }
+      });
 
     }
-};
+  }
 
-  register = (e) =>{
+
+
+  saveAndContinue1 = (e) => {
+    if (
+      console.log(this.state),
+      !validator.isEmpty(this.state.email) &
+      validator.isEmail(this.state.email) &
+      !validator.isEmpty(this.state.fullname) &
+      !validator.isEmpty(this.state.num) &
+      //validator.isLength(this.props.inputValues.num, {min:8}) &
+      !validator.isEmpty(this.state.businessname) &
+      !validator.isEmpty(this.state.password)
+      //validator.isLength(this.props.inputValues.password, { min: 8 })
+
+    ) {
+      e.preventDefault()
+      console.log(this.state)
+      Axios.post('http://localhost:3001/PartnerConfirmation', this.state).then((Response) => {
+        console.log(Response)
+      })
+    } else {
+      var required = document.querySelectorAll("input[required]");
+
+      required.forEach(function (element) {
+        if (element.value.trim() === "") {
+          element.style.backgroundColor = "#ffcccb";
+        } else {
+          element.style.backgroundColor = "white";
+        }
+      });
+
+    }
+  };
+
+  register = (e) => {
     e.preventDefault()
     console.log(this.state)
-    Axios.post('http://localhost:3001/PartnerConfirmation' , this.state).then((Response) => {
-        console.log(Response)
+    Axios.post('http://localhost:3001/PartnerConfirmation', this.state).then((Response) => {
+      console.log(Response)
     })
-}
+  }
 
   render() {
-    const {email, businessname, fullname, num, password} = this.state
+    const { email, businessname, fullname, num, password, LoginStatus} = this.state
     return (
       <Container>
         <h1>Partner Register page</h1>
-        <br></br>
+        <p style={{ marginTop: 10, color: 'red' }}>{LoginStatus}</p>
         <Form>
           <Form.Group controlId="formEmail" style={{ marginTop: 10 }} >
             <Form.Label className="label">Email Address</Form.Label>
@@ -128,7 +171,7 @@ class PartnerRegister extends Component {
           </Form.Group>
 
           <Button type="submit" variant="primary" onClick={this.saveAndContinue} style={{ marginTop: 25, marginLeft: 120 }}>Next</Button>
-          
+
         </Form>
 
         <Link to="../Login/login" style={{ marginTop: 20 }}>Already a Partner?</Link>

@@ -102,6 +102,24 @@ app.post("/EmailCheck", (req, res) => {
     });
 });
 
+//partner emailcheck
+app.post("/EmailCheck1", (req, res) => {
+  const email = req.body.email
+
+  db.query("SELECT * FROM partners WHERE email = ?", [email],
+    (err, result) => {
+      if (err) {
+        res.send({err:err})
+      } else {
+        if (result.length > 0) {
+          res.send(result);
+        } else {
+          res.send({message: "This email is already in used. Try another Email."});
+        }
+      }
+    });
+});
+
 //Login - client
 app.post("/ClientLogin", (req, res) => {
   const email = req.body.email
