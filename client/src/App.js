@@ -7,6 +7,8 @@ import Profile from './Profile';
 import YouthRegister from './Register/YouthRegister'; //import from the js file
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { ErrorBoundary } from './ErrorHandling/ErrorBoundary';
+import NoRouteMatch from './ErrorHandling/NoRouteMatch'
 /*
 function App() {
   return(
@@ -46,6 +48,7 @@ function App() {
 
 function App() {
   return(
+  <ErrorBoundary>
   <div>
     <ul className="App">
       <li><Link to="/">Home</Link></li>
@@ -59,8 +62,10 @@ function App() {
           <Route path="/Register/partnerRegister" element={<PartnerRegister />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/Register/youthRegister" element={<YouthRegister />} />
+          <Route path="*" element={<NoRouteMatch />} />
         </Routes>
-    </div>);
+    </div>
+    </ErrorBoundary>);
 }
 
 

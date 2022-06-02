@@ -1,0 +1,37 @@
+.ErrorContainer{
+    background-color: #120a0d;
+    height: 100vh;
+    width: 100vw;
+}
+
+.ErrorContent {
+    color: #ed5c5c;
+
+    text-align: center;
+    font-family: 'Consolas';
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    height: 100vh;
+}
+
+.ErrorContent a:link,.ErrorContent a:visited{
+    color: #ed5c5c;
+    text-decoration: underline;
+}
+
+.ErrorContent a:hover{
+    color: #ec8484;
+}
+
+.ErrorContent a:active{
+    color: #ed5c5c;
+}
+
+.ErrorContent img {
+    image-rendering: crisp-edges; /* change this to auto if needed */
+    max-width: 100%;
+}
