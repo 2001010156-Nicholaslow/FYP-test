@@ -1,11 +1,11 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './PartnerHome.css';
-import { BrowserRouter as Link } from 'react-router-dom';
+import { BiListUl, BiBarChartAlt2, BiSearchAlt } from "react-icons/bi";
+import { Link } from "react-router-dom";
+
 
 function PartnerHome() {
-
-    //navi bar here
 
 
     return (
@@ -16,10 +16,47 @@ function PartnerHome() {
                     <div className='stuff_todo'>
                         <div className='row_item'>
                             <div class="col-sm-12 col-md-6 col-lg-5">
-                                <h3>Choose an option!</h3>
+                                <h3>Choose an option</h3>
                             </div>
-                            <div class="col-sm-12 col-md-6 col-lg-7">
-                                
+                            <div>
+                                <div className='pages_icons'>
+                                    
+                                    <div className='icon'>
+
+                                    <Link to="../">
+                                        <button type="button">
+                                            <div className = "image_icon">
+                                               <BiListUl /> 
+                                            </div>
+                                            <p>Job Ad</p>
+                                        </button>
+                                    </Link>
+                                       
+                                    
+
+                                    
+                                    <Link to="../">
+                                        <button type="button">
+                                            <div className = "image_icon">
+                                               <BiSearchAlt /> 
+                                            </div>
+                                            <p>Search user</p>
+                                        </button>
+                                    </Link>
+                                       
+
+
+                                    <Link to="../">
+                                        <button type="button">
+                                            <div className = "image_icon">
+                                               <BiBarChartAlt2 /> 
+                                            </div>
+                                            <p>Statics</p>
+                                        </button>
+                                    </Link>
+                                    </div> 
+                                </div>
+
                             </div>
 
                         </div>

@@ -11,6 +11,8 @@
 .panel {
     margin-bottom: 10px;
     border: 0;
+    border-color: black;
+    background-color: yellow;
 }
 
 .panel_body{
@@ -27,4 +29,22 @@
 .row_item{
         margin-left: -5px;
         margin-right: -5px;
+}
+
+
+.icon{
+    height: auto;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-md);
+    border: 2px solid transparent;
+    font-size: 1.3em;
+    
+}
+
+.image_icon{
+    width: 150px;
+    font-size: 1.7em;
 }

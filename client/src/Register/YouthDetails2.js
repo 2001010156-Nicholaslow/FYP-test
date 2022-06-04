@@ -24,9 +24,9 @@ class YouthDetails2 extends Component {
 
             required.forEach(function (element) {
                 if (element.value.trim() === "") {
-                    element.style.backgroundColor = "#ffcccb";
+                    element.style.borderColor = "#f10";
                 } else {
-                    element.style.backgroundColor = "white";
+                    element.style.borderColor = "white";
                 }
             });
         }
