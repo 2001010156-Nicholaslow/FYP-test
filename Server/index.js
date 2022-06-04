@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-
 const express = require("express");
 const app = express();
 const mysql = require("mysql");
@@ -62,28 +61,51 @@ app.get("/users", (req, res) => {
   });
 });
 
-//Client - YouthRegister
-app.post("/YouthConfirmation", (req,res) => {
-  const fullname = req.body.fullname
-  const password = req.body.password
-  const email = req.body.email
-  const dob = req.body.dob
-  const gender = req.body.gender
-  const num = req.body.num
-  const levelOfEducation = req.body.levelOfEducation
-  const citizenship = req.body.citizenship
-  const address = req.body.address
-  const country = req.body.country
-  const postalcode = req.body.postalcode
-
-
-  db.query("INSERT INTO users (full_name, password, email, dob, gender, contact_number, education, citizenship, address, country, postalcode) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [fullname,password,email,dob,gender,num,levelOfEducation,citizenship,address,country,postalcode],
-  (err,result) => {
-    console.log(err);
-    console.log(result);
+app.get("/opportunity", (req, res) => {
+  db.query("SELECT * FROM opportunity", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      res.status(200).send(results);
+    }
   });
 });
 
+//Client - YouthRegister
+app.post("/YouthConfirmation", (req, res) => {
+  const fullname = req.body.fullname;
+  const password = req.body.password;
+  const email = req.body.email;
+  const dob = req.body.dob;
+  const gender = req.body.gender;
+  const num = req.body.num;
+  const levelOfEducation = req.body.levelOfEducation;
+  const citizenship = req.body.citizenship;
+  const address = req.body.address;
+  const country = req.body.country;
+  const postalcode = req.body.postalcode;
+
+  db.query(
+    "INSERT INTO users (full_name, password, email, dob, gender, contact_number, education, citizenship, address, country, postalcode) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+    [
+      fullname,
+      password,
+      email,
+      dob,
+      gender,
+      num,
+      levelOfEducation,
+      citizenship,
+      address,
+      country,
+      postalcode,
+    ],
+    (err, result) => {
+      console.log(err);
+      console.log(result);
+    }
+  );
+});
 
 app.listen(3001, () => {
   console.log("running server");

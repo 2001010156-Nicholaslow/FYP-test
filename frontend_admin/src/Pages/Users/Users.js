@@ -15,44 +15,84 @@ function Users() {
   });
 
   const [columns, setColumns] = useState([
-    { title: "Full Name", field: "full_name" },
+    { title: "Full Name", field: "full_name", filtering: false },
     {
       title: "Email",
       field: "email",
+      filtering: false,
     },
     {
       title: "Date of birth",
       field: "dob",
+      filtering: false,
       render: (rowData) => moment(rowData.dob).format("YYYY/MM/DD"),
+    },
+    {
+      title: "Education",
+      field: "education",
     },
     {
       title: "Contact Number",
       field: "contact_number",
+      filtering: false,
     },
     {
       title: "Gender",
       field: "gender",
     },
     {
-      title: "Details",
-      field: "user_id",
-      render: (rowData) => {
-        return (
-          <button onClick={() => navigate(`/admin/user/${rowData.user_id}`)}>
-            Details
-          </button>
-        );
-      },
+      title: "Citizenship",
+      field: "citizenship",
     },
+    {
+      title: "Address",
+      field: "address",
+      filtering: false,
+    },
+    {
+      title: "Postal Code",
+      field: "postalcode",
+      filtering: false,
+    },
+    {
+      title: "Country",
+      field: "country",
+    },
+
+    // {
+    //   title: "Details",
+    //   field: "user_id",
+    //   render: (rowData) => {
+    //     return (
+    //       <button onClick={() => navigate(`/admin/user/${rowData.user_id}`)}>
+    //         Details
+    //       </button>
+    //     );
+    //   },
+    // },
   ]);
 
   return (
     <MaterialTable
       icons={TableIcons}
-      title="Users"
+      title=" Manage Users"
       columns={columns}
       data={data}
+      options={{
+        filtering: true,
+      }}
       editable={{
+        onRowUpdate: (newData, oldData) =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              const dataUpdate = [...data];
+              const index = oldData.tableData.id;
+              dataUpdate[index] = newData;
+              setData([...dataUpdate]);
+
+              resolve();
+            }, 1000);
+          }),
         onRowDelete: (oldData) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
