@@ -1,8 +1,10 @@
 import React from "react";
 
-function PartnerRegister(){
+function PartnerLogin(){
     return(
+        
         <div className="PartnerRegister">
+            
         <h1>This is the Partner Register page</h1>
 
         <input type="text" placeholder="Company name"/>
@@ -12,5 +14,4 @@ function PartnerRegister(){
     </div>
     );
 }
-// delete all of this
-export default PartnerRegister;
+export default PartnerLogin;

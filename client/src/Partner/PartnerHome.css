@@ -1,4 +1,5 @@
 .RegisterHome{
+    margin-top: 10px;
    margin: 0 auto;
     width: 40%;
     height: 100%;
@@ -46,5 +47,9 @@
 
 .image_icon{
     width: 150px;
+    font-size: 1.7em;
+}
+
+.image_icon_nav{
     font-size: 1.7em;
 }
