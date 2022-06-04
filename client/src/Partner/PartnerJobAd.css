@@ -1,0 +1,57 @@
+.JobAd {
+    margin-top: 10px;
+    margin: 0 auto;
+    width: 60%;
+    height: 100%;
+    text-align: center;
+    display: block;
+    padding: 8px;
+
+}
+
+.JobAd_panel {
+    margin-bottom: 10px;
+    border: 0;
+}
+
+.JobAd_Nav{
+    background-color: grey;
+}
+
+.button_create{
+    background-color: #6C1D43;
+    color: #ffffff;
+}
+
+.Ad_detail{
+    text-align: left;
+    color: #ffffff;
+    padding-left: 10px;
+    border: 5px solid rgb(0, 0, 0);
+}
+
+.Modified_AD{
+    padding-left: 1.5%;
+    width: 60%;
+}
+
+.ADbutton_edit{
+    padding-left: 1.5%;
+    margin: 5px;
+    width: 100px;
+    text-align: center;
+    background-color: yellow;
+    color: black;
+    font-size: 18px;
+}
+
+.ADbutton_delete{
+    padding-left: 1.5%;
+    margin: 5px;
+    width: 100px;
+    text-align: center;
+    color: white;
+    background-color: red;
+    font-size: 18px;
+}
+
