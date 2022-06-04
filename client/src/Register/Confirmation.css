@@ -1,7 +1,7 @@
 .card1{
     margin-left: auto;
     margin-right: auto;
-    width: 40%;
+    width: 80%;
 
 }
 
@@ -22,6 +22,6 @@
     align-items: flex-start;
     writing-mode: horizontal-tb;
     flex-direction: row;
-    display:block;
+    display:flex;
     margin-top: 10px
 }

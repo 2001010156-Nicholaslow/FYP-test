@@ -1,0 +1,30 @@
+.RegisterHome{
+   margin: 0 auto;
+    width: 40%;
+    height: 100%;
+    text-align: center;
+    display: block;
+    padding: 8px;
+ 
+}
+
+.panel {
+    margin-bottom: 10px;
+    border: 0;
+}
+
+.panel_body{
+    padding: auto;
+}
+
+.stuff_todo {
+    background: #2a4b9c;
+    color: #fff;
+    margin-bottom: 20px;
+    padding: 20px 20px 15px 30px;
+}
+
+.row_item{
+        margin-left: -5px;
+        margin-right: -5px;
+}

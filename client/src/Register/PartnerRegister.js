@@ -1,146 +1,182 @@
-import React from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import React, { Component } from 'react';
+import { Link } from "react-router-dom";
+import { Form, Button, Container } from 'react-bootstrap';
+import validator from "validator";
+import Axios from "axios";
 
-class PartnerRegister extends React.Component {
-    
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
+class PartnerRegister extends Component {
+
+  state = {
+    email: '',
+    fullname: '',
+    num: '',
+    businessname: '',
+    password: '',
+    LoginStatus: ''
   }
 
-  validationSchema() {
-    return Yup.object().shape({
-      fullname: Yup.string().required('Fullname is required'),
-      username: Yup.string()
-        .required('Username is required')
-        .min(6, 'Username must be at least 6 characters')
-        .max(20, 'Username must not exceed 20 characters'),
-      email: Yup.string()
-        .required('Email is required')
-        .email('Email is invalid'),
-      password: Yup.string()
-        .required('Password is required')
-        .min(6, 'Password must be at least 6 characters')
-        .max(40, 'Password must not exceed 40 characters'),
-      confirmPassword: Yup.string()
-        .required('Confirm Password is required')
-        .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
-      acceptTerms: Yup.bool().oneOf([true], 'Accept Terms is required'),
-    });
+
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleSubmit(data) {
-    console.log(JSON.stringify(data, null, 0));
+  saveAndContinue = (e) => {
+    if (
+      console.log(this.state),
+      !validator.isEmpty(this.state.email) &
+      validator.isEmail(this.state.email) &
+      !validator.isEmpty(this.state.fullname) &
+      !validator.isEmpty(this.state.num) &
+      !validator.isEmpty(this.state.businessname) &
+      !validator.isEmpty(this.state.password)
+
+    ) {
+      e.preventDefault();
+      console.log(this.state)
+      Axios.post("http://localhost:3001/EmailCheck1", {
+        email: this.state.email
+      }).then((response) => {
+        if (response.data.message) {
+          Axios.post('http://localhost:3001/PartnerConfirmation', this.state).then((Response) => {
+            console.log(" ")
+          })
+          this.setState({ LoginStatus: "Account successfully created!" })
+        } else {
+          this.setState({ LoginStatus: "This email is already in used. Try another Email." })
+          
+          //alert("This email is already in used. Try another Email.");
+        }
+      });
+    } else {
+
+      var required = document.querySelectorAll("input[required]");
+
+      required.forEach(function (element) {
+        if (element.value.trim() === "") {
+          element.style.backgroundColor = "#ffcccb";
+        } else {
+          element.style.backgroundColor = "white";
+        }
+      });
+
+    }
+  }
+
+
+
+  saveAndContinue1 = (e) => {
+    if (
+      console.log(this.state),
+      !validator.isEmpty(this.state.email) &
+      validator.isEmail(this.state.email) &
+      !validator.isEmpty(this.state.fullname) &
+      !validator.isEmpty(this.state.num) &
+      //validator.isLength(this.props.inputValues.num, {min:8}) &
+      !validator.isEmpty(this.state.businessname) &
+      !validator.isEmpty(this.state.password)
+      //validator.isLength(this.props.inputValues.password, { min: 8 })
+
+    ) {
+      e.preventDefault()
+      console.log(this.state)
+      Axios.post('http://localhost:3001/PartnerConfirmation', this.state).then((Response) => {
+        console.log(Response)
+      })
+    } else {
+      var required = document.querySelectorAll("input[required]");
+
+      required.forEach(function (element) {
+        if (element.value.trim() === "") {
+          element.style.backgroundColor = "#ffcccb";
+        } else {
+          element.style.backgroundColor = "white";
+        }
+      });
+
+    }
+  };
+
+  register = (e) => {
+    e.preventDefault()
+    console.log(this.state)
+    Axios.post('http://localhost:3001/PartnerConfirmation', this.state).then((Response) => {
+      console.log(Response)
+    })
   }
 
   render() {
-    const initialValues = {
-      fullname: '',
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      acceptTerms: false,
-    };
-
+    const { email, businessname, fullname, num, password, LoginStatus} = this.state
     return (
-      <div className="register-form">
-        <Formik
-          initialValues={initialValues}
-          validationSchema={this.validationSchema}
-          onSubmit={this.handleSubmit}
-        >
-          {({ resetForm }) => (
-            <Form>
-              <div className="form-group">
-                <label>Full Name</label>
-                <Field name="fullname" type="text" className="form-control" />
-                <ErrorMessage
-                  name="fullname"
-                  component="div"
-                  className="text-danger"
-                />
-              </div>
+      <Container>
+        <h1>Partner Register page</h1>
+        <p style={{ marginTop: 10, color: 'red' }}>{LoginStatus}</p>
+        <Form>
+          <Form.Group controlId="formEmail" style={{ marginTop: 10 }} >
+            <Form.Label className="label">Email Address</Form.Label>
+            <Form.Control style={{ width: 300 }}
+              type="email"
+              value={email}
+              name="email"
+              required
+              onChange={this.handleChange}
+            />
+          </Form.Group>
 
-              <div className="form-group">
-                <label htmlFor="username"> Username </label>
-                <Field name="username" type="text" className="form-control" />
-                <ErrorMessage
-                  name="username"
-                  component="div"
-                  className="text-danger"
-                />
-              </div>
+          <Form.Group controlId="formFullName" style={{ marginTop: 10 }}>
+            <Form.Label className="label">Contact Person Name</Form.Label>
+            <Form.Control
+              type="text"
+              value={fullname}
+              name="fullname"
+              required
+              onChange={this.handleChange}
+            />
+          </Form.Group>
 
-              <div className="form-group">
-                <label htmlFor="email"> Email </label>
-                <Field name="email" type="email" className="form-control" />
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className="text-danger"
-                />
-              </div>
+          <Form.Group controlId="formNum" style={{ marginTop: 10 }}>
+            <Form.Label>Contact Number</Form.Label>
+            <Form.Control
+              type="number"
+              value={num}
+              name="num"
+              required
+              minlength={8}
+              min={0}
+              onChange={this.handleChange}
+            />
+          </Form.Group>
 
-              <div className="form-group">
-                <label htmlFor="password"> Password </label>
-                <Field
-                  name="password"
-                  type="password"
-                  className="form-control"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="text-danger"
-                />
-              </div>
+          <Form.Group controlId="formBusinessName" style={{ marginTop: 10 }}>
+            <Form.Label className="label">Registered Business Name</Form.Label>
+            <Form.Control
+              type="text"
+              //pattern="[0-9]{5}"
+              value={businessname}
+              name="businessname"
+              required
+              onChange={this.handleChange}
+            />
+          </Form.Group>
 
-              <div className="form-group">
-                <label htmlFor="confirmPassword"> Confirm Password </label>
-                <Field
-                  name="confirmPassword"
-                  type="password"
-                  className="form-control"
-                />
-                <ErrorMessage
-                  name="confirmPassword"
-                  component="div"
-                  className="text-danger"
-                />
-              </div>
+          <Form.Group controlId="formPassword" style={{ marginTop: 10 }}>
+            <Form.Label className="label">Password</Form.Label>
+            <Form.Control
+              type="password"
+              value={password}
+              name="password"
+              required
+              minlength={8}
+              onChange={this.handleChange}
+            />
+          </Form.Group>
 
-              <div className="form-group form-check">
-                <Field
-                  name="acceptTerms"
-                  type="checkbox"
-                  className="form-check-input"
-                />
-                <label htmlFor="acceptTerms" className="form-check-label">
-                  I have read and agree to the Terms
-                </label>
-                <ErrorMessage
-                  name="acceptTerms"
-                  component="div"
-                  className="text-danger"
-                />
-              </div>
+          <Button type="submit" variant="primary" onClick={this.saveAndContinue} style={{ marginTop: 25, marginLeft: 120 }}>Next</Button>
 
-              <div>
-                <button type="submit">Register</button>
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  className="btn btn-warning float-right"
-                >
-                  Reset
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+        </Form>
+
+        <Link to="../Login/login" style={{ marginTop: 20 }}>Already a Partner?</Link>
+
+      </Container>
     );
   }
 }
