@@ -4,6 +4,10 @@ const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
 const JWTKey = "abc";
+const bcrypt = require('bcrypt');
+const { response } = require("express");
+const saltRounds = 10;
+
 const db = mysql.createConnection({
   user: "root",
   host: "localhost",
@@ -85,68 +89,62 @@ app.post("/YouthConfirmation", (req, res) => {
   const country = req.body.country;
   const postalcode = req.body.postalcode;
 
-  db.query(
-    "INSERT INTO users (full_name, password, email, dob, gender, contact_number, education, citizenship, address, country, postalcode) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-    [
-      fullname,
-      password,
-      email,
-      dob,
-      gender,
-      num,
-      levelOfEducation,
-      citizenship,
-      address,
-      country,
-      postalcode,
-    ],
-    (err, result) => {
-      console.log(err);
-      console.log(result);
-    }
-  );
+  bcrypt.hash(password, saltRounds, (err, hash) => { //hashing
+
+    db.query(
+      "INSERT INTO users (full_name, password, email, dob, gender, contact_number, education, citizenship, address, country, postalcode) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+      [
+        fullname,
+        hash,
+        email,
+        dob,
+        gender,
+        num,
+        levelOfEducation,
+        citizenship,
+        address,
+        country,
+        postalcode,
+      ],
+      (err, result) => {
+        console.log(err);
+        console.log(result);
+      }
+    );
+  })
 });
-//Client - YouthRegister
-app.post("/YouthConfirmation", (req, res) => {
+
+//client - PartnerRegister
+app.post("/PartnerConfirmation", (req, res) => {
   const fullname = req.body.fullname;
   const password = req.body.password;
   const email = req.body.email;
-  const dob = req.body.dob;
-  const gender = req.body.gender;
   const num = req.body.num;
-  const levelOfEducation = req.body.levelOfEducation;
-  const citizenship = req.body.citizenship;
-  const address = req.body.address;
-  const country = req.body.country;
-  const postalcode = req.body.postalcode;
+  const businessname = req.body.businessname;
 
-  db.query(
-    "INSERT INTO users (full_name, password, email, dob, gender, contact_number, education, citizenship, address, country, postalcode) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-    [
-      fullname,
-      password,
-      email,
-      dob,
-      gender,
-      num,
-      levelOfEducation,
-      citizenship,
-      address,
-      country,
-      postalcode,
-    ],
-    (err, result) => {
-      console.log(err);
-      console.log(result);
-    }
-  );
+  bcrypt.hash(password, saltRounds, (err, hash) => { //hashing
+    db.query(
+      "INSERT INTO partners (email, company_name, contact_name, contact_number, password) VALUES (?,?,?,?,?)",
+      [
+        email,
+        businessname,
+        fullname,
+        num,
+        hash
+      ],
+      (err, result) => {
+        console.log(err);
+        console.log(result);
+      }
+    );
+  })
 });
 
 //youth emailcheck
 app.post("/EmailCheck", (req, res) => {
   const email = req.body.email;
 
-  db.query("SELECT * FROM users WHERE email = ?", [email], (err, result) => {
+  db.query("SELECT * FROM users WHERE email = ?;", [email], (err, result) => {
     if (err) {
       res.send({ err: err });
     } else {
@@ -165,7 +163,7 @@ app.post("/EmailCheck", (req, res) => {
 app.post("/EmailCheck1", (req, res) => {
   const email = req.body.email;
 
-  db.query("SELECT * FROM partners WHERE email = ?", [email], (err, result) => {
+  db.query("SELECT * FROM partners WHERE email = ?;", [email], (err, result) => {
     if (err) {
       res.send({ err: err });
     } else {
@@ -186,14 +184,20 @@ app.post("/ClientLogin", (req, res) => {
   const password = req.body.password;
 
   db.query(
-    "SELECT * FROM users WHERE email = ? AND password = ?",
-    [email, password],
+    "SELECT * FROM users WHERE email = ?;",
+    [email],
     (err, result) => {
       if (err) {
         res.send({ err: err });
       } else {
         if (result.length > 0) {
-          res.send(result);
+          bcrypt.compare(password, result[0].password, (error, response) => {
+            if(response) {
+              res.send(result)
+            } else {
+              res.send({message : "Wrong password!"})
+            }
+          })
         } else {
           res.send({ message: "Wrong Email/Password combination!" });
         }
@@ -202,20 +206,31 @@ app.post("/ClientLogin", (req, res) => {
   );
 });
 
-//Client - PartnerRegister
-app.post("/PartnerConfirmation", (req, res) => {
+
+//Login - Partner
+app.post("/PartnerLogin", (req, res) => {
   const email = req.body.email;
-  const fullname = req.body.fullname;
   const password = req.body.password;
-  const num = req.body.num;
-  const businessname = req.body.businessname;
 
   db.query(
-    "INSERT INTO partners (email, company_name, contact_name, contact_number, password) VALUES (?,?,?,?,?)",
-    [email, businessname, fullname, num, password],
+    "SELECT * FROM Partner WHERE email = ?;",
+    [email],
     (err, result) => {
-      console.log(err);
-      console.log(result);
+      if (err) {
+        res.send({ err: err });
+      } else {
+        if (result.length > 0) {
+          bcrypt.compare(password, result[0].password, (error, response) => {
+            if(response) {
+              res.send(result)
+            } else {
+              res.send({message : "Wrong password!"})
+            }
+          })
+        } else {
+          res.send({ message: "Wrong Email/Password combination!" });
+        }
+      }
     }
   );
 });
