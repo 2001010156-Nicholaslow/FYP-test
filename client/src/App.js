@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Home from './Home';
 import Login from './Login/Login';
+import PartnerLogin from './Login/PartnerLogin';
 import PartnerRegister from './Register/PartnerRegister';
 import Profile from './Profile';
 import YouthRegister from './Register/YouthRegister'; //import from the js file
@@ -30,6 +31,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="Login/login" element={<Login />} />
+          <Route path="Login/Partnerlogin" element={<PartnerLogin />} />
           <Route path="/Register/partnerRegister" element={<PartnerRegister />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/Register/youthRegister" element={<YouthRegister />} />

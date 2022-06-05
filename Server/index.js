@@ -4,9 +4,13 @@ const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
 const JWTKey = "abc";
-const bcrypt = require('bcrypt');
-const { response } = require("express");
-const saltRounds = 10;
+const bcrypt = require('bcrypt'); //for hashing
+const { response } = require("express"); 
+const saltRounds = 10; //for hashing
+const bodyParser = require("body-parser"); //session and cookies
+const cookieParser = require("cookie-parser"); //session and cookies
+const session =require("express-session"); //session and cookies
+
 
 const db = mysql.createConnection({
   user: "root",
@@ -19,9 +23,23 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    credentials: true,
+    methods: ["GET", "POST"],
+    credentials: true
   })
 );
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(
+  session({
+  key: "userId", //email
+  secret: "nicholaslow", //important! remember to change
+  resave : false,
+  saveUninitialized: false,
+  cookies: {
+    expires: 21600,  //6hours (60 * 60 * 6)
+  }
+}))
 
 app.post("/login", (req, res) => {
   console.log("hello");
@@ -178,7 +196,40 @@ app.post("/EmailCheck1", (req, res) => {
   });
 });
 
-//Login - client
+
+//check session for login
+app.get("/loginSession" , (req, res) => {
+  if(req.session.user) {
+    res.send({loggedIn: true, user: req.session.user});
+  } else {
+    res.send({ loggedIn: false})
+  }
+})
+
+const verifyJWT = (req, res, next) => {
+  const token = req.headers["x-access-token"]
+
+  if(!token) {
+    res.send("You need a token. Try again later.")
+  }else {
+    jwt.verify(token, "jwtSecret", (err, decoded) => {
+      if(err) {
+        res.json({auth: false, message: " Authentication Failed."});
+      } else {
+        req.userId = decoded.id;
+        next();
+      }
+    })
+  }
+}
+
+
+//check for auth 
+app.get("/isAuth", verifyJWT, (req, res) => {
+  res.send("You are authenticated.")
+})
+
+//client Login
 app.post("/ClientLogin", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -193,13 +244,22 @@ app.post("/ClientLogin", (req, res) => {
         if (result.length > 0) {
           bcrypt.compare(password, result[0].password, (error, response) => {
             if(response) {
-              res.send(result)
+              
+
+              const id = result[0].id
+              const token = jwt.sign({id}, "jwtSecret", {  //remember to change secret! important
+                expiresIn: 300,
+              })
+              req.session.user = result;
+
+
+              res.json({auth: true, token: token, result: result});
             } else {
               res.send({message : "Wrong password!"})
             }
-          })
+          });
         } else {
-          res.send({ message: "Wrong Email/Password combination!" });
+          res.json({auth: false, message: "Wrong Email/Password combination!" });
         }
       }
     }
@@ -213,7 +273,7 @@ app.post("/PartnerLogin", (req, res) => {
   const password = req.body.password;
 
   db.query(
-    "SELECT * FROM Partner WHERE email = ?;",
+    "SELECT * FROM partners WHERE email = ?;",
     [email],
     (err, result) => {
       if (err) {
@@ -222,13 +282,18 @@ app.post("/PartnerLogin", (req, res) => {
         if (result.length > 0) {
           bcrypt.compare(password, result[0].password, (error, response) => {
             if(response) {
-              res.send(result)
+              const id = result[0].id
+              const token = jwt.sign({id}, "jwtSecret", {  //remember to change secret! important
+                expiresIn: 300,
+              })
+              req.session.user = result;
+              res.json({auth: true, token: token, result: result});
             } else {
               res.send({message : "Wrong password!"})
             }
           })
         } else {
-          res.send({ message: "Wrong Email/Password combination!" });
+          res.json({auth: false, message: "Wrong Email/Password combination!" });
         }
       }
     }

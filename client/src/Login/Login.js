@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import './YouthLogin.css';
 import Axios from "axios";
@@ -9,7 +9,10 @@ function Login() {
 
     const [password, Setpassword] = useState("");
     const [email, Setemail] = useState("");
-    const [LoginStatus, SetLoginStatus] = useState("");
+    const [LoginMSG, SetLoginMSG] = useState("");
+    const [LoginStatus, SetLoginStatus] = useState(false);
+
+    Axios.defaults.withCredentials = true; //must be true
 
     const login = () => {
         if (
@@ -22,10 +25,22 @@ function Login() {
                 password: password
             }).then((response) => {
 
-                if (response.data.message) {
-                    SetLoginStatus(response.data.message)
+                if (!response.data.auth) {
+                    SetLoginMSG(false)
+                    SetLoginMSG("Invalid Password/Email")
                 } else {
-                    SetLoginStatus("Login Successfully")
+                    localStorage.setItem("token", response.data.token)
+                    SetLoginMSG(true)
+                    SetLoginMSG("Login Success")
+
+                    //check auth
+                    Axios.get("http://localhost:3001/isAuth", {
+                        headers: {
+                            "x-access-token": localStorage.getItem("token"),
+                        },
+                    }).then((response) => {
+                        console.log(response);
+                    });
                 }
             });
         } else {
@@ -35,7 +50,7 @@ function Login() {
             required.forEach(function (element) {
                 if (element.value.trim() === "") {
                     element.style.borderColor = "#f10";
-                    SetLoginStatus("Invalid Password/Email")
+                    SetLoginMSG("Invalid Password/Email")
 
                 } else {
                     element.style.borderColor = "white";
@@ -44,6 +59,25 @@ function Login() {
 
         }
     };
+
+    /*const userAuthenticated = () => { //check for correct token
+        Axios.get("http://localhost:3001/isAuth", {
+            headers: {
+                "x-access-token": localStorage.getItem("token"),
+            },
+        }).then((response) => {
+            console.log(response);
+        });
+    }*/
+
+    useEffect(() => {
+        Axios.get("http://localhost:3001/loginSession").then((response) => {
+            if (response.data.loggedIn == true) {
+                SetLoginStatus(true)
+            }
+
+        })
+    })
 
 
     return (
@@ -61,9 +95,9 @@ function Login() {
                     <br></br>
                 </Form>
             </div>
-            <button type="submit"  onClick={login} style={{ marginTop: 20 , marginBottom: 20, alignItems : 'center'}} >Login</button>
+            <button type="submit" onClick={login} style={{ marginTop: 20, marginBottom: 20, alignItems: 'center' }} >Login</button>
             <Link to="../Register/YouthRegister">Sign up here</Link>
-                    <h1>{LoginStatus}</h1>
+            <h1>{LoginMSG}</h1>
         </div>
 
     );
