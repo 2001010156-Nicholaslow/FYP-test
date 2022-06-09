@@ -1,9 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BiHome } from "react-icons/bi";
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, NavDropdown} from 'react-bootstrap';
 import PartnerHome from "./PartnerHome";
 import './Partner.css';
 function Partner() {
+
+    const msg = "Nicholas";
 
     return (
         <div>
@@ -19,15 +21,19 @@ function Partner() {
                     <Nav.Link href="./PartnerStats">Statics</Nav.Link>
                 </Nav>
                 <Navbar.Collapse className="justify-content-end">
-                    <Navbar.Text>
-                        Signed in as: <a href="./PartnerProfile">NicholasLow</a>
-                    </Navbar.Text>
+                    <NavDropdown title={"Sign in as : " + msg} id="basic-nav-dropdown">
+                        <NavDropdown.Item href="./PartnerProfile">Edit profile</NavDropdown.Item>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item href="#action/3.4">Log out</NavDropdown.Item>
+                    </NavDropdown>
                 </Navbar.Collapse>
             </Navbar>
 
             <div className='Partner_Page'>
-                <PartnerHome />
                 
+                <PartnerHome />
+
+
             </div>
         </div>
     );

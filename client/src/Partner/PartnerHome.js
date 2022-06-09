@@ -74,7 +74,7 @@ function PartnerHome() {
                                             <div className="image_icon">
                                                 <BiHide />
                                             </div>
-                                            <p>Add-on?</p>
+                                            <p>Log out</p>
                                         </button>
                                     </Link>
 

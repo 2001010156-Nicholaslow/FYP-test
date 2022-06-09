@@ -22,7 +22,6 @@ class PartnerRegister extends Component {
 
   saveAndContinue = (e) => {
     if (
-      console.log(this.state),
       !validator.isEmpty(this.state.email) &
       validator.isEmail(this.state.email) &
       !validator.isEmpty(this.state.fullname) &
@@ -43,7 +42,7 @@ class PartnerRegister extends Component {
           this.setState({ LoginStatus: "Account successfully created!" })
         } else {
           this.setState({ LoginStatus: "This email is already in used. Try another Email." })
-          
+
           //alert("This email is already in used. Try another Email.");
         }
       });
@@ -63,39 +62,6 @@ class PartnerRegister extends Component {
   }
 
 
-
-  saveAndContinue1 = (e) => {
-    if (
-      console.log(this.state),
-      !validator.isEmpty(this.state.email) &
-      validator.isEmail(this.state.email) &
-      !validator.isEmpty(this.state.fullname) &
-      !validator.isEmpty(this.state.num) &
-      //validator.isLength(this.props.inputValues.num, {min:8}) &
-      !validator.isEmpty(this.state.businessname) &
-      !validator.isEmpty(this.state.password)
-      //validator.isLength(this.props.inputValues.password, { min: 8 })
-
-    ) {
-      e.preventDefault()
-      console.log(this.state)
-      Axios.post('http://localhost:3001/PartnerConfirmation', this.state).then((Response) => {
-        console.log(Response)
-      })
-    } else {
-      var required = document.querySelectorAll("input[required]");
-
-      required.forEach(function (element) {
-        if (element.value.trim() === "") {
-          element.style.backgroundColor = "#ffcccb";
-        } else {
-          element.style.backgroundColor = "white";
-        }
-      });
-
-    }
-  };
-
   register = (e) => {
     e.preventDefault()
     console.log(this.state)
@@ -105,7 +71,7 @@ class PartnerRegister extends Component {
   }
 
   render() {
-    const { email, businessname, fullname, num, password, LoginStatus} = this.state
+    const { email, businessname, fullname, num, password, LoginStatus } = this.state
     return (
       <Container>
         <h1>Partner Register page</h1>
@@ -144,6 +110,9 @@ class PartnerRegister extends Component {
               min={0}
               onChange={this.handleChange}
             />
+             <small id="passwordHelpInline" class="text-muted">
+                            Must be 8 characters long.  xxxx xxxx
+                        </small>
           </Form.Group>
 
           <Form.Group controlId="formBusinessName" style={{ marginTop: 10 }}>
@@ -156,6 +125,7 @@ class PartnerRegister extends Component {
               required
               onChange={this.handleChange}
             />
+              
           </Form.Group>
 
           <Form.Group controlId="formPassword" style={{ marginTop: 10 }}>
@@ -168,6 +138,9 @@ class PartnerRegister extends Component {
               minlength={8}
               onChange={this.handleChange}
             />
+            <small id="passwordHelpInline" class="text-muted">
+              Must be 8-20 characters long.
+            </small>
           </Form.Group>
 
           <Button type="submit" variant="primary" onClick={this.saveAndContinue} style={{ marginTop: 25, marginLeft: 120 }}>Next</Button>

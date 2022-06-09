@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './YouthLogin.css';
 import Axios from "axios";
 import validator from "validator";
@@ -7,6 +7,7 @@ import { Form } from 'react-bootstrap';
 
 function Login() {
 
+    const nav = useNavigate();
     const [password, Setpassword] = useState("");
     const [email, Setemail] = useState("");
     const [LoginMSG, SetLoginMSG] = useState("");
@@ -31,7 +32,9 @@ function Login() {
                 } else {
                     localStorage.setItem("token", response.data.token)
                     SetLoginMSG(true)
-                    SetLoginMSG("Login Success")
+                    nav("../Partner/Partner")
+
+
 
                     //check auth
                     Axios.get("http://localhost:3001/isAuth", {

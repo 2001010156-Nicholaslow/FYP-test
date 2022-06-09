@@ -5,7 +5,6 @@ import './PartnerJobAd.css';
 function PartnerJobAd() {
 
 
-
     return (
         <div>
             <div>
@@ -38,7 +37,7 @@ function PartnerJobAd() {
                             <Navbar.Brand style={{ color: "white" }}>Job Listings</Navbar.Brand>
 
                             <Navbar.Collapse className="justify-content-end">
-                                <button><Nav.Link href="#features" style={{ color: "black" }}>Jobs listed (10)</Nav.Link></button> 
+                                <button><Nav.Link href="./PartnerJobAd" style={{ color: "black" }}>Jobs listed (10)</Nav.Link></button>
                                 <button className='button_create'><Nav.Link href="./PartnerForm" style={{ color: "white" }}>Create Job Ad</Nav.Link></button>
                             </Navbar.Collapse>
                         </Navbar>
@@ -56,7 +55,7 @@ function PartnerJobAd() {
                                 <button className='ADbutton_edit'>Edit</button>
                                 <button className='ADbutton_delete'>Delete</button>
                             </div>
-                            
+
                         </div>
 
                     </div>

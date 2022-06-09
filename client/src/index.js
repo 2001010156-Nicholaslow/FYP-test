@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom'
 
 
-import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom'; //dont remove router
+import { BrowserRouter as Router,Routes, Route} from 'react-router-dom'; //dont remove router
 import Home from './Home';
 import Login from './Login/Login';
 import PartnerLogin from './Login/PartnerLogin';
@@ -31,7 +31,7 @@ ReactDOM.render(
           <Route path="/profile" element={<Profile />} />
           <Route path="/JobListing" element={<JobListing />} />
           <Route path="/Register/youthRegister" element={<YouthRegister />} />
-          <Route path="/Partner/Partner" element={<Partner />} />
+          <Route path="/Partner/Partner/" element={<Partner />} />
           <Route path="/Partner/PartnerProfile" element={<PartnerProfile />}/>
           <Route path="/Partner/PartnerForm" element={<PartnerForm />}/>
           <Route path="/Partner/PartnerJobAd" element={<PartnerJobAd />}/>

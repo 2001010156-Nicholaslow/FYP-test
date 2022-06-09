@@ -84,7 +84,7 @@ class YouthDetails1 extends Component {
  
          }
      };
- */ 
+ */
 
     render() {
         return (
@@ -125,6 +125,9 @@ class YouthDetails1 extends Component {
                             minlength="8"
                             onChange={this.props.handleChange}
                         />
+                        <small id="passwordHelpInline" class="text-muted">
+                            Must be 8-20 characters long.
+                        </small>
                     </Form.Group>
 
                     <Button type="submit" variant="primary" onClick={this.checkEmail} style={{ marginTop: 25, marginLeft: 120 }}>Next</Button>
