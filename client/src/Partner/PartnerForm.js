@@ -8,6 +8,16 @@ import Axios from "axios";
 
 class PartnerForm extends Component {
 
+    id = localStorage.getItem("user_id");
+    
+
+   /* Axios.post("http://localhost:3001/LoginCheckPartner", {
+        user_id: id
+    }).then((response) => {
+            fullname = response.data
+    });
+*/
+
 
 
     state = {

@@ -5,13 +5,18 @@ import Axios from "axios";
 import validator from "validator";
 import { Form } from 'react-bootstrap';
 
-function Login() {
+export default function Login() {
 
     const nav = useNavigate();
     const [password, Setpassword] = useState("");
     const [email, Setemail] = useState("");
     const [LoginMSG, SetLoginMSG] = useState("");
     const [LoginStatus, SetLoginStatus] = useState(false);
+    
+    
+    var sess;
+    //module.exports = {sess};
+
 
     Axios.defaults.withCredentials = true; //must be true
 
@@ -32,6 +37,8 @@ function Login() {
                 } else {
                     localStorage.setItem("token", response.data.token)
                     SetLoginMSG(true)
+                    sess = response.data.result[0]
+                    localStorage.setItem("user_id", sess.user_id)
                     nav("../Partner/Partner")
 
 
@@ -105,4 +112,3 @@ function Login() {
 
     );
 }
-export default Login;

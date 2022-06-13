@@ -5,11 +5,11 @@ const mysql = require("mysql");
 const cors = require("cors");
 const JWTKey = "abc";
 const bcrypt = require('bcrypt'); //for hashing
-const { response } = require("express"); 
+const { response } = require("express");
 const saltRounds = 10; //for hashing
 const bodyParser = require("body-parser"); //session and cookies
 const cookieParser = require("cookie-parser"); //session and cookies
-const session =require("express-session"); //session and cookies
+const session = require("express-session"); //session and cookies
 
 
 const db = mysql.createConnection({
@@ -28,18 +28,18 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
   session({
-  key: "userId", //email
-  secret: "nicholaslow", //important! remember to change
-  resave : false,
-  saveUninitialized: false,
-  cookies: {
-    expires: 21600,  //6hours (60 * 60 * 6)
-  }
-}))
+    key: "userId", //email
+    secret: "nicholaslow", //important! remember to change
+    resave: false,
+    saveUninitialized: false,
+    cookies: {
+      expires: 21600,  //6hours (60 * 60 * 6)
+    }
+  }))
 
 app.post("/login", (req, res) => {
   console.log("hello");
@@ -198,23 +198,23 @@ app.post("/EmailCheck1", (req, res) => {
 
 
 //check session for login
-app.get("/loginSession" , (req, res) => {
-  if(req.session.user) {
-    res.send({loggedIn: true, user: req.session.user});
+app.get("/loginSession", (req, res) => {
+  if (req.session.user) {
+    res.send({ loggedIn: true, user: req.session.user });
   } else {
-    res.send({ loggedIn: false})
+    res.send({ loggedIn: false })
   }
 })
 
 const verifyJWT = (req, res, next) => {
   const token = req.headers["x-access-token"]
 
-  if(!token) {
+  if (!token) {
     res.send("You need a token. Try again later.")
-  }else {
+  } else {
     jwt.verify(token, "jwtSecret", (err, decoded) => {
-      if(err) {
-        res.json({auth: false, message: " Authentication Failed."});
+      if (err) {
+        res.json({ auth: false, message: " Authentication Failed." });
       } else {
         req.userId = decoded.id;
         next();
@@ -243,23 +243,23 @@ app.post("/ClientLogin", (req, res) => {
       } else {
         if (result.length > 0) {
           bcrypt.compare(password, result[0].password, (error, response) => {
-            if(response) {
-              
+            if (response) {
+
 
               const id = result[0].id
-              const token = jwt.sign({id}, "jwtSecret", {  //remember to change secret! important
+              const token = jwt.sign({ id }, "jwtSecret", {  //remember to change secret! important
                 expiresIn: 300,
               })
               req.session.user = result;
 
 
-              res.json({auth: true, token: token, result: result});
+              res.json({ auth: true, token: token, result: result });
             } else {
-              res.send({message : "Wrong password!"})
+              res.send({ message: "Wrong password!" })
             }
           });
         } else {
-          res.json({auth: false, message: "Wrong Email/Password combination!" });
+          res.json({ auth: false, message: "Wrong Email/Password combination!" });
         }
       }
     }
@@ -281,24 +281,52 @@ app.post("/PartnerLogin", (req, res) => {
       } else {
         if (result.length > 0) {
           bcrypt.compare(password, result[0].password, (error, response) => {
-            if(response) {
+            if (response) {
               const id = result[0].id
-              const token = jwt.sign({id}, "jwtSecret", {  //remember to change secret! important
+              const token = jwt.sign({ id }, "jwtSecret", {  //remember to change secret! important
                 expiresIn: 300,
               })
               req.session.user = result;
-              res.json({auth: true, token: token, result: result});
+              res.json({ auth: true, token: token, result: result });
             } else {
-              res.send({message : "Wrong password!"})
+              res.send({ message: "Wrong password!" })
             }
           })
         } else {
-          res.json({auth: false, message: "Wrong Email/Password combination!" });
+          res.json({ auth: false, message: "Wrong Email/Password combination!" });
         }
       }
     }
   );
 });
+
+
+//get user_details (Partners)
+app.post("/LoginCheckPartner", (req, res) => {
+  const partners_id = req.body.user_id;
+
+  db.query("SELECT company_name FROM partners WHERE partners_id = ?;", [partners_id], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      res.send(result[0].company_name);
+    }
+  });
+});
+
+//get user_details (Users)
+app.post("/LoginCheckUser", (req, res) => {
+  const users_id = req.body.user_id;
+
+  db.query("SELECT full_name FROM users WHERE users_id = ?;", [users_id], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      res.send(result[0].full_name);
+    }
+  });
+});
+
 
 // listen App
 app.listen(3001, () => {

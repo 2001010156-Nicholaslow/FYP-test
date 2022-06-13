@@ -15,6 +15,8 @@ function PartnerLogin() {
 
     Axios.defaults.withCredentials = true; //must be true
 
+    var sess;
+
     const login = () => {
         if (
             !validator.isEmpty(email) &
@@ -32,6 +34,8 @@ function PartnerLogin() {
                 } else {
                     localStorage.setItem("token", response.data.token)
                     SetLoginMSG(true)
+                    sess = response.data.result[0]
+                    localStorage.setItem("user_id", sess.partners_id)
                     nav("../Partner/Partner")
 
                     //check auth

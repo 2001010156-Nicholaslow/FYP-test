@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Axios from "axios";
 import { BiHome } from "react-icons/bi";
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 function PartnerForm(){
+
+    const id = localStorage.getItem("user_id");
+    const [msg, Setmsg] = useState("");
+
+    Axios.post("http://localhost:3001/LoginCheckPartner", {
+        user_id: id
+    }).then((response) => {
+            Setmsg(response.data);
+    });
+
     return(
         <div>
         <Navbar bg="dark" variant="dark">
@@ -17,10 +28,12 @@ function PartnerForm(){
                 <Nav.Link href="./PartnerStats">Statics</Nav.Link>
             </Nav>
             <Navbar.Collapse className="justify-content-end">
-                <Navbar.Text>
-                    Signed in as: <a href="./PartnerProfile">NicholasLow</a>
-                </Navbar.Text>
-            </Navbar.Collapse>
+                    <NavDropdown title={"Sign in as : " + msg} id="basic-nav-dropdown">
+                        <NavDropdown.Item href="./PartnerProfile">Edit profile</NavDropdown.Item>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item href="#action/3.4">Log out</NavDropdown.Item>
+                    </NavDropdown>
+                </Navbar.Collapse>
         </Navbar>
 
         <div>

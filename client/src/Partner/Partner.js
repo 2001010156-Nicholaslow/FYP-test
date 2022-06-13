@@ -1,11 +1,20 @@
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BiHome } from "react-icons/bi";
-import { Nav, Navbar, NavDropdown} from 'react-bootstrap';
+import Axios from "axios";
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import PartnerHome from "./PartnerHome";
 import './Partner.css';
 function Partner() {
 
-    const msg = "Nicholas";
+    const id = localStorage.getItem("user_id");
+    const [msg, Setmsg] = useState("");
+
+    Axios.post("http://localhost:3001/LoginCheckPartner", {
+        user_id: id
+    }).then((response) => {
+            Setmsg(response.data);
+    });
 
     return (
         <div>
@@ -30,7 +39,7 @@ function Partner() {
             </Navbar>
 
             <div className='Partner_Page'>
-                
+
                 <PartnerHome />
 
 
