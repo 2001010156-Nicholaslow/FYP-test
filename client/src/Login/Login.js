@@ -39,7 +39,7 @@ export default function Login() {
                     SetLoginMSG(true)
                     sess = response.data.result[0]
                     localStorage.setItem("user_id", sess.user_id)
-                    nav("../Partner/Partner")
+                    nav("../")
 
 
 

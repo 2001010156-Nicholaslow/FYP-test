@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { useNavigate } from "react-router-dom";
 import { Button, Container, Card } from 'react-bootstrap';
 import Axios from "axios";
 import './Confirmation.css';
@@ -23,8 +22,7 @@ class Confirmation extends Component{
             postalcode : this.props.inputValues.postalcode
           
         }).then((Response) => {
-            console.log(Response)
-            useNavigate("../Login/Login")
+            window.location.replace("../Login/Login");
         })
     }
 

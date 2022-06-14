@@ -158,6 +158,47 @@ app.post("/PartnerConfirmation", (req, res) => {
   })
 });
 
+//Partners Add job
+app.post("/JobAddFormADD", (req, res) => {
+  const name = req.body.JobTitle
+  const Companyname = req.body.fullname
+  const position_level = req.body.position_level
+  const required_yrs = req.body.required_yrs
+  const job_scope = req.body.job_scope
+  const job_specialization = req.body.job_specialization
+  const description = req.body.description
+  const location = req.body.location
+  const salary = req.body.salary
+  const qualification = req.body.qualification
+  const additional_requirements = req.body.additional_requirements
+  const UID = req.body.Uid
+
+
+  db.query(
+    "INSERT INTO opportunity (name, company_name, position_level, required_yrs, job_scope, industry, description, location, salary, qualification, additional_requirements, fk_partners_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+    [
+      name,
+      Companyname,
+      position_level,
+      required_yrs,
+      job_scope,
+      job_specialization,
+      description,
+      location,
+      salary,
+      qualification,
+      additional_requirements,
+      UID
+    ],
+    (err, result) => {
+      console.log(err);
+      console.log(result);
+    }
+  );
+
+})
+
+
 //youth emailcheck
 app.post("/EmailCheck", (req, res) => {
   const email = req.body.email;
@@ -195,6 +236,23 @@ app.post("/EmailCheck1", (req, res) => {
     }
   });
 });
+
+//partner count job
+app.post("/CountPartnerJob", (req, res) => {
+  const uid = req.body.user_id;
+
+  db.query("SELECT COUNT(opp_id) as cnt FROM opportunity WHERE fk_partners_id = ?;", [uid], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      
+      
+      //let results=JSON.parse(JSON.stringify(result))
+      let count= result[0].cnt;
+        res.send(count + '');     
+    }
+  });
+})
 
 
 //check session for login

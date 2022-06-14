@@ -7,11 +7,18 @@ function PartnerJobAd() {
 
     const id = localStorage.getItem("user_id");
     const [msg, Setmsg] = useState("");
+    const [JobNum, SetJobNum] = useState("");
 
     Axios.post("http://localhost:3001/LoginCheckPartner", {
         user_id: id
     }).then((response) => {
             Setmsg(response.data);
+    });
+
+    Axios.post("http://localhost:3001/CountPartnerJob", {
+        user_id: id
+    }).then((response) => {
+        SetJobNum(response.data);
     });
 
 
@@ -49,7 +56,7 @@ function PartnerJobAd() {
                             <Navbar.Brand style={{ color: "white" }}>Job Listings</Navbar.Brand>
 
                             <Navbar.Collapse className="justify-content-end">
-                                <button><Nav.Link href="./PartnerJobAd" style={{ color: "black" }}>Jobs listed (10)</Nav.Link></button>
+                                <button><Nav.Link href="./PartnerJobAd" style={{ color: "black" }}>Jobs listed ({JobNum})</Nav.Link></button>
                                 <button className='button_create'><Nav.Link href="./PartnerForm" style={{ color: "white" }}>Create Job Ad</Nav.Link></button>
                             </Navbar.Collapse>
                         </Navbar>

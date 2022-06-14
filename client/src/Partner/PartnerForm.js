@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import { BiHome } from "react-icons/bi";
 import Searchable from 'react-searchable-dropdown';
+import { Navigate } from "react-router-dom";
 import { Nav, Navbar, NavDropdown, Form, Button } from 'react-bootstrap';
 import validator from "validator";
 import './PartnerForm.css';
@@ -8,23 +9,9 @@ import Axios from "axios";
 
 class PartnerForm extends Component {
 
-    id = localStorage.getItem("user_id");
-    
-
-   /* Axios.post("http://localhost:3001/LoginCheckPartner", {
-        user_id: id
-    }).then((response) => {
-            fullname = response.data
-    });
-*/
-
-
-
     state = {
-        email: '', //froom sql/sessions
+        Uid: localStorage.getItem("user_id"),
         fullname: '', //from sql/sesisons
-        companyname: '', //from sessions/sql
-        ProfileStatus: '', //sql to check if user profile is completed
         JobTitle: '',
         position_level: '',
         required_yrs: '', //requirements
@@ -33,33 +20,41 @@ class PartnerForm extends Component {
         description: '',
         location: '',
         salary: '',
-        qualifaction: '',
-        skills: '',
-        additional_requirements: ''
-
+        qualification: '',
+        additional_requirements: '',
+        Status: ''
     }
-
-
 
     handleChange = (event) => {
         event.preventDefault();
         this.setState({ [event.target.name]: event.target.value })
     }
 
-
     saveAndContinue = (e) => {
         if (
-            !validator.isEmpty(this.state.num) &
-            !validator.isEmpty(this.state.businessname) &
-            !validator.isEmpty(this.state.password)
-
+            !validator.isEmpty(this.state.JobTitle) &
+            !validator.isEmpty(this.state.position_level) &
+            !validator.isEmpty(this.state.required_yrs) &
+            !validator.isEmpty(this.state.job_scope) &
+            !validator.isEmpty(this.state.job_specialization) &
+            !validator.isEmpty(this.state.description) &
+            !validator.isEmpty(this.state.location) &
+            !validator.isEmpty(this.state.salary) &
+            !validator.isEmpty(this.state.qualification)
         ) {
             e.preventDefault()
-            console.log(this.state)
-            Axios.post('http://localhost:3001/', this.state).then((Response) => {
-                console.log(Response)
+            Axios.post("http://localhost:3001/LoginCheckPartner", {
+                user_id: this.state.Uid
+            }).then((response) => {
+                this.setState({ fullname: response.data })
+                Axios.post('http://localhost:3001/JobAddFormADD', this.state).then((Response) => {
+                    window.location.replace("./PartnerJobAd");
+                })
             })
+
         } else {
+            e.preventDefault()
+            this.setState({ Status: "Error : Missing Fields!" })
             var required = document.querySelectorAll("input[required]");
 
             required.forEach(function (element) {
@@ -72,11 +67,19 @@ class PartnerForm extends Component {
 
         }
     };
+    
 
 
 
     render() {
-        const { email, fullname, companyname, ProfileStatus, JobTitle, position_level, required_yrs, job_scope, job_specialization, description, location, salary, qualification, additional_requirements} = this.state
+        const {Uid, fullname, JobTitle, position_level, required_yrs, job_scope, job_specialization, description, location, salary, qualification, additional_requirements, Status} = this.state
+        
+        
+       Axios.post("http://localhost:3001/LoginCheckPartner", {
+            user_id: Uid
+        }).then((response) => {
+                this.setState({ fullname: response.data })
+        })
         return (
             <div className='Container'>
                 <div className='form_navbar'>
@@ -103,7 +106,7 @@ class PartnerForm extends Component {
 
                 <div className='form_partner'>
 
-                    <p style={{ marginTop: 10, color: 'red' }}>{ProfileStatus}</p>
+                    
                     <h2>Job Ad details</h2>
                     <Form>
                         <Form.Group controlId="JobTitle" style={{ marginTop: 30 }} >
@@ -164,7 +167,7 @@ class PartnerForm extends Component {
                             <small id="passwordHelpInline" class="text-muted">
                                 A short summary of the job. Maximum 250 characters.
                             </small>
-                           
+
                         </Form.Group>
 
                         <Form.Group controlId="job_specialization" style={{ marginTop: 20 }}>
@@ -217,8 +220,8 @@ class PartnerForm extends Component {
                                     value: 'Public service',
                                     label: 'Public service'
                                 }, {
-                                    value: 'Technology',
-                                    label: 'Technology'
+                                    value: 'IT/Technology',
+                                    label: 'IT/Technology'
                                 }, {
                                     value: 'Call centres/Telemarketing',
                                     label: 'Call centres/Telemarketing'
@@ -249,8 +252,7 @@ class PartnerForm extends Component {
                                 }
                                 ]}
                                 onSelect={value => {
-                                    this.job_specialization = value;
-                                    //console.log(this.job_specialization)
+                                    this.setState({ job_specialization: value })
                                 }}
                                 listMaxHeight={140} //by default 140
                             />
@@ -649,8 +651,7 @@ class PartnerForm extends Component {
 
                                 ]}
                                 onSelect={value => {
-                                    this.location = value;
-                                    console.log(value)
+                                    this.setState({ location: value })
                                 }}
                                 listMaxHeight={140} //by default 140
                             />
@@ -674,24 +675,24 @@ class PartnerForm extends Component {
 
 
                         <Form.Group controlId="qualification" style={{ marginTop: 30 }}>
-                        <Form.Label>Required Qualifaction</Form.Label>
-                        <Form.Control className="dropdown_box" as="select" name="qualification" defaultValue={qualification} onChange={this.handleChange} required>
-                            <option selected disabled value="">Please select a option</option>
-                            <option value="None">None</option>
-                            <option value="O-level">GCE 'O' Level</option>
-                            <option value="N-level">GCE 'N' Level</option>
-                            <option value="A-level">GCE 'A' Level</option>
-                            <option value="Diploma">Diploma/Degree</option>
-                            <option value="Bachelor">Bachelor</option>
-                            <option value="Master">Master</option>
-                            <option value="PhD">PhD</option>
-                            <option value="Others">Others</option>
-                        </Form.Control>
-                       
-                    </Form.Group>
+                            <Form.Label>Required Qualifaction</Form.Label>
+                            <Form.Control className="dropdown_box" as="select" name="qualification" defaultValue={qualification} onChange={this.handleChange} required>
+                                <option selected disabled value="">Please select a option</option>
+                                <option value="None">None</option>
+                                <option value="O-level">GCE 'O' Level</option>
+                                <option value="N-level">GCE 'N' Level</option>
+                                <option value="A-level">GCE 'A' Level</option>
+                                <option value="Diploma">Diploma/Degree</option>
+                                <option value="Bachelor">Bachelor</option>
+                                <option value="Master">Master</option>
+                                <option value="PhD">PhD</option>
+                                <option value="Others">Others</option>
+                            </Form.Control>
+
+                        </Form.Group>
 
 
-                    <Form.Group controlId="additional_requirements" style={{ marginTop: 20 }} >
+                        <Form.Group controlId="additional_requirements" style={{ marginTop: 20 }} >
                             <Form.Label className="additional_requirements">Additional Requirements</Form.Label>
                             <small id="passwordHelpInline" className="optional_text">
                                 Optional*
@@ -705,13 +706,11 @@ class PartnerForm extends Component {
                                 rows={8}
                                 onChange={this.handleChange}
                             />
-                            
+
                         </Form.Group>
 
-
-
                         <Button type="submit" variant="primary" onClick={this.saveAndContinue} style={{ marginTop: 25, marginLeft: 120 }}>Confirm</Button>
-
+                        <p style={{ marginTop: 30, color: 'red' , textAlign: 'center'}}>{Status}</p>
                     </Form>
 
 

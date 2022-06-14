@@ -59,33 +59,6 @@ class YouthDetails1 extends Component {
     }
 
 
-    /* saveAndContinue = (e) => {
-         if (
-             !validator.isEmpty(this.props.inputValues.email) &
-             validator.isEmail(this.props.inputValues.email) &
-             !validator.isEmpty(this.props.inputValues.fullname) &
-             !validator.isEmpty(this.props.inputValues.password) &
-             validator.isLength(this.props.inputValues.password, { min: 8 })
- 
-         ) {
-             e.preventDefault();
-             this.props.nextStep();
-         } else {
- 
-             var required = document.querySelectorAll("input[required]");
- 
-             required.forEach(function (element) {
-                 if (element.value.trim() === "") {
-                     element.style.backgroundColor = "#ffcccb";
-                 } else {
-                     element.style.backgroundColor = "white";
-                 }
-             });
- 
-         }
-     };
- */
-
     render() {
         return (
             <Container>
