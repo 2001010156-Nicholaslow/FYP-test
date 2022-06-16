@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE"],
     credentials: true
   })
 );
@@ -42,7 +42,6 @@ app.use(
   }))
 
 app.post("/login", (req, res) => {
-  console.log("hello");
   const email = req.body.email;
   const password = req.body.password;
   db.query(
@@ -52,7 +51,6 @@ app.post("/login", (req, res) => {
       if (err) {
         res.status(401).send({ err: err });
       }
-      console.log(results.length);
       if (results.length != 0) {
         const responseBody = {
           token: jwt.sign(
@@ -125,8 +123,8 @@ app.post("/YouthConfirmation", (req, res) => {
         postalcode,
       ],
       (err, result) => {
-        console.log(err);
-        console.log(result);
+        //console.log(err);
+        // console.log(result);
       }
     );
   })
@@ -151,8 +149,8 @@ app.post("/PartnerConfirmation", (req, res) => {
         hash
       ],
       (err, result) => {
-        console.log(err);
-        console.log(result);
+        //console.log(err);
+        //console.log(result);
       }
     );
   })
@@ -191,8 +189,8 @@ app.post("/JobAddFormADD", (req, res) => {
       UID
     ],
     (err, result) => {
-      console.log(err);
-      console.log(result);
+      //console.log(err);
+      // console.log(result);
     }
   );
 
@@ -245,14 +243,43 @@ app.post("/CountPartnerJob", (req, res) => {
     if (err) {
       res.send({ err: err });
     } else {
-      
-      
+
+
       //let results=JSON.parse(JSON.stringify(result))
-      let count= result[0].cnt;
-        res.send(count + '');     
+      let count = result[0].cnt;
+      res.send(count + '');
     }
   });
 })
+
+//Partner Job Ad Listing
+app.post("/PartnerJobAdList", (req, res) => {
+  const uid = req.body.user_id;
+
+  db.query("SELECT * FROM opportunity WHERE fk_partners_id = ? ORDER BY created_at DESC;", [uid], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      let results = JSON.parse(JSON.stringify(result))
+      res.send(results);
+    }
+  });
+})
+
+
+//Listing DELETE
+app.delete("/api/deleteListing/:opp_id", (req, res) => {
+  const name = req.params.opp_id;
+  const sqlDelete = "Delete FROM opportunity WHERE opp_id = ?";
+
+
+  db.query(sqlDelete, name, (err, result) => {
+    if (err) { console.log("err") } else {
+      res.send({ message: "Delete Successful." });
+    }
+  })
+})
+
 
 
 //check session for login

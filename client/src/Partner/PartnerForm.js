@@ -1,5 +1,5 @@
-import React, { Component} from 'react';
-import { BiHome } from "react-icons/bi";
+import React, { Component, useEffect} from 'react';
+import { BiHome, BiWindows } from "react-icons/bi";
 import Searchable from 'react-searchable-dropdown';
 import { Navigate } from "react-router-dom";
 import { Nav, Navbar, NavDropdown, Form, Button } from 'react-bootstrap';
@@ -25,6 +25,15 @@ class PartnerForm extends Component {
         Status: ''
     }
 
+    componentDidMount(){
+        
+        Axios.post("http://localhost:3001/LoginCheckPartner", {
+            user_id: this.state.Uid
+        }).then((response) => {
+                this.setState({ fullname: response.data })
+        })
+    }
+    
     handleChange = (event) => {
         event.preventDefault();
         this.setState({ [event.target.name]: event.target.value })
@@ -43,17 +52,20 @@ class PartnerForm extends Component {
             !validator.isEmpty(this.state.qualification)
         ) {
             e.preventDefault()
+
             Axios.post("http://localhost:3001/LoginCheckPartner", {
                 user_id: this.state.Uid
             }).then((response) => {
                 this.setState({ fullname: response.data })
                 Axios.post('http://localhost:3001/JobAddFormADD', this.state).then((Response) => {
-                    window.location.replace("./PartnerJobAd");
-                })
+                }
+                )
+                window.location.replace("../Partner/PartnerJobAd");
             })
 
         } else {
             e.preventDefault()
+            
             this.setState({ Status: "Error : Missing Fields!" })
             var required = document.querySelectorAll("input[required]");
 
@@ -66,20 +78,15 @@ class PartnerForm extends Component {
             });
 
         }
-    };
     
+    };
 
 
 
     render() {
         const {Uid, fullname, JobTitle, position_level, required_yrs, job_scope, job_specialization, description, location, salary, qualification, additional_requirements, Status} = this.state
         
-        
-       Axios.post("http://localhost:3001/LoginCheckPartner", {
-            user_id: Uid
-        }).then((response) => {
-                this.setState({ fullname: response.data })
-        })
+
         return (
             <div className='Container'>
                 <div className='form_navbar'>
@@ -137,6 +144,7 @@ class PartnerForm extends Component {
                             <Form.Label>Required Years of Experience</Form.Label>
                             <Form.Control className="dropdown_box" as="select" name="required_yrs" defaultValue={required_yrs} onChange={this.handleChange} required>
                                 <option selected disabled value="">Please select a option</option>
+                                <option value="None">None</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>

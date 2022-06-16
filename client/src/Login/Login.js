@@ -38,7 +38,7 @@ export default function Login() {
                     localStorage.setItem("token", response.data.token)
                     SetLoginMSG(true)
                     sess = response.data.result[0]
-                    localStorage.setItem("user_id", sess.user_id)
+                    localStorage.setItem("Uid", sess.user_id)
                     nav("../")
 
 

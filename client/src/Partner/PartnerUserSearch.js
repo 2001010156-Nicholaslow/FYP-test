@@ -24,7 +24,7 @@ function PartnerUserSeach(){
         </Navbar>
 
         <div>
-            <h1>This is the Partner Search page</h1>
+            <h1>This is the Partner Search page/ APPLication</h1>
             
         </div>
     </div>
