@@ -19,6 +19,7 @@ import PartnerJobAd from './Partner/PartnerJobAd';
 import PartnerStats from './Partner/PartnerStats';
 import PartnerUserSearch from './Partner/PartnerUserSearch';
 import JobListing from './JobListing';
+import PartnerFormEdit from './Partner/PartnerFormEdit';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -34,6 +35,7 @@ ReactDOM.render(
           <Route path="/Partner/Partner/" element={<Partner />} />
           <Route path="/Partner/PartnerProfile" element={<PartnerProfile />}/>
           <Route path="/Partner/PartnerForm" element={<PartnerForm />}/>
+          <Route path="/Partner/PartnerFormEdit" element={<PartnerFormEdit />}/>
           <Route path="/Partner/PartnerJobAd" element={<PartnerJobAd />}/>
           <Route path="/Partner/PartnerUserSearch" element={<PartnerUserSearch />}/>
           <Route path="/Partner/PartnerStats" element={<PartnerStats />}/>

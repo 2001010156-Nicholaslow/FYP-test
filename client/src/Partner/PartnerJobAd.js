@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Axios from "axios";
 import { BiHome } from "react-icons/bi";
 import DeleteConfirmation from "./DeleteConfirmation";
+import { Link } from 'react-router-dom'; 
 import { Alert, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import './PartnerJobAd.css';
+import './PartnerJobAd.css';;
 function PartnerJobAd() {
 
     const id = localStorage.getItem("user_id");
@@ -36,7 +37,6 @@ function PartnerJobAd() {
             user_id: id
         }).then((response) => {
             SetJobAds(response.data)
-            console.log(response.data)
         })
     }, [])
 
@@ -136,12 +136,14 @@ function PartnerJobAd() {
                                     <div className='JobAd_body'>
                                         <div className='JobAd_Nav'>
                                             <div className="Ad_detail" key={Joblist.id}>
-                                                <Nav.Link href="#Hello" style={{ color: "black", width: "40%" }}> <h4>{Joblist.name}</h4></Nav.Link>
+                                                <Nav.Link href="" style={{ color: "black", width: "40%" }}> <h4>{Joblist.name}</h4></Nav.Link>
                                                 <p className='Modified_AD_Text'>{Joblist.job_scope}</p>
                                                 <p className='Modified_AD'>Last Modified: {(Joblist.created_at).replace('T', ', ').slice(0,(Joblist.created_at).length-7 )}</p>
-                                                <button className='ADbutton_edit'>Edit</button>
+                                               
+                                                <button className='ADbutton_edit'><Link to="../Partner/PartnerFormEdit" state={Joblist.opp_id}>Edit</Link></button>
                                                 
                                                 <button className='ADbutton_delete' onClick={() => {showDeleteModal(Joblist.name,Joblist.opp_id)}}>Delete</button>
+
                                                 <DeleteConfirmation showModal={displayConfirmationModal} hideModal={hideConfirmationModal} confirmModal={deleteValue} type={Joblist.name} id={Joblist.opp_id} message={deleteMessage}  />
                                             </div>
  

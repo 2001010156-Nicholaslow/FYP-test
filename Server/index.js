@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST", "DELETE"],
+    methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true
   })
 );
@@ -196,6 +196,49 @@ app.post("/JobAddFormADD", (req, res) => {
 
 })
 
+//Partner Update job
+
+app.put("/JobAddFormUpdate", (req,res) => {
+  const name = req.body.JobTitle
+  const Companyname = req.body.fullname
+  const position_level = req.body.position_level
+  const required_yrs = req.body.required_yrs
+  const job_scope = req.body.job_scope
+  const job_specialization = req.body.job_specialization
+  const description = req.body.description
+  const location = req.body.location
+  const salary = req.body.salary
+  const qualification = req.body.qualification
+  const additional_requirements = req.body.additional_requirements
+  const UID = req.body.Uid
+  const opp_id = req.body.oid
+
+  db.query(
+    "UPDATE opportunity SET name = ?, company_name = ?, position_level = ?, required_yrs = ?, job_scope = ?, industry = ?, description = ?, location = ?, salary = ?, qualification = ?, additional_requirements= ?, created_at= NOW() WHERE fk_partners_id = ? AND opp_id = ?",
+    [
+      name,
+      Companyname,
+      position_level,
+      required_yrs,
+      job_scope,
+      job_specialization, 
+      description,
+      location,
+      salary,
+      qualification,
+      additional_requirements,
+      UID,
+      opp_id
+    ],
+    (err, result) => {
+      //console.log(err);
+      //console.log(result);
+    }
+  );
+});
+
+
+
 
 //youth emailcheck
 app.post("/EmailCheck", (req, res) => {
@@ -244,7 +287,6 @@ app.post("/CountPartnerJob", (req, res) => {
       res.send({ err: err });
     } else {
 
-
       //let results=JSON.parse(JSON.stringify(result))
       let count = result[0].cnt;
       res.send(count + '');
@@ -257,6 +299,22 @@ app.post("/PartnerJobAdList", (req, res) => {
   const uid = req.body.user_id;
 
   db.query("SELECT * FROM opportunity WHERE fk_partners_id = ? ORDER BY created_at DESC;", [uid], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      let results = JSON.parse(JSON.stringify(result))
+      res.send(results);
+    }
+  });
+})
+
+
+//Partner Job Ad ListingUpdate
+app.post("/PartnerJobAdListUpdate", (req, res) => {
+  const uid = req.body.user_id;
+  const oid =req.body.oid
+
+  db.query("SELECT * FROM opportunity WHERE fk_partners_id = ? AND opp_id = ?;", [uid,oid], (err, result) => {
     if (err) {
       res.send({ err: err });
     } else {

@@ -1,7 +1,6 @@
 import React, { Component, useEffect} from 'react';
 import { BiHome, BiWindows } from "react-icons/bi";
 import Searchable from 'react-searchable-dropdown';
-import { Navigate } from "react-router-dom";
 import { Nav, Navbar, NavDropdown, Form, Button } from 'react-bootstrap';
 import validator from "validator";
 import './PartnerForm.css';
