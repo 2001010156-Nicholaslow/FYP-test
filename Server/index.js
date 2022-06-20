@@ -278,6 +278,25 @@ app.post("/EmailCheck1", (req, res) => {
   });
 });
 
+//Partner ACcount details check
+app.post("/CheckPartnerCompleted", (req, res) => {
+  const uid = req.body.user_id;
+
+  db.query("SELECT UEN FROM partners WHERE partners_id = ?;", [uid], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      let results = JSON.parse(JSON.stringify(result))
+      var UENCheck = results[0].UEN
+      if (UENCheck == null || UENCheck == "") {
+        res.send({
+          message: "Your profile is not completed! \nPlease enter your UEN Registration number to get verified. Verifying your account will unlock necessary to complete your hiring process.",
+        });
+      }
+    }
+  });
+});
+
 //partner count job
 app.post("/CountPartnerJob", (req, res) => {
   const uid = req.body.user_id;
@@ -293,6 +312,7 @@ app.post("/CountPartnerJob", (req, res) => {
     }
   });
 })
+
 
 //Partner Job Ad Listing
 app.post("/PartnerJobAdList", (req, res) => {
@@ -389,9 +409,9 @@ app.post("/ClientLogin", (req, res) => {
             if (response) {
 
 
-              const id = result[0].id
+              const id = result[0].user_id
               const token = jwt.sign({ id }, "jwtSecret", {  //remember to change secret! important
-                expiresIn: 300,
+                expiresIn: "3h",
               })
               req.session.user = result;
 
@@ -425,9 +445,9 @@ app.post("/PartnerLogin", (req, res) => {
         if (result.length > 0) {
           bcrypt.compare(password, result[0].password, (error, response) => {
             if (response) {
-              const id = result[0].id
+              const id = result[0].partners_id
               const token = jwt.sign({ id }, "jwtSecret", {  //remember to change secret! important
-                expiresIn: 300,
+                expiresIn: "3h",
               })
               req.session.user = result;
               res.json({ auth: true, token: token, result: result });
