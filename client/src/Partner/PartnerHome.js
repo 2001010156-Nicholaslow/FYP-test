@@ -1,15 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './PartnerHome.css';
-import { BiListUl, BiBarChartAlt2, BiSearchAlt, BiHide, BiUser } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { BiListUl, BiBarChartAlt2, BiSearchAlt, BiUser } from "react-icons/bi";
+import { IoWarning } from "react-icons/io5";
+import { ImExit } from "react-icons/im";
+import { Alert } from 'react-bootstrap';
+import { Link, useNavigate } from "react-router-dom";
+import Axios from "axios";
 
 
 function PartnerHome() {
 
+    const Uid = localStorage.getItem("user_id");
+    const token = localStorage.getItem("token");
+    const [AlertMSG, SetAlertMSG] = useState("");
+    const [AlertMSGStatus, SetAlertMSGStatus] = useState(false);
+    const nav = useNavigate();
+
+    const logout = () => {
+        sessionStorage.clear();
+        localStorage.clear()
+    }
+
+    useEffect(() => {
+        if (Uid == "" || token == "" || Uid == undefined || token == undefined) {
+            nav("../Login/PartnerLogin")
+            window.location.reload();
+        } else {
+            Axios.post("http://localhost:3001/CheckPartnerCompleted", {
+                user_id: Uid
+            }).then((response) => {
+                if (response.data.message) {
+                    SetAlertMSG(response.data.message)
+                    SetAlertMSGStatus(true)
+                }
+            })
+        }
+    }, [])
+
 
     return (
         <div className="RegisterHome">
+
+            {AlertMSGStatus && <Alert variant="warning" >
+                <b><IoWarning />Warning!: Profile Verification</b>
+                <br></br>
+                <p className="text_alertmsg">{AlertMSG} To complete your profile <a href='../Partner/PartnerProfile'>Click Here</a></p></Alert>}
+
 
             <div className='panel'>
                 <div className='panel-body'>
@@ -69,16 +106,16 @@ function PartnerHome() {
                                         </button>
                                     </Link>
 
-                                    <Link to="../Partner/Partner" style={{ padding: 10, }}>
-                                        <button type="button">
+                                    <Link to="../" style={{ padding: 10, }}>
+                                        <button type="button" onClick={logout}>
                                             <div className="image_icon">
-                                                <BiHide />
+                                                <ImExit />
                                             </div>
                                             <p>Log out</p>
                                         </button>
                                     </Link>
 
-                                    
+
                                 </div>
                             </div>
                         </div>

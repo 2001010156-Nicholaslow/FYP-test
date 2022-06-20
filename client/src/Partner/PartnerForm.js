@@ -1,15 +1,17 @@
-import React, { Component, useEffect} from 'react';
+import React, { Component, useEffect } from 'react';
 import { BiHome, BiWindows } from "react-icons/bi";
 import Searchable from 'react-searchable-dropdown';
 import { Nav, Navbar, NavDropdown, Form, Button } from 'react-bootstrap';
 import validator from "validator";
 import './PartnerForm.css';
 import Axios from "axios";
+import jwt_decode from 'jwt-decode';
 
 class PartnerForm extends Component {
 
     state = {
         Uid: localStorage.getItem("user_id"),
+        token: localStorage.getItem("token"),
         fullname: '', //from sql/sesisons
         JobTitle: '',
         position_level: '',
@@ -24,15 +26,24 @@ class PartnerForm extends Component {
         Status: ''
     }
 
-    componentDidMount(){
-        
-        Axios.post("http://localhost:3001/LoginCheckPartner", {
-            user_id: this.state.Uid
-        }).then((response) => {
-                this.setState({ fullname: response.data })
-        })
+    componentDidMount() {
+        if (this.state.Uid == "" || this.state.token == "" || this.state.Uid == undefined || this.state.token == undefined) {
+            window.location.replace("../Login/PartnerLogin");
+        } else {
+            var decoded = jwt_decode(this.state.token);
+            
+            if (decoded.id == this.state.Uid) {
+                Axios.post("http://localhost:3001/LoginCheckPartner", {
+                    user_id: this.state.Uid
+                }).then((response) => {
+                    this.setState({ fullname: response.data })
+                })
+            }else {
+                window.location.replace("../Login/PartnerLogin");
+            }
+        }
     }
-    
+
     handleChange = (event) => {
         event.preventDefault();
         this.setState({ [event.target.name]: event.target.value })
@@ -64,7 +75,7 @@ class PartnerForm extends Component {
 
         } else {
             e.preventDefault()
-            
+
             this.setState({ Status: "Error : Missing Fields!" })
             var required = document.querySelectorAll("input[required]");
 
@@ -77,14 +88,14 @@ class PartnerForm extends Component {
             });
 
         }
-    
+
     };
 
 
 
     render() {
-        const {Uid, fullname, JobTitle, position_level, required_yrs, job_scope, job_specialization, description, location, salary, qualification, additional_requirements, Status} = this.state
-        
+        const { Uid, fullname, JobTitle, position_level, required_yrs, job_scope, job_specialization, description, location, salary, qualification, additional_requirements, Status } = this.state
+
 
         return (
             <div className='Container'>
@@ -112,7 +123,7 @@ class PartnerForm extends Component {
 
                 <div className='form_partner'>
 
-                    
+
                     <h2>Job Ad details</h2>
                     <Form>
                         <Form.Group controlId="JobTitle" style={{ marginTop: 30 }} >
@@ -717,7 +728,7 @@ class PartnerForm extends Component {
                         </Form.Group>
 
                         <Button type="submit" variant="primary" onClick={this.saveAndContinue} style={{ marginTop: 25, marginLeft: 120 }}>Confirm</Button>
-                        <p style={{ marginTop: 30, color: 'red' , textAlign: 'center'}}>{Status}</p>
+                        <p style={{ marginTop: 30, color: 'red', textAlign: 'center' }}>{Status}</p>
                     </Form>
 
 

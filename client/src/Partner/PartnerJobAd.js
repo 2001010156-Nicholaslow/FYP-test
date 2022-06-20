@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Axios from "axios";
 import { BiHome } from "react-icons/bi";
 import DeleteConfirmation from "./DeleteConfirmation";
-import { Link } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import './PartnerJobAd.css';;
+import './PartnerJobAd.css';
+import jwt_decode from 'jwt-decode';
 function PartnerJobAd() {
 
     const id = localStorage.getItem("user_id");
@@ -19,7 +20,18 @@ function PartnerJobAd() {
     const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
     const [deleteMessage, setDeleteMessage] = useState(null);
 
-    const showDeleteModal = (type,id) => {
+    const token = localStorage.getItem("token");
+    const [AllowUser, SetAllowUser] = useState(false);
+
+    const nav = useNavigate();
+
+    const Exit = () => {
+        localStorage.clear()
+        sessionStorage.clear()
+        nav("../Login/PartnerLogin")
+    }
+
+    const showDeleteModal = (type, id) => {
         setdeleteType(type);
         setdeleteID(id);
         setDeleteMessage('Are you sure you want to delete "' + type + '"?')
@@ -28,58 +40,68 @@ function PartnerJobAd() {
 
     const hideConfirmationModal = () => {
         setDisplayConfirmationModal(false);
-      };
+    };
 
 
     useEffect(() => {
+        if (id == "" || token == "" || id == undefined || token == undefined) {
+            nav("../Login/PartnerLogin")
+            window.location.reload();
+        } else {
 
-        Axios.post("http://localhost:3001/PartnerJobAdList", {
-            user_id: id
-        }).then((response) => {
-            SetJobAds(response.data)
-        })
-    }, [])
+            var decoded = jwt_decode(token);
 
-    useEffect(() => {
-        function LoginCheckPartner() {
-            Axios.post("http://localhost:3001/LoginCheckPartner", {
+            if (decoded.id == id) {
+                Axios.post("http://localhost:3001/LoginCheckPartner", {
+                    user_id: id
+                }).then((response) => {
+                    Setmsg(response.data);
+                });
+            } else {
+                localStorage.clear()
+                sessionStorage.clear()
+                nav("../Login/PartnerLogin")
+            }
+
+            Axios.post("http://localhost:3001/PartnerJobAdList", {
                 user_id: id
             }).then((response) => {
-                Setmsg(response.data);
+                SetJobAds(response.data)
+            })
+
+            Axios.post("http://localhost:3001/CountPartnerJob", {
+                user_id: id
+            }).then((response) => {
+                SetJobNum(response.data);
             });
         }
-        LoginCheckPartner()
+
     }, [])
 
-    Axios.post("http://localhost:3001/CountPartnerJob", {
-        user_id: id
-    }).then((response) => {
-        SetJobNum(response.data);
-    });
 
-    
+
     const deleteValue = (opp_id) => {
-        
+
         Axios.delete(`http://localhost:3001/api/deleteListing/${opp_id}`).then((response) => {
             if (response.data.message) {
                 Axios.post("http://localhost:3001/PartnerJobAdList", {
-            user_id: id
-        }).then((response) => {
-            SetJobAds(response.data)
-        })
+                    user_id: id
+                }).then((response) => {
+                    SetJobAds(response.data)
+                })
                 SetAlertMSG(response.data.message)
                 SetAlertMSGStatus(true)
                 setDeleteMessage('Successful!')
                 setDisplayConfirmationModal(false);
-                
+
             } else {
                 SetAlertMSG("Delete Fail, Please Try Again.");
             }
-            
-        })
-        
 
-      };
+        })
+
+
+    };
 
 
     return (
@@ -100,7 +122,7 @@ function PartnerJobAd() {
                         <NavDropdown title={"Sign in as : " + msg} id="basic-nav-dropdown">
                             <NavDropdown.Item href="./PartnerProfile">Edit profile</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">Log out</NavDropdown.Item>
+                            <NavDropdown.Item onClick={Exit}>Log Out</NavDropdown.Item>
                         </NavDropdown>
                     </Navbar.Collapse>
                 </Navbar>
@@ -122,14 +144,14 @@ function PartnerJobAd() {
                     </div>
                 </div>
 
-               
 
-               {AlertMSGStatus && <Alert variant="success">{AlertMSG}</Alert>}
+
+                {AlertMSGStatus && <Alert variant="success">{AlertMSG}</Alert>}
 
                 <div>
                     {JobAds.map((Joblist) => {
                         const list = (
-                            
+
                             <>
                                 <div className='JobAd_panel'>
                                     <br></br>
@@ -138,15 +160,15 @@ function PartnerJobAd() {
                                             <div className="Ad_detail" key={Joblist.id}>
                                                 <Nav.Link href="" style={{ color: "black", width: "40%" }}> <h4>{Joblist.name}</h4></Nav.Link>
                                                 <p className='Modified_AD_Text'>{Joblist.job_scope}</p>
-                                                <p className='Modified_AD'>Last Modified: {(Joblist.created_at).replace('T', ', ').slice(0,(Joblist.created_at).length-7 )}</p>
-                                               
-                                                <button className='ADbutton_edit'><Link to="../Partner/PartnerFormEdit" state={Joblist.opp_id}>Edit</Link></button>
-                                                
-                                                <button className='ADbutton_delete' onClick={() => {showDeleteModal(Joblist.name,Joblist.opp_id)}}>Delete</button>
+                                                <p className='Modified_AD'>Last Modified: {(Joblist.created_at).replace('T', ', ').slice(0, (Joblist.created_at).length - 7)}</p>
 
-                                                <DeleteConfirmation showModal={displayConfirmationModal} hideModal={hideConfirmationModal} confirmModal={deleteValue} type={Joblist.name} id={Joblist.opp_id} message={deleteMessage}  />
+                                                <button className='ADbutton_edit'><Link to="../Partner/PartnerFormEdit" state={Joblist.opp_id}>Edit</Link></button>
+
+                                                <button className='ADbutton_delete' onClick={() => { showDeleteModal(Joblist.name, Joblist.opp_id) }}>Delete</button>
+
+                                                <DeleteConfirmation showModal={displayConfirmationModal} hideModal={hideConfirmationModal} confirmModal={deleteValue} type={Joblist.name} id={Joblist.opp_id} message={deleteMessage} />
                                             </div>
- 
+
                                         </div>
 
                                     </div>
@@ -159,7 +181,7 @@ function PartnerJobAd() {
                     )}
                 </div>
 
-               
+
             </div>
         </div>
 

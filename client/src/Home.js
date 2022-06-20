@@ -78,7 +78,6 @@ function Home() {
                                 <h2>Partners</h2>
                                 <li><Link to="/Login/Partnerlogin">Login - Partner</Link></li>
                                 <li><Link to="/Register/PartnerRegister">Partner Register</Link></li>
-                                <li><Link to="/Partner/Partner">Partner home</Link></li>
                             </div>
                             <div class="grid-item_home">
                                 <h2>Job Search</h2>
@@ -86,9 +85,8 @@ function Home() {
                             </div>
                             <div class="grid-item_home">
                                 <h2>About Us</h2>
-                                <li><a href="https://www.cyberyouth.sg/">Our website</a></li>
-                                <li>
-                                    <a href="https://www.facebook.com/cyberyouthsg/">Facebook</a></li>
+                                <li><a href="https://www.google.com/">Our website</a></li>
+                                <li><a href="https://www.google.com/">Facebook</a></li>
                             </div>
                             <div class="grid-item_home_empty"></div>
 

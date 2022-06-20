@@ -57,3 +57,8 @@
 .image_icon_nav{
     font-size: 1.7em;
 }
+.text_alertmsg{
+    text-align: left;
+    margin: 10px;
+    font-size: 18px;
+}
