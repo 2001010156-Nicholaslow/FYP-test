@@ -1,0 +1,34 @@
+.container_welcome{
+    margin: 0 auto;
+    height: 100%;
+    text-align: left;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    width: 80%;
+    background-color: #ffffff;
+}
+
+
+.icon_welcome{
+    height: auto;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    border-radius: var(--border-radius-md);
+    border: 2px solid transparent;
+    font-size: 1.3em;
+
+    
+}
+
+.image_icon_welcome{
+    width: 150px;
+    font-size: 1.7em;
+}
+

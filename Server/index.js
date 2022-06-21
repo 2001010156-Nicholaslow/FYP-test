@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const jwt = require("jsonwebtoken");
 const express = require("express");
 const app = express();
@@ -10,6 +12,9 @@ const saltRounds = 10; //for hashing
 const bodyParser = require("body-parser"); //session and cookies
 const cookieParser = require("cookie-parser"); //session and cookies
 const session = require("express-session"); //session and cookies
+
+
+const { sendConfirmationEmail } = require('./mailer');
 
 
 const db = mysql.createConnection({
@@ -123,8 +128,10 @@ app.post("/YouthConfirmation", (req, res) => {
         postalcode,
       ],
       (err, result) => {
-        //console.log(err);
-        // console.log(result);
+        const Uid = (result.insertId)
+        const token = jwt.sign({ Uid }, "jwtSecret") //remember to change secret! important
+        const newUser = { email, fullname }
+        sendConfirmationEmail({ toUser: newUser, ConfirmationCode: token })
       }
     );
   })
@@ -138,6 +145,7 @@ app.post("/PartnerConfirmation", (req, res) => {
   const num = req.body.num;
   const businessname = req.body.businessname;
 
+
   bcrypt.hash(password, saltRounds, (err, hash) => { //hashing
     db.query(
       "INSERT INTO partners (email, company_name, contact_name, contact_number, password) VALUES (?,?,?,?,?)",
@@ -149,12 +157,51 @@ app.post("/PartnerConfirmation", (req, res) => {
         hash
       ],
       (err, result) => {
-        //console.log(err);
-        //console.log(result);
+        const id = (result.insertId)
+        const token = jwt.sign({ id }, "jwtSecret", {  //remember to change secret! important
+          expiresIn: "3h",
+        })
+        const newUser = { email, fullname }
+        sendConfirmationEmail({ toUser: newUser, ConfirmationCode: token })
       }
     );
+
   })
 });
+app.get("/confirm/:confirmationCode")
+
+//Partner Verify email check
+app.post("/Partneremailverifycheck", (req, res) => {
+  const email = req.body.email;
+  const emailverify = 0;
+  db.query(
+    "SELECT * FROM partners WHERE email = ? AND emailverify = ?", [email,emailverify], (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+         if (result.length > 0) {
+          res.send({
+            message: "Your account is not verified. Please check your Email.",
+          });
+        } else {
+          res.send(result);
+        }
+        
+
+       /* let results = JSON.parse(JSON.stringify(result))
+        if (results[0].emailverify == 0) {
+          res.send({
+            message: "Your account is not verified. Please check your Email.",
+          });
+        } else {
+          res.send({result});
+        }
+        */
+      }
+    }
+  )
+}
+)
 
 //Partners Add job
 app.post("/JobAddFormADD", (req, res) => {
@@ -198,7 +245,7 @@ app.post("/JobAddFormADD", (req, res) => {
 
 //Partner Update job
 
-app.put("/JobAddFormUpdate", (req,res) => {
+app.put("/JobAddFormUpdate", (req, res) => {
   const name = req.body.JobTitle
   const Companyname = req.body.fullname
   const position_level = req.body.position_level
@@ -221,7 +268,7 @@ app.put("/JobAddFormUpdate", (req,res) => {
       position_level,
       required_yrs,
       job_scope,
-      job_specialization, 
+      job_specialization,
       description,
       location,
       salary,
@@ -332,9 +379,9 @@ app.post("/PartnerJobAdList", (req, res) => {
 //Partner Job Ad ListingUpdate
 app.post("/PartnerJobAdListUpdate", (req, res) => {
   const uid = req.body.user_id;
-  const oid =req.body.oid
+  const oid = req.body.oid
 
-  db.query("SELECT * FROM opportunity WHERE fk_partners_id = ? AND opp_id = ?;", [uid,oid], (err, result) => {
+  db.query("SELECT * FROM opportunity WHERE fk_partners_id = ? AND opp_id = ?;", [uid, oid], (err, result) => {
     if (err) {
       res.send({ err: err });
     } else {
@@ -409,8 +456,8 @@ app.post("/ClientLogin", (req, res) => {
             if (response) {
 
 
-              const id = result[0].user_id
-              const token = jwt.sign({ id }, "jwtSecret", {  //remember to change secret! important
+              const Uid = result[0].user_id
+              const token = jwt.sign({ Uid }, "jwtSecret", {  //remember to change secret! important
                 expiresIn: "3h",
               })
               req.session.user = result;

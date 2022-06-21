@@ -22,8 +22,9 @@ class Confirmation extends Component{
             postalcode : this.props.inputValues.postalcode
           
         }).then((Response) => {
-            window.location.replace("../Login/Login");
+            
         })
+        window.location.href = "../success";
     }
 
     back  = (e) => {
@@ -42,7 +43,7 @@ class Confirmation extends Component{
         return(
             <Container className='card1'>
                 <h1>Confirm your Details</h1>
-                <p>Confirm if the following details are correct.</p>
+                <p>Confirm that the following details are correct.</p>
                 
                 <Card className='details'>
                     <Card.Body className='card2'>

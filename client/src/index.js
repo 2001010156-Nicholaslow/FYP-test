@@ -20,6 +20,8 @@ import PartnerStats from './Partner/PartnerStats';
 import PartnerUserSearch from './Partner/PartnerUserSearch';
 import JobListing from './JobListing';
 import PartnerFormEdit from './Partner/PartnerFormEdit';
+import Welcome2 from './Login/Welcome2';
+import Succes from './success';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -30,6 +32,7 @@ ReactDOM.render(
           <Route path="Login/Partnerlogin" element={<PartnerLogin />} />
           <Route path="/Register/partnerRegister" element={<PartnerRegister />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/success" element={<Succes />} />
           <Route path="/JobListing" element={<JobListing />} />
           <Route path="/Register/youthRegister" element={<YouthRegister />} />
           <Route path="/Partner/Partner/" element={<Partner />} />
@@ -38,7 +41,7 @@ ReactDOM.render(
           <Route path="/Partner/PartnerFormEdit" element={<PartnerFormEdit />}/>
           <Route path="/Partner/PartnerJobAd" element={<PartnerJobAd />}/>
           <Route path="/Partner/PartnerUserSearch" element={<PartnerUserSearch />}/>
-          <Route path="/Partner/PartnerStats" element={<PartnerStats />}/>
+          <Route path="/confirm/:ConfirmationCode" element={<Welcome2 />} />
 
         </Routes>
   </BrowserRouter>,document.getElementById("root")

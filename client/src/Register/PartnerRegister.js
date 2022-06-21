@@ -39,7 +39,7 @@ class PartnerRegister extends Component {
           Axios.post('http://localhost:3001/PartnerConfirmation', this.state).then((Response) => {
             this.setState({ LoginStatus: "Account successfully created!" })
           })
-          window.location.replace("../Login/PartnerLogin");
+          window.location.replace("../success");
         } else {
           this.setState({ LoginStatus: "This email is already in used. Try another Email." })
 

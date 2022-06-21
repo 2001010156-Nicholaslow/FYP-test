@@ -35,7 +35,7 @@ class YouthDetails1 extends Component {
                 if (response.data.message) {
                     this.setState({ LoginStatus: "Email Valid" })
                     this.props.nextStep();
-                    console.log(this.state.LoginStatus)
+                    
 
                 } else {
                     this.setState({ LoginStatus: "This email is already in used. Try another Email." })
@@ -103,11 +103,11 @@ class YouthDetails1 extends Component {
                         </small>
                     </Form.Group>
 
-                    <Button type="submit" variant="primary" onClick={this.checkEmail} style={{ marginTop: 25, marginLeft: 120 }}>Next</Button>
+                    <Button type="submit" variant="primary" onClick={this.checkEmail} style={{marginTop: 25, marginLeft : "35%" }}>Next</Button>
 
                 </Form>
 
-                <Link to="../Login/login" style={{ marginTop: 20 }}>Already a Youth?</Link>
+                <Link to="../Login/login" style={{ marginTop: 20, marginRight: "3%" }}>Already a Youth?</Link>
 
             </Container>
         );
