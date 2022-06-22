@@ -77,7 +77,7 @@ function PartnerHome() {
                                                 <div className="image_icon">
                                                     <BiSearchAlt />
                                                 </div>
-                                                <p>Application</p>
+                                                <p>Applicants</p>
                                             </button>
                                         </Link>
 
