@@ -21,13 +21,12 @@ function PartnerLogin() {
         if (
             !validator.isEmpty(email) &
             !validator.isEmpty(password)
-
         ) {
             Axios.post("http://localhost:3001/Partneremailverifycheck",{
                 email: email
             }).then((res) => {
                 if(res.data.message){
-                        SetLoginMSG("Invalid Password/Email")
+                        SetLoginMSG(res.data.message)
                         SetLoginStatus(true)
                 }else{
                     Axios.post("http://localhost:3001/PartnerLogin", {
@@ -74,22 +73,11 @@ function PartnerLogin() {
         }
     };
 
-    /*const userAuthenticated = () => { //check for correct token
-        Axios.get("http://localhost:3001/isAuth", {
-            headers: {
-                "x-access-token": localStorage.getItem("token"),
-            },
-        }).then((response) => {
-            console.log(response);
-        });
-    }*/
-
     useEffect(() => {
         Axios.get("http://localhost:3001/loginSession").then((response) => {
             if (response.data.loggedIn == true) {
                 SetLoginStatus(false)
             }
-
         })
     }, [])
 
