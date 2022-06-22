@@ -175,33 +175,55 @@ app.post("/Partneremailverifycheck", (req, res) => {
   const email = req.body.email;
   const emailverify = 0;
   db.query(
-    "SELECT * FROM partners WHERE email = ? AND emailverify = ?", [email,emailverify], (err, result) => {
+    "SELECT * FROM partners WHERE email = ? AND emailverify = ?", [email, emailverify], (err, result) => {
       if (err) {
         res.send({ err: err });
       } else {
-         if (result.length > 0) {
+        if (result.length > 0) {
           res.send({
             message: "Your account is not verified. Please check your Email.",
           });
         } else {
           res.send(result);
         }
-        
+      }
+    })
+})
 
-       /* let results = JSON.parse(JSON.stringify(result))
-        if (results[0].emailverify == 0) {
+//User Verify email check
+app.post("/Useremailverifycheck", (req, res) => {
+  const email = req.body.email;
+  const emailverify = 1;
+  db.query(
+    "SELECT * FROM users WHERE email = ? AND not_verify = ?", [email, emailverify], (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        if (result.length > 0) {
           res.send({
             message: "Your account is not verified. Please check your Email.",
           });
         } else {
-          res.send({result});
+          res.send(result);
         }
-        */
       }
-    }
-  )
-}
-)
+    })
+})
+
+//partner verify email 
+app.post("/PartnerEmailVerify", (req, res) => {
+  const verified = 1;
+  const id = req.body.Pid;
+  db.query("UPDATE partners SET emailverify = ? WHERE partners_id = ?", [verified, id])
+})
+
+//User verify email 
+app.post("/UserEmailVerify", (req, res) => {
+  const id = req.body.Uid;
+  const verified = 0;
+  db.query("UPDATE users SET not_verify= ? WHERE user_id = ?", [verified, id])
+})
+
 
 //Partners Add job
 app.post("/JobAddFormADD", (req, res) => {
