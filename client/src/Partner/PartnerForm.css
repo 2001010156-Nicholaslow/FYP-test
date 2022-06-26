@@ -1,0 +1,24 @@
+.form_partner {
+    margin: 0 auto;
+    height: 100%;
+    text-align: left;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    width: 80%;
+    background-color: #f3f3f3;
+    font-weight: bold;
+}
+
+.dropdown_box{
+    color: white;
+    background-color: #252d47;
+}
+
+.optional_text{
+    padding: 10px;
+    margin-left: 10px;
+}

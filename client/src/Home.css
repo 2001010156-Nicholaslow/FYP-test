@@ -1,0 +1,88 @@
+.Home_page {
+    box-sizing: border-box;
+}
+
+.home_title_text{
+    padding-left: 25%;
+}
+
+.search_banner{
+    background-color: rgb(235, 0, 0);
+    height: auto;
+    padding: 40px;
+}
+
+.search_bar{
+    width:auto;
+    margin-right: auto;
+    margin-left: auto;
+    position: relative;
+    padding-left: 25%;
+
+}
+
+.text_search{
+    width: 60%;
+    font-size: 24px;
+    padding: 10px;
+    padding-bottom: 9px;
+
+}
+
+.image_icon_home{
+    background-color: rebeccapurple;
+    width: 150px;
+    padding: 10px;
+    font-size: 25px;
+}
+
+.button_search_home{
+    color: white;
+    padding: 0;
+    font-size: 18px;
+}
+
+.home_footer{
+    background: #08080a;
+    color: #dddddd;
+    font-size: 14px;
+    margin: 0;
+    padding: 40px 0 0;
+    padding-bottom: 80px;
+}
+
+.home_footer_row{
+    background: #08080a;
+    color: #dddddd;
+    font-size: 14px;
+    margin: 0;
+    padding: 40px 0 0;
+    
+}
+
+.grid-container_home {
+    display: grid;
+    row-gap: 50px;
+    grid-template-columns: auto auto auto auto auto auto;
+    background-color: #08080a;
+    padding: 10px;
+  }
+  
+  .grid-item_home_empty {
+    display: grid;
+    row-gap: 50px;
+    grid-template-columns: auto auto auto auto auto auto;
+    background-color: #08080a;
+    padding: 10px;
+  }
+
+  .grid-item_home {
+    background-color: #08080a;
+    color: white;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 20px;
+    text-align: left;
+    padding-left: 20%;
+    list-style-type: none;
+  }

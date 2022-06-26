@@ -35,7 +35,7 @@ class YouthDetails1 extends Component {
                 if (response.data.message) {
                     this.setState({ LoginStatus: "Email Valid" })
                     this.props.nextStep();
-                    console.log(this.state.LoginStatus)
+                    
 
                 } else {
                     this.setState({ LoginStatus: "This email is already in used. Try another Email." })
@@ -49,42 +49,15 @@ class YouthDetails1 extends Component {
 
             required.forEach(function (element) {
                 if (element.value.trim() === "") {
-                    element.style.backgroundColor = "#ffcccb";
+                    element.style.borderColor = "#f10";
                 } else {
-                    element.style.backgroundColor = "white";
+                    element.style.borderColor = "white";
                 }
             });
 
         }
     }
 
-
-    /* saveAndContinue = (e) => {
-         if (
-             !validator.isEmpty(this.props.inputValues.email) &
-             validator.isEmail(this.props.inputValues.email) &
-             !validator.isEmpty(this.props.inputValues.fullname) &
-             !validator.isEmpty(this.props.inputValues.password) &
-             validator.isLength(this.props.inputValues.password, { min: 8 })
- 
-         ) {
-             e.preventDefault();
-             this.props.nextStep();
-         } else {
- 
-             var required = document.querySelectorAll("input[required]");
- 
-             required.forEach(function (element) {
-                 if (element.value.trim() === "") {
-                     element.style.backgroundColor = "#ffcccb";
-                 } else {
-                     element.style.backgroundColor = "white";
-                 }
-             });
- 
-         }
-     };
- */ 
 
     render() {
         return (
@@ -125,13 +98,16 @@ class YouthDetails1 extends Component {
                             minlength="8"
                             onChange={this.props.handleChange}
                         />
+                        <small id="passwordHelpInline" class="text-muted">
+                            Must be 8-20 characters long.
+                        </small>
                     </Form.Group>
 
-                    <Button type="submit" variant="primary" onClick={this.checkEmail} style={{ marginTop: 25, marginLeft: 120 }}>Next</Button>
+                    <Button type="submit" variant="primary" onClick={this.checkEmail} style={{marginTop: 25, marginLeft : "35%" }}>Next</Button>
 
                 </Form>
 
-                <Link to="../Login/login" style={{ marginTop: 20 }}>Already a Youth?</Link>
+                <Link to="../Login/login" style={{ marginTop: 20, marginRight: "3%" }}>Already a Youth?</Link>
 
             </Container>
         );

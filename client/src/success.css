@@ -1,0 +1,28 @@
+.icon_success{
+    height: auto;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    border-radius: var(--border-radius-md);
+    border: 2px solid transparent;
+}
+
+.success_image{
+    width: auto;
+    display: flex;
+    padding-bottom: 10px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image_icon_success{
+    font-size: 5em;
+}
+
+.success_buton{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

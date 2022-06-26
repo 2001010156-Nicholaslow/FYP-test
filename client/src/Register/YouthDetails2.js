@@ -24,9 +24,9 @@ class YouthDetails2 extends Component {
 
             required.forEach(function (element) {
                 if (element.value.trim() === "") {
-                    element.style.backgroundColor = "#ffcccb";
+                    element.style.borderColor = "#f10";
                 } else {
-                    element.style.backgroundColor = "white";
+                    element.style.borderColor = "white";
                 }
             });
         }
@@ -87,7 +87,7 @@ class YouthDetails2 extends Component {
                     </Form.Group>
 
 
-                    <Button variant="secondary" onClick={this.back} style={{ marginTop: 25 }}>Back</Button>{' '}
+                    <Button variant="secondary" onClick={this.back} style={{ marginTop: 25, marginLeft : "25%"  }}>Back</Button>{' '}
                     <Button type="submit" variant="primary" onClick={this.saveAndContinue} style={{ marginTop: 25 }}>Next</Button>
                 </Form>
             </Container>
