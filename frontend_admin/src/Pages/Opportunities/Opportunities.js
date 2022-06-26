@@ -14,6 +14,22 @@ function Opportunities() {
   const [columns, setColumns] = useState([
     { title: "Job Name", field: "name" },
     {
+      title: "Company",
+      field: "company_name",
+    },
+    {
+      title: "Job Role",
+      field: "job_role",
+    },
+    {
+      title: "Position",
+      field: "position_level",
+    },
+    {
+      title: "Salary",
+      field: "salary",
+    },
+    {
       title: "Job Scope",
       field: "job_scope",
     },

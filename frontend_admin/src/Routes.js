@@ -5,7 +5,7 @@ import User from "./Pages/User/User";
 import Users from "./Pages/Users/Users";
 import MainPage from "./Pages/MainPage/MainPage";
 import Opportunities from "./Pages/Opportunities/Opportunities";
-
+import Partners from "./Pages/Partners/Partners";
 const Requiredlogin = () => {
   return localStorage.getItem("token") ? (
     <Outlet />
@@ -23,6 +23,7 @@ const Routing = () => {
         <Route path="/admin/users" element={<Users />} />
         <Route path="/admin/user/:userId" element={<User />} />
         <Route path="/admin/opportunities" element={<Opportunities />} />
+        <Route path="/admin/partners" element={<Partners />} />
       </Route>
     </Routes>
   );

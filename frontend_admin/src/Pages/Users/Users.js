@@ -12,7 +12,7 @@ function Users() {
     Axios.get("http://localhost:3001/users").then((response) => {
       setData(response.data);
     });
-  });
+  }, []);
 
   const [columns, setColumns] = useState([
     { title: "Full Name", field: "full_name", filtering: false },
@@ -89,17 +89,6 @@ function Users() {
               const index = oldData.tableData.id;
               dataUpdate[index] = newData;
               setData([...dataUpdate]);
-
-              resolve();
-            }, 1000);
-          }),
-        onRowDelete: (oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataDelete = [...data];
-              const index = oldData.tableData.id;
-              dataDelete.splice(index, 1);
-              setData([...dataDelete]);
 
               resolve();
             }, 1000);
