@@ -13,7 +13,7 @@ export default function MainPage() {
         <Link to="/admin/opportunities">Manage Opportunity</Link>
       </h2>
       <h3>
-        <Link to="/admin">Manage Partner Accounts </Link>
+        <Link to="/admin/partners">Manage Partner Accounts </Link>
       </h3>
     </section>
   );

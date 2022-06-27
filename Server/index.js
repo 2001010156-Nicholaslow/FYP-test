@@ -96,6 +96,33 @@ app.get("/opportunity", (req, res) => {
   });
 });
 
+app.get("/partners", (req, res) => {
+  db.query("SELECT * FROM partners", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
+app.put("/verifypartner", (req, res) => {
+  const partner_id = req.body.partner_id;
+  console.log(req.body);
+  db.query(
+    "UPDATE partners SET verified=1 WHERE partners_id =?",  
+    [partner_id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
 //Client - YouthRegister
 app.post("/YouthConfirmation", (req, res) => {
   const fullname = req.body.fullname;
