@@ -47,7 +47,7 @@ const Welcome2 = (req) => {
           <p1>Congratulations your account has been activated. Click the link below to login.</p1>
           </div>
         </div>
-        <Link to={Navlink} className="nav-link"><button className='button_welcome'>Click here to login</button></Link>
+        <Link to={Navlink} className="nav-link_welcome"><button className='button_welcome'>Click here to login</button></Link>
       </header>
 
     </div>
