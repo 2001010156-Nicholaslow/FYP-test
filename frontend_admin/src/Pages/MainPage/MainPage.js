@@ -15,6 +15,9 @@ export default function MainPage() {
       <h3>
         <Link to="/admin/partners">Manage Partner Accounts </Link>
       </h3>
+      <h4>
+        <Link to="/admin/reviews">Manage Reviews </Link>
+      </h4>
     </section>
   );
 }

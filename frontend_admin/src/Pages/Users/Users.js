@@ -70,14 +70,6 @@ function Users() {
     {
       title: "Education",
       field: "education",
-      lookup: {
-        "GCE O Level":"GCE O Level",
-        "GCE N Level": "GCE N Level",
-        "GCE A Level": "GCE A Level",
-        "Diploma/Degree": "Diploma/Degree",
-        "Bachelor": "Bachelor",
-        "Master": "Master",
-      },
     },
     {
       title: "Contact Number",
@@ -107,7 +99,7 @@ function Users() {
       field: "country",
     },
   ]);
-  
+
   return (
     <MaterialTable
       icons={TableIcons}

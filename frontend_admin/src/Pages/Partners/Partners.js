@@ -11,7 +11,7 @@ function Partners() {
 
   const verifyPartners = (partner_id) => {
     console.log(partner_id);
-    Axios.put("http://localhost:3001/verifypartner", {
+    Axios.put("http://localhost:3001/admin_verify_partner", {
       partner_id: partner_id,
     }).then((response) => {
       alert("Verified");
@@ -32,7 +32,7 @@ function Partners() {
   };
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/partners").then((response) => {
+    Axios.get("http://localhost:3001/admin_get_partners").then((response) => {
       setData(response.data);
     });
   }, [reload]);

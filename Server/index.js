@@ -196,7 +196,7 @@ app.put("/admin_delete_opp", (req, res) => {
 });
 
 //Admin Manage Partners
-app.get("/partners", (req, res) => {
+app.get("/admin_get_partners", (req, res) => {
   db.query("SELECT * FROM partners", (err, results) => {
     if (err) {
       res.status(401).send({ err: err });
@@ -206,7 +206,7 @@ app.get("/partners", (req, res) => {
   });
 });
 
-app.put("/verifypartner", (req, res) => {
+app.put("/admin_verify_partner", (req, res) => {
   const partner_id = req.body.partner_id;
   console.log(req.body);
   db.query(
@@ -235,6 +235,20 @@ app.put("/admin_update_partner", (req, res) => {
     (err, results) => {
       if (err) {
         console.log(err);
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//Admin Manage Reviews
+app.get("/admin_get_reviews", (req, res) => {
+  db.query(
+    "SELECT r.id_review,r.review,r.rating,u.full_name,p.company_name FROM review r,users u,partners p WHERE u.user_id=r.user_id AND p.partners_id=r.partners_id",
+    (err, results) => {
+      if (err) {
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
