@@ -8,16 +8,15 @@ export default function MainPage() {
       <br />
       <h1>
         <Link to="/admin/users">Manage Users</Link>
-      </h1>
-      <h2>
-        <Link to="/admin/opportunities">Manage Opportunity</Link>
-      </h2>
-      <h3>
+        <br></br>
         <Link to="/admin/partners">Manage Partner Accounts </Link>
-      </h3>
-      <h4>
+        <br></br>
+        <Link to="/admin/opportunities">Manage Opportunity</Link>
+        <br></br>
         <Link to="/admin/reviews">Manage Reviews </Link>
-      </h4>
+        <br></br>
+        <Link to="/admin/login">Logout</Link>
+      </h1>
     </section>
   );
 }

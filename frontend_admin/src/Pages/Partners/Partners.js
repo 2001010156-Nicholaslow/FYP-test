@@ -31,6 +31,15 @@ function Partners() {
     });
   };
 
+  const deletepartner = (partners_id) => {
+    Axios.put("http://localhost:3001/admin_delete_partner", {
+      partners_id: partners_id,
+    }).then((response) => {
+      alert("Deleted");
+      setReload(!reload);
+    });
+  };
+
   useEffect(() => {
     Axios.get("http://localhost:3001/admin_get_partners").then((response) => {
       setData(response.data);
@@ -129,7 +138,7 @@ function Partners() {
             setTimeout(() => {
               const dataDelete = [...data];
               const index = oldData.tableData.id;
-              // deleteopp(oldData.opp_id);
+              deletepartner(oldData.partners_id);
               dataDelete.splice(index, 1);
               setData([...dataDelete]);
               resolve();

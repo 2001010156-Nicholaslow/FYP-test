@@ -243,12 +243,64 @@ app.put("/admin_update_partner", (req, res) => {
   );
 });
 
+app.put("/admin_delete_partner", (req, res) => {
+  const partners_id = req.body.partners_id;
+  console.log(req.body);
+  db.query(
+    "DELETE FROM partners WHERE partners_id =?",
+    [partners_id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
 //Admin Manage Reviews
 app.get("/admin_get_reviews", (req, res) => {
   db.query(
-    "SELECT r.id_review,r.review,r.rating,u.full_name,p.company_name FROM review r,users u,partners p WHERE u.user_id=r.user_id AND p.partners_id=r.partners_id",
+    "SELECT r.review_id,r.review,r.rating,u.full_name,p.company_name FROM review r,users u,partners p WHERE u.user_id=r.user_id AND p.partners_id=r.partners_id",
     (err, results) => {
       if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+app.put("/admin_update_reviews", (req, res) => {
+  const review_id = req.body.review_id;
+  const review = req.body.review;
+  const rating = req.body.rating;
+  console.log(req.body);
+  db.query(
+    "UPDATE review SET review=?, rating=? WHERE review_id =?",
+    [review, rating, review_id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+app.put("/admin_delete_review", (req, res) => {
+  const review_id = req.body.review_id;
+  console.log(req.body);
+  db.query(
+    "DELETE FROM review WHERE review_id =?",
+    [review_id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
