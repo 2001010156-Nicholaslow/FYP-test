@@ -1,6 +1,9 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./MainPage";
+
+function removeSession() {
+  localStorage.clear();
+}
 
 export default function MainPage() {
   return (
@@ -15,7 +18,11 @@ export default function MainPage() {
         <br></br>
         <Link to="/admin/reviews">Manage Reviews </Link>
         <br></br>
-        <Link to="/admin/login">Logout</Link>
+        <Link to="/admin/stats">View Statistics</Link>
+        <br></br>
+        <Link to="/admin/login" onClick={removeSession}>
+          Logout
+        </Link>
       </h1>
     </section>
   );
