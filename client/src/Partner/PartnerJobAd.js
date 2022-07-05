@@ -156,7 +156,7 @@ function PartnerJobAd() {
                                 <div className='JobAd_panel'>
                                     <br></br>
                                     <div className='JobAd_body'>
-                                        <div className='JobAd_Nav'>
+                                        <div className='JobAd_Nav_Body'>
                                             <div className="Ad_detail" key={Joblist.id}>
                                                 <Nav.Link href="" style={{ color: "black", width: "40%" }}> <h4>{Joblist.name}</h4></Nav.Link>
                                                 <p className='Modified_AD_Text'>{Joblist.job_scope}</p>

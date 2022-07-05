@@ -25,11 +25,11 @@ function Partner() {
 
     useEffect(() => {
 
-        var decoded = jwt_decode(token);
-
         if (id == "" || token == "" || id == undefined || token == undefined) {
             nav("../Login/PartnerLogin")
         } else {
+            var decoded = jwt_decode(token);
+
             if (decoded.id == id) {
                 SetAllowUser(true)
                 Axios.post("http://localhost:3001/LoginCheckPartner", {
