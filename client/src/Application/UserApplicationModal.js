@@ -1,13 +1,13 @@
 import Axios from "axios";
 import React from "react";
-import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react"
 
 import './Application.css'
 
-function UserApplication(){
+function UserApplicationModal(props){
 
-    const { oppId } = useParams();
+    const oppId = props.oppId;
+    console.log(props);
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -49,6 +49,7 @@ function UserApplication(){
             (response) => {
                 setIsLoaded(true);
                 console.log(response.status);
+                console.log("asdasdasd");
 
                 setIsError(false);
                 setItems(response.data)
@@ -97,4 +98,4 @@ function UserApplication(){
     }
 }
 
-export default UserApplication;
+export default UserApplicationModal;

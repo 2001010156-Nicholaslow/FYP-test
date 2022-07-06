@@ -64,6 +64,21 @@ app.get("/users", (req, res) => {
   });
 });
 
+//Client - Profile
+app.get("/users/:id", (req, res) => {
+  const id = req.params.id
+
+  db.query("SELECT * FROM users WHERE user_id = '" + id + "'", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      if(results.length == 0) // not found
+        res.status(404).send();
+      res.status(200).send(results[0]);
+    }
+  });
+});
+
 //Client - Application
 app.get("/opportunity/:id", (req, res) => {
   const id = req.params.id
@@ -83,18 +98,16 @@ app.post("/opportunity/:id/apply", (req,res) => {
   const id = req.params.id;
   const f = req.files;
 
-  console.log(f);
-
   if(f == null)
     res.status(406).send("no file");
 
-  console.log(f.file.name);
+  console.log(f.File.name);
 
   db.query("INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
     [
-      f.file.data,
+      f.File.data,
       "0",
-      "1",
+      "2",
       id
     ],
     (err,result) => {
@@ -105,6 +118,21 @@ app.post("/opportunity/:id/apply", (req,res) => {
       }     
     }
   )
+});
+
+//Client - Review Application
+app.get("/opportunity/:id/application", (req,res) => {
+  const id = req.params.id
+
+  db.query("SELECT * FROM application INNER JOIN users ON application.user_id = users.user_id WHERE opp_id='" + id + "'", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      if(results.length == 0) // not found
+        res.status(404).send();
+      res.status(200).send(results);
+    }
+  });
 });
 
 //Client - YouthRegister
