@@ -5,6 +5,7 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
 const JWTKey = "abc";
 const bcrypt = require("bcrypt"); //for hashing
 const { response } = require("express");
@@ -23,6 +24,7 @@ const db = mysql.createConnection({
 });
 
 app.use(express.json());
+app.use(fileUpload());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -124,14 +126,72 @@ app.put("/admin_update_users", (req, res) => {
   );
 });
 
-app.put("/admin_delete_users", (req, res) => {
-  const user_id = req.body.user_id;
-  console.log(req.body);
-  db.query("DELETE FROM users WHERE user_id =?", [user_id], (err, results) => {
+//Client - Profile
+app.get("/users/:id", (req, res) => {
+  const id = req.params.id
+
+  db.query("SELECT * FROM users WHERE user_id = '" + id + "'", (err, results) => {
     if (err) {
-      console.log(err);
       res.status(401).send({ err: err });
     } else {
+      if(results.length == 0) // not found
+        res.status(404).send();
+      res.status(200).send(results[0]);
+    }
+  });
+});
+
+//Client - Application
+app.get("/opportunity/:id", (req, res) => {
+  const id = req.params.id
+
+  db.query("SELECT * FROM opportunity WHERE opp_id='" + id + "'", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      if(results.length == 0) // not found
+        res.status(404).send();
+      res.status(200).send(results[0]);
+    }
+  });
+});
+
+app.post("/opportunity/:id/apply", (req,res) => {
+  const id = req.params.id;
+  const f = req.files;
+
+  if(f == null)
+    res.status(406).send("no file");
+
+  console.log(f.File.name);
+
+  db.query("INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
+    [
+      f.File.data,
+      "0",
+      "2",
+      id
+    ],
+    (err,result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send("okay");
+      }     
+    }
+  )
+});
+
+//Client - Review Application
+app.get("/opportunity/:id/application", (req,res) => {
+  const id = req.params.id
+
+  db.query("SELECT * FROM application INNER JOIN users ON application.user_id = users.user_id WHERE opp_id='" + id + "'", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      if(results.length == 0) // not found
+        res.status(404).send();
       res.status(200).send(results);
     }
   });
