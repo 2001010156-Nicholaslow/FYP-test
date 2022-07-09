@@ -7,6 +7,8 @@ import { ImExit } from "react-icons/im";
 import { Alert } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import Popup from './Popup';
+import './Popup.css';
 
 
 function PartnerHome() {
@@ -16,6 +18,12 @@ function PartnerHome() {
     const [AlertMSG, SetAlertMSG] = useState("");
     const [AlertMSGStatus, SetAlertMSGStatus] = useState(false);
     const nav = useNavigate();
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const togglePopup = () => {
+        setIsOpen(!isOpen);
+    }
 
     const logout = () => {
         sessionStorage.clear();
@@ -50,7 +58,7 @@ function PartnerHome() {
 
             <div className='panel'>
                 <div className='panel-body'>
-                    <h2 style={{padding : 8}}>DashBoard</h2>
+                    <h2 style={{ padding: 8 }}>DashBoard</h2>
                     <div className='stuff_todo'>
                         <div className='row_item'>
                             <div class="col-sm-12 col-md-6 col-lg-5">
@@ -122,6 +130,15 @@ function PartnerHome() {
                     </div>
                 </div>
             </div>
+            <button type="button" className="button_popup_1" onClick={togglePopup}>report</button>
+            {isOpen && <Popup
+                content={<>
+                    <b>Help Center</b>
+                    <p>Report any bugs/Errors</p>
+                    <button>Test button</button>
+                </>}
+                handleClose={togglePopup}
+            />}
         </div>
     );
 }
