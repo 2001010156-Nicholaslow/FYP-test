@@ -50,7 +50,7 @@ function PartnerHome() {
 
             <div className='panel'>
                 <div className='panel-body'>
-                    <h1>Welcome to the Recruitment Centre</h1>
+                    <h2 style={{padding : 8}}>DashBoard</h2>
                     <div className='stuff_todo'>
                         <div className='row_item'>
                             <div class="col-sm-12 col-md-6 col-lg-5">
