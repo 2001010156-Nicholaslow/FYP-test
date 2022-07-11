@@ -41,7 +41,6 @@ ReactDOM.render(
           <Route path="/Partner/PartnerFormEdit" element={<PartnerFormEdit />}/>
           <Route path="/Partner/PartnerJobAd" element={<PartnerJobAd />}/>
           <Route path="/Partner/PartnerUserSearch" element={<PartnerUserSearch />}/>
-          <Route path="/Partner/PartnerStats" element={<PartnerStats />}/>
           <Route path="/confirm/:ConfirmationCode" element={<Welcome2 />} />
 
         </Routes>
