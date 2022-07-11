@@ -302,7 +302,7 @@ class PartnerForm extends Component {
                             <Form.Label>Location</Form.Label>
                             <Searchable
                                 value={location}
-                                placeholder="Search for the Nearest MRT" // by default "Search"
+                                placeholder="Search for Location" // by default "Search"
                                 notFoundText="No result found" // by default "No result found"
                                 required
                                 options={[{

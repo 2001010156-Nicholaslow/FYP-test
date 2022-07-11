@@ -96,8 +96,8 @@ export default function Login() {
 
     return (
         <div className='container_loginPage1'>
-            {LoginStatus && <Alert variant="warning" >{LoginMSG}</Alert>}
             <div className='Login_container'>
+            {LoginStatus && <Alert variant="warning" >{LoginMSG}</Alert>}
                 <div classname='login'>
                     <div className='header'>
                         <h3 className='headertext'>Youth Login</h3>

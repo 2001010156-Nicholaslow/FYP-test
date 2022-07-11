@@ -114,9 +114,25 @@ function PartnerStats() {
             </Navbar>
 
             <div>
+                <div className='reviews_text' style={{padding: 20, margin: 30}}>
+                    <div>
+                        <h2>{msg}</h2>
+                    </div>
+                    <div className='simple_stats_icon'>
+                        <div>
+                            <h1>hi</h1>
+                        </div>
+                        <div>
+                            <h1>Bye</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
                 <div className='status_partner'>
                     <MUIDataTable
-                        title={<h2>Statics</h2>}
+                        title={<h2>Statistics</h2>}
                         data={data}
                         columns={columns}
                         options={options}
