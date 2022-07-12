@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BiHome } from "react-icons/bi";
-import MUIDataTable from "mui-datatables";
+import TableIcons from "../Components/MaterialTablesIcons/TablesIcons";
+import MaterialTable from "material-table";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -31,7 +32,7 @@ function PartnerStats() {
             nav("../Login/PartnerLogin")
         } else {
             var decoded = jwt_decode(token);
-            
+
             if (decoded.id == id) {
                 SetAllowUser(true)
                 Axios.post("http://localhost:3001/LoginCheckPartner", {
@@ -90,7 +91,7 @@ function PartnerStats() {
 
 
     return (
-        
+
         <div>
             {AllowUser}
             <Navbar bg="dark" variant="dark">
@@ -114,7 +115,7 @@ function PartnerStats() {
             </Navbar>
 
             <div>
-                <div className='reviews_text' style={{padding: 20, margin: 30}}>
+                <div className='reviews_text' style={{ padding: 20, margin: 30 }}>
                     <div>
                         <h2>{msg}</h2>
                     </div>
@@ -131,7 +132,8 @@ function PartnerStats() {
 
             <div>
                 <div className='status_partner'>
-                    <MUIDataTable
+                    <MaterialTable
+                        icons={TableIcons}
                         title={<h2>Statistics</h2>}
                         data={data}
                         columns={columns}

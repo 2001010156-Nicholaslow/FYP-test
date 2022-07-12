@@ -23,6 +23,7 @@ function Partner() {
         nav("../Login/PartnerLogin")
     }
 
+
     useEffect(() => {
 
         var decoded = jwt_decode(token);

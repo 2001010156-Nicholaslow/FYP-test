@@ -20,6 +20,7 @@ import PartnerUserSearch from "./Partner/PartnerUserSearch";
 import JobListing from "./JobListing";
 import PartnerFormEdit from "./Partner/PartnerFormEdit";
 import Welcome2 from "./Login/Welcome2";
+import ResetPassword from "./Login/ResetPassword";
 import Succes from "./success";
 //admin
 import AdminLogin from "./Pages/Login/Login";
@@ -55,12 +56,11 @@ ReactDOM.render(
       <Route path="/Partner/PartnerProfile" element={<PartnerProfile />} />
       <Route path="/Partner/PartnerForm" element={<PartnerForm />} />
       <Route path="/Partner/PartnerFormEdit" element={<PartnerFormEdit />} />
+      <Route path="/Partner/PartnerStats" element={<PartnerStats />} />
       <Route path="/Partner/PartnerJobAd" element={<PartnerJobAd />} />
-      <Route
-        path="/Partner/PartnerUserSearch"
-        element={<PartnerUserSearch />}
-      />
+      <Route path="/Partner/PartnerUserSearch" element={<PartnerUserSearch />}/>
       <Route path="/confirm/:ConfirmationCode" element={<Welcome2 />} />
+      <Route path="/confirm/:PasswordReset" element={<ResetPassword />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route element={<Requiredlogin />}>
         <Route path="/admin/mainpage" element={<MainPage />} />
