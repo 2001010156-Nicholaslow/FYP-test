@@ -310,17 +310,26 @@ app.put("/admin_delete_review", (req, res) => {
 });
 
 //Stats
-
-function getCustomerCount( callback ){    
-  var count = 0;  
-  db.transaction(function(tx) {   
-  tx.executeSql('SELECT * FROM users WHERE last_login>=CURDATE();', [], function(tx, results) {
-           // this function is called when the executeSql is ended
-           count = results.rows.length;
-           callback( count );   // <-- call the callback when is done   
-      });
+app.get("/admin_get_Day1", (req, res) => {
+  db.query("SELECT CURDATE();", (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
   });
-}
+});
+
+// function getCustomerCount( callback ){
+//   var count = 0;
+//   db.transaction(function(tx) {
+//   tx.executeSql('SELECT * FROM users WHERE last_login>=CURDATE();', [], function(tx, results) {
+//            // this function is called when the executeSql is ended
+//            count = results.rows.length;
+//            callback( count );   // <-- call the callback when is done
+//       });
+//   });
+// }
 
 //End of Admin
 
