@@ -310,12 +310,13 @@ app.put("/admin_delete_review", (req, res) => {
 });
 
 //Stats
-app.get("/admin_get_Day1", (req, res) => {
-  db.query("SELECT CURDATE();", (err, result) => {
+
+app.get("/getUserCreated1", (req, res) => {
+  db.query("Select COUNT(user_id) FROM users", (err, results) => {
     if (err) {
-      console.log(err);
+      res.status(401).send({ err: err });
     } else {
-      res.send(result);
+      res.status(200).send(results);
     }
   });
 });
