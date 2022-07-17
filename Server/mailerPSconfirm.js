@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-exports.sendPasswordResetEmailconfirm = function({toUser,ConfirmationCode}) {
+exports.sendPasswordResetEmailconfirm = function({toUser}) {
     return new Promise((res,rej) => {
         const transport = nodemailer.createTransport({
             service: "gmail",
@@ -14,11 +14,12 @@ exports.sendPasswordResetEmailconfirm = function({toUser,ConfirmationCode}) {
             from: process.env.GOOGLE_USER,
             to: toUser.email,
             subject: 'Account password change',
-            html:`1
-            <h3>Hello ${toUser.fullname} </h3>
-            <p>The password for your account:${toUser.fullname} has been change.To login in click here: <a target="_" href="${[process.env.DOMAIN]}</p>
-            <p>If this is not you, please contact our us immediately</p>
-            <p>Cheers,</p>
+            html:`
+            <h3>Hello ${toUser.name} </h3>
+            <p>You have just successfully change your password.\n
+            If you did not request for a password change, Please contact us immediately\n
+            To login, please follow this link: ${[process.env.DOMAIN]}
+            Cheers,
             `
         }
 

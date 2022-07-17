@@ -27,7 +27,7 @@ const Welcome2 = (req) => {
     SetNavlink("../Login/PartnerLogin")
 
   }else if (decoded.Uid) {
-    const Uid = decoded.id
+    const Uid = decoded.Uid
      Axios.post("http://localhost:3001/UserEmailVerify", {
       Uid: Uid
   })
