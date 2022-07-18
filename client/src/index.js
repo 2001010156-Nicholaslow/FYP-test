@@ -33,6 +33,7 @@ import Opportunities from "./Pages/Opportunities/Opportunities";
 import Partners from "./Pages/Partners/Partners";
 import Reviews from "./Pages/Reviews/reviews";
 import Stats from "./Pages/Stats/Stats";
+import PartnerReview from "./Partner/PartnerReview";
 
 const Requiredlogin = () => {
   return localStorage.getItem("token") ? (
@@ -61,6 +62,7 @@ ReactDOM.render(
       <Route path="/Partner/PartnerForm" element={<PartnerForm />} />
       <Route path="/Partner/PartnerFormEdit" element={<PartnerFormEdit />} />
       <Route path="/Partner/PartnerStats" element={<PartnerStats />} />
+      <Route path="/Partner/PartnerReview" element={<PartnerReview />} />
       <Route path="/Partner/PartnerJobAd" element={<PartnerJobAd />} />
       <Route path="/Partner/PartnerUserSearch" element={<PartnerUserSearch />}/>
       <Route path="/confirm/:ConfirmationCode" element={<Welcome2 />} />

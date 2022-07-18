@@ -730,6 +730,29 @@ app.post("/EmailCheck1", (req, res) => {
   );
 });
 
+//reporting system
+app.post("/HelpReport", (req, res) => {
+  const report_type = req.body.report_type
+  const report_title = req.body.report_title
+  const report_text = req.body.report_text
+  const uid = req.body.user_id;
+
+  console.log(report_text + report_title + report_type + uid)
+
+  db.query("INSERT into reports (report_type, report_title, report_text, partners_id) VALUES (?,?,?,?)",
+  [report_type,report_title,report_text,uid],
+  (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      res.send({
+        message:
+          "Your Report has been send to an Admin.",
+      });
+    }
+  })
+})
+
 //Partner ACcount details check
 app.post("/CheckPartnerCompleted", (req, res) => {
   const uid = req.body.user_id;

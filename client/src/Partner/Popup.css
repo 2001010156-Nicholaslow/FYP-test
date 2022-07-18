@@ -13,7 +13,7 @@
     margin: 0 auto;
     height: auto;
     max-height: 70vh;
-    margin-top: calc(100vh - 85vh + 100px);
+    margin-top: calc(100vh - 85vh + 60px);
     background: #fff;
     border-radius: 4px;
     padding: 20px;
