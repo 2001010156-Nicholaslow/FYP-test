@@ -5,6 +5,8 @@ import './Confirmation.css';
 
 class Confirmation extends Component{
 
+    
+
     Youthregister = (e) =>{
         Axios.post('http://localhost:3001/YouthConfirmation' , {
             email: this.props.inputValues.email,
@@ -20,8 +22,9 @@ class Confirmation extends Component{
             postalcode : this.props.inputValues.postalcode
           
         }).then((Response) => {
-            console.log(Response)
+            
         })
+        window.location.href = "../success";
     }
 
     back  = (e) => {
@@ -40,7 +43,7 @@ class Confirmation extends Component{
         return(
             <Container className='card1'>
                 <h1>Confirm your Details</h1>
-                <p>Confirm if the following details are correct.</p>
+                <p>Confirm that the following details are correct.</p>
                 
                 <Card className='details'>
                     <Card.Body className='card2'>

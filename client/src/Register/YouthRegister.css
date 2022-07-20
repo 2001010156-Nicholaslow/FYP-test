@@ -1,9 +1,10 @@
 .YouthRegister{
     margin: 0 auto;
-    width: 40%;
+    width: 100%;
     height: 100%;
     text-align: center;
     display: block;
     padding: 8px;
-    background-color: #8eb7ea;
+    background-color: #f3f3f3;
 }
+
