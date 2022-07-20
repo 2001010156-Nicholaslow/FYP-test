@@ -5,6 +5,7 @@ import moment from "moment";
 
 function App() {
   const [userData, setUserData] = useState();
+  const [PartnerData, setPartnerData] = useState();
   useEffect(() => {
     Axios.get("http://localhost:3001/getUserCreated1").then((response) => {
       console.log(response.data);
@@ -13,16 +14,28 @@ function App() {
         labels: payload.map((data) => moment(data.date).format("YYYY/MM/DD")),
         datasets: [
           {
-            label: "Users Gained",
+            label: "Users Created",
             data: payload.map((data) => data.count),
-            backgroundColor: [
-              "rgba(75,192,192,1)",
-              "#ecf0f1",
-              "#50AF95",
-              "#f3ba2f",
-              "#2a71d0",
-            ],
-            borderColor: "black",
+            backgroundColor: ["rgba(9, 45, 240, 0.8)"],
+            borderWidth: 2,
+          },
+        ],
+      });
+      console.log(moment().format("YYYY/MM/DD"));
+    });
+  }, []);
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/getPartnerCreated1").then((response) => {
+      console.log(response.data);
+      let payload = response.data;
+      setPartnerData({
+        labels: payload.map((data) => moment(data.date).format("YYYY/MM/DD")),
+        datasets: [
+          {
+            label: "Partner Created",
+            data: payload.map((data) => data.count),
+            backgroundColor: ["rgba(183, 19, 19, 0.8)"],
             borderWidth: 2,
           },
         ],
@@ -35,6 +48,7 @@ function App() {
     <div className="App">
       <div style={{ width: 700 }}>
         <LineChart chartData={userData} />
+        <LineChart chartData={PartnerData} />
       </div>
     </div>
   );

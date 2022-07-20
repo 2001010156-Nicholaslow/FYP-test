@@ -353,6 +353,48 @@ app.get("/getUserCreated1", (req, res) => {
   );
 });
 
+app.get("/getPartnerCreated1", (req, res) => {
+  db.query(
+    "SELECT Count(partners_id) AS count,CAST(Curdate() as Date) AS date FROM partners\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) \
+    UNION\
+    SELECT Count(partners_id) AS count,CAST(Curdate() as Date) -interval 1 day AS date\
+    FROM partners\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 1 day\
+    UNION\
+    SELECT Count(partners_id) AS count,CAST(Curdate() as Date) -interval 2 day AS date\
+    FROM partners\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 2 day\
+    UNION\
+    SELECT Count(partners_id) AS count,CAST(Curdate() as Date) -interval 3 day AS date\
+    FROM partners\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 3 day\
+    UNION\
+    SELECT Count(partners_id) AS count,CAST(Curdate() as Date) -interval 4 day AS date\
+    FROM partners\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 4 day\
+    UNION\
+    SELECT Count(partners_id) AS count,CAST(Curdate() as Date) -interval 5 day AS date\
+    FROM partners\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 5 day\
+    UNION\
+    SELECT Count(partners_id) AS count,CAST(Curdate() as Date) -interval 6 day AS date\
+    FROM partners\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 6 day\
+    UNION\
+    SELECT Count(partners_id) AS count,CAST(Curdate() as Date) -interval 7 day AS date\
+    FROM partners\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 7 day",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
 // function getCustomerCount( callback ){
 //   var count = 0;
 //   db.transaction(function(tx) {
