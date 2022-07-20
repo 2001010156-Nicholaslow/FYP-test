@@ -3,3 +3,4 @@ client/build
 client/node_modules/.cache/default-development/0.pack
 *.pack
 Server/node_modules
+node_modules
