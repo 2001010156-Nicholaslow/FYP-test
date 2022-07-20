@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import './Home.css';
 import { BiSearchAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import Axios from "axios";
+
 
 function Home() {
+    useEffect(() => {
+        
+        Axios.get("http://localhost:3001/admin_get_opp").then((response) => {
+            console.log(response)
+        })
+    }, [])
     return (
         <div className="Home_page">
             <div>

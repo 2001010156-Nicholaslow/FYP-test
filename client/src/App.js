@@ -1,24 +1,20 @@
-import React from 'react';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom'; //dont remove router
-
-
+import React from "react";
+import "./App.css";
+import Home from "./Home";
+import Login from "./Login/Login";
+import PartnerRegister from "./Register/PartnerRegister";
+import Profile from "./Profile";
+import YouthRegister from "./Register/YouthRegister"; //import from the js file
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import NavbarComp from "./Components/NavBar/NavbarComp";
 
 function App() {
-  
   return (
     <div>
-      <ul className="App">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="Login/login">Login</Link></li>
-        <li><Link to="/Register/youthRegister">Youth Register</Link></li>
-        <li><Link to="/Register/PartnerRegister">Partner Register</Link></li>
-        <li><Link to="/profile">My Profile</Link></li>
-      </ul>
-
-    </div>);
+      <NavbarComp />
+    </div>
+  );
 }
-
 
 export default App;
