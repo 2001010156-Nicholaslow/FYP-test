@@ -1,0 +1,6 @@
+node_modules
+client/node_modules
+client/build
+client/node_modules/.cache/default-development/0.pack
+*.pack
+Server/node_modules
