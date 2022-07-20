@@ -3,9 +3,13 @@ import "./Home.css";
 import { BiSearchAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import Axios from "axios";
+import { Typeahead } from 'react-bootstrap-typeahead'; // ES2015
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+
 
 function Home() {
-  const [jobData, setJobData] = useState({});
+  const [jobData, setJobData] = useState([]);
+  const [multiSelections, setMultiSelections] = useState([]);
 
   useEffect(() => {
     Axios.get("http://localhost:3001/admin_get_opp", {
@@ -15,9 +19,13 @@ function Home() {
     }).then((response) => {
       setJobData(response.data);
       console.log(jobData);
+      console.log(response);
+
     });
   }, []); // the API to bring all data from the job opp data to UI - nehal
+const onChange = () => {
 
+}
   return (
     <div classNameName="Home_page">
       <div>
@@ -25,11 +33,17 @@ function Home() {
           <h1 classNameName="home_title_text">Find your dream jobs with us!</h1>
           <p classNameName="home_title_text">Search by name or skills</p>
           <div classNameName="search_bar">
-            <input
-              type="text"
-              placeholder="Search Job by Title or Keyword"
-              classNameName="text_search"
-            />
+          <Typeahead
+          id="basic-typeahead-multiple"
+          labelKey="name"
+          multiple
+          onChange={setMultiSelections}
+          options={jobData}
+          placeholder="pick a job..."
+          selected={multiSelections}
+          filterBy={['name', 'location', 'position_level', 'company_name']}
+
+        />
             <button type="button" classNameName="button_search_home">
               <div classNameName="image_icon_home">
                 <BiSearchAlt />
@@ -43,18 +57,16 @@ function Home() {
           <div
             className="text-center mx-auto mb-5 wow fadeInUp"
             data-wow-delay="0.1s"
-            /*  style="max-width: 600px; visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;" */
           >
-            <h6 className="text-primary">Our Services</h6>
+            <h6 className="text-primary">jobs</h6>
             <h1 className="mb-4">
-              We Are Pioneers In The World Of Renewable Energy
+              Job Opportunities
             </h1>
           </div>
           <div className="row g-4">
-            <div
+            {multiSelections.length > 0 && multiSelections.map(x => <div 
               className="col-md-6 col-lg-4 wow fadeInUp"
               data-wow-delay="0.1s"
-              /* style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;" */
             >
               <div className="service-item rounded overflow-hidden">
                 <img className="img-fluid" src="img/img-600x400-1.jpg" alt="" />
@@ -62,17 +74,42 @@ function Home() {
                   <div className="service-icon">
                     <i className="fa fa-solar-panel fa-3x"></i>
                   </div>
-                  <h4 className="mb-3">Solar Panels</h4>
+                  <h4 className="mb-3">{x.name}</h4>
                   <p>
-                    Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam
-                    lorem diam.
+                    {x.company_name}
+                  </p>
+                  <p>
+                    {x.position_level}
                   </p>
                   <a className="small fw-medium" href="">
                     Read More<i className="fa fa-arrow-right ms-2"></i>
                   </a>
                 </div>
               </div>
-            </div>
+            </div>)}
+            {multiSelections.length === 0 && jobData.map(x => <div 
+              className="col-md-6 col-lg-4 wow fadeInUp"
+              data-wow-delay="0.1s"
+            >
+              <div className="service-item rounded overflow-hidden">
+                <img className="img-fluid" src="img/img-600x400-1.jpg" alt="" />
+                <div className="position-relative p-4 pt-0">
+                  <div className="service-icon">
+                    <i className="fa fa-solar-panel fa-3x"></i>
+                  </div>
+                  <h4 className="mb-3">{x.name}</h4>
+                  <p>
+                    {x.company_name}
+                  </p>
+                  <p>
+                    {x.position_level}
+                  </p>
+                  <a className="small fw-medium" href="">
+                    Read More<i className="fa fa-arrow-right ms-2"></i>
+                  </a>
+                </div>
+              </div>
+            </div>)}
           </div>
         </div>
       </div>
