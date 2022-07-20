@@ -10,15 +10,15 @@ export default class NavbarComp extends Component {
             <div>
                 <Navbar bg="dark" variant={"dark"} expand="lg">
                     <Container>
-                        <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
+                        <Navbar.Brand href="/">C300</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="me-auto">
                                  <Nav.Link><Link to="/">Home</Link></Nav.Link>
                                  <Nav.Link><Link to="Login/login">Login</Link> </Nav.Link>
                                 <NavDropdown title="Register" id="basic-nav-dropdown" className="change-color">
-                                    <NavDropdown.Item><Link to="Login/login">Login</Link></NavDropdown.Item>
-                                    <NavDropdown.Item><Link to="Login/login">Login</Link></NavDropdown.Item>
+                                    <NavDropdown.Item><Link to="Login/Partnerlogin">Login Partner</Link></NavDropdown.Item>
+                                    <NavDropdown.Item><Link to="Login/login">Login Youth</Link></NavDropdown.Item>
                                 </NavDropdown>
                                 <Nav.Link>
                                 <Link to="/profile">Profile</Link>
