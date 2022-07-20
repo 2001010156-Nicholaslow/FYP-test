@@ -367,6 +367,38 @@ app.get("/getUserCreated1", (req, res) => {
 //   });
 // }
 
+//Admin reports
+app.get("/admin_get_reports", (req, res) => {
+  db.query(
+    "SELECT * FROM reports",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+app.put("/admin_delete_reports", (req, res) => {
+  const report_id = req.body.report_id;
+  console.log(req.body);
+  db.query(
+    "DELETE FROM report WHERE report_id =?",
+    [report_id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+
 //End of Admin
 
 //Client - YouthRegister
@@ -736,8 +768,6 @@ app.post("/HelpReport", (req, res) => {
   const report_title = req.body.report_title
   const report_text = req.body.report_text
   const uid = req.body.user_id;
-
-  console.log(report_text + report_title + report_type + uid)
 
   db.query("INSERT into reports (report_type, report_title, report_text, partners_id) VALUES (?,?,?,?)",
   [report_type,report_title,report_text,uid],

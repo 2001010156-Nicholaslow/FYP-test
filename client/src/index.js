@@ -32,6 +32,7 @@ import MainPage from "./Pages/MainPage/MainPage";
 import Opportunities from "./Pages/Opportunities/Opportunities";
 import Partners from "./Pages/Partners/Partners";
 import Reviews from "./Pages/Reviews/reviews";
+import Reports from "./Pages/Reports/reports";
 import Stats from "./Pages/Stats/Stats";
 import PartnerReview from "./Partner/PartnerReview";
 
@@ -75,6 +76,7 @@ ReactDOM.render(
         <Route path="/admin/opportunities" element={<Opportunities />} />
         <Route path="/admin/partners" element={<Partners />} />
         <Route path="/admin/reviews" element={<Reviews />} />
+        <Route path="/admin/reports" element={<Reports />} />
         <Route path="/admin/stats" element={<Stats />} />
       </Route>
     </Routes>
