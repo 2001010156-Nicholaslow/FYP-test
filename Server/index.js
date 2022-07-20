@@ -14,6 +14,9 @@ const cookieParser = require("cookie-parser"); //session and cookies
 const session = require("express-session"); //session and cookies
 
 const { sendConfirmationEmail } = require("./mailer");
+const { sendPasswordResetEmailconfirm } = require("./mailerPSconfirm");
+const { sendPasswordResetEmail } = require("./mailerPS");
+const { sendNotifaEmail } = require("./mailerNotification");
 
 const db = mysql.createConnection({
   user: "root",
@@ -406,6 +409,38 @@ app.get("/getPartnerCreated1", (req, res) => {
 //   });
 // }
 
+//Admin reports
+app.get("/admin_get_reports", (req, res) => {
+  db.query(
+    "SELECT * FROM reports",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+app.put("/admin_delete_reports", (req, res) => {
+  const report_id = req.body.report_id;
+  console.log(req.body);
+  db.query(
+    "DELETE FROM report WHERE report_id =?",
+    [report_id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+
 //End of Admin
 
 //Client - YouthRegister
@@ -475,7 +510,114 @@ app.post("/PartnerConfirmation", (req, res) => {
     );
   });
 });
-app.get("/confirm/:confirmationCode");
+app.get("/confirm/:confirmationCode"); //for mailerjs
+
+app.get("/confirm/:PasswordReset")//for mailerPS.js
+
+//User Password reset email
+app.post("/ClientPasswordForget", (req, res) => {
+  const email = req.body.email;
+  db.query("SELECT * FROM users WHERE email = ?",
+    [email],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        let results = JSON.parse(JSON.stringify(result));
+        const name = results[0].full_name;
+        const Uid = results[0].user_id;
+        const token = jwt.sign({ Uid }, "jwtSecret2"); //remember to change secret! important
+        const UserDetails = { email, name }
+        sendPasswordResetEmail({ toUser: UserDetails, PasswordReset: token });
+      }
+    })
+})
+
+//Partner Password reset email
+app.post("/PartnerPasswordForget", (req, res) => {
+  const email = req.body.email;
+  db.query("SELECT * FROM partners WHERE email = ?",
+    [email],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        let results = JSON.parse(JSON.stringify(result));
+        const name = results[0].company_name;
+        const id = results[0].partners_id;
+        const token = jwt.sign({ id }, "jwtSecret2"); //remember to change secret! important
+        const UserDetails = { email, name }
+        sendPasswordResetEmail({ toUser: UserDetails, PasswordReset: token });
+      }
+    })
+})
+
+//reset password Partner
+app.post("/PartnerPasswordReset", (req, res) => {
+  const Pid = req.body.Pid;
+  const password = req.body.NPS;
+
+  bcrypt.hash(password, saltRounds, (err, hash) => {
+    //hashing
+    db.query(
+      "UPDATE partners SET password = ? WHERE partners_id = ?",
+      [hash, Pid],
+      (err, result) => {
+        if (err) {
+          res.send({ err: err })
+        } else {
+          db.query("SELECT * FROM partners WHERE partners_id = ?",
+            [Pid],
+            (err, result) => {
+              if (err) {
+                res.send({ err: err });
+              } else {
+                let results = JSON.parse(JSON.stringify(result));
+                const name = results[0].company_name;
+                const email = results[0].email;
+                const UserDetails = { email, name }
+                sendPasswordResetEmailconfirm({ toUser: UserDetails });
+              }
+            })
+        }
+      }
+    )
+  });
+})
+
+//reset password User
+app.post("/UserPasswordReset", (req, res) => {
+  const Uid = req.body.Uid;
+  const password = req.body.NPS;
+
+  bcrypt.hash(password, saltRounds, (err, hash) => {
+    //hashing
+    db.query(
+      "UPDATE users SET password = ? WHERE user_id = ?",
+      [hash, Uid],
+      (err, result) => {
+        if (err) {
+          res.send({ err: err })
+        } else {
+          db.query("SELECT * FROM users WHERE user_id = ?",
+            [Uid],
+            (err, result) => {
+              if (err) {
+                res.send({ err: err });
+              } else {
+                let results = JSON.parse(JSON.stringify(result));
+                const name = results[0].full_name;
+                const email = results[0].email;
+                const UserDetails = { email, name }
+                sendPasswordResetEmailconfirm({ toUser: UserDetails });
+              }
+            })
+        }
+      }
+    )
+  });
+})
+
 
 //Partner Verify email check
 app.post("/Partneremailverifycheck", (req, res) => {
@@ -539,6 +681,7 @@ app.post("/UserEmailVerify", (req, res) => {
   const verified = 0;
   db.query("UPDATE users SET not_verify= ? WHERE user_id = ?", [verified, id]);
 });
+
 
 //Partners Add job
 app.post("/JobAddFormADD", (req, res) => {
@@ -660,6 +803,27 @@ app.post("/EmailCheck1", (req, res) => {
     }
   );
 });
+
+//reporting system
+app.post("/HelpReport", (req, res) => {
+  const report_type = req.body.report_type
+  const report_title = req.body.report_title
+  const report_text = req.body.report_text
+  const uid = req.body.user_id;
+
+  db.query("INSERT into reports (report_type, report_title, report_text, partners_id) VALUES (?,?,?,?)",
+  [report_type,report_title,report_text,uid],
+  (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      res.send({
+        message:
+          "Your Report has been send to an Admin.",
+      });
+    }
+  })
+})
 
 //Partner ACcount details check
 app.post("/CheckPartnerCompleted", (req, res) => {

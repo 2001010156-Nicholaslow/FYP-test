@@ -18,6 +18,10 @@ export default function Login() {
     Axios.defaults.withCredentials = true; //must be true
 
     const login = () => {
+        //clear storage
+        localStorage.clear()
+        sessionStorage.clear()
+
         if (
             !validator.isEmpty(email) &
             !validator.isEmpty(password)
@@ -86,6 +90,7 @@ export default function Login() {
     }*/
 
     useEffect(() => {
+        
         Axios.get("http://localhost:3001/loginSession").then((response) => {
             if (response.data.loggedIn == true) {
                 SetLoginStatus(false)
@@ -108,7 +113,8 @@ export default function Login() {
                         <input classname="login_box" type="email" onChange={(e) => { Setemail(e.target.value) }} placeholder="Email" style={{ marginTop: 10 }} required />
                         <br></br>
                         <input type="password" classname="login_box" placeholder="Password" onChange={(e) => { Setpassword(e.target.value) }} style={{ marginTop: 10 }} required />
-                        <br></br>
+                        <p><Link to="../Login/ForgetPassword">Forget Password?</Link></p>
+                        
                     </Form>
                 </div>
                 <button className='login_button' type="submit" onClick={login} style={{ marginTop: 20, marginBottom: 20, alignItems: 'center' }} >Login</button>

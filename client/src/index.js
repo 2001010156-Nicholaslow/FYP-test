@@ -7,6 +7,8 @@ import { BrowserRouter } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route,Outlet,Navigate} from "react-router-dom"; //dont remove router
 import Home from "./Home";
 import Login from "./Login/Login";
+import ForgetPassword from "./Login/ForgetPassword";
+import ForgetPasswordPartner from "./Login/ForgetPasswordPartner";
 import PartnerLogin from "./Login/PartnerLogin";
 import PartnerRegister from "./Register/PartnerRegister";
 import Profile from "./Profile";
@@ -30,7 +32,9 @@ import MainPage from "./Pages/MainPage/MainPage";
 import Opportunities from "./Pages/Opportunities/Opportunities";
 import Partners from "./Pages/Partners/Partners";
 import Reviews from "./Pages/Reviews/reviews";
+import Reports from "./Pages/Reports/reports";
 import Stats from "./Pages/Stats/Stats";
+import PartnerReview from "./Partner/PartnerReview";
 
 const Requiredlogin = () => {
   return localStorage.getItem("token") ? (
@@ -47,6 +51,8 @@ ReactDOM.render(
       <Route path="/" element={<Home />} />
       <Route path="Login/login" element={<Login />} />
       <Route path="Login/Partnerlogin" element={<PartnerLogin />} />
+      <Route path="Login/ForgetPassword" element={<ForgetPassword />} />
+      <Route path="Login/ForgetPasswordPartner" element={<ForgetPasswordPartner />} />
       <Route path="/Register/partnerRegister" element={<PartnerRegister />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/success" element={<Succes />} />
@@ -57,10 +63,11 @@ ReactDOM.render(
       <Route path="/Partner/PartnerForm" element={<PartnerForm />} />
       <Route path="/Partner/PartnerFormEdit" element={<PartnerFormEdit />} />
       <Route path="/Partner/PartnerStats" element={<PartnerStats />} />
+      <Route path="/Partner/PartnerReview" element={<PartnerReview />} />
       <Route path="/Partner/PartnerJobAd" element={<PartnerJobAd />} />
       <Route path="/Partner/PartnerUserSearch" element={<PartnerUserSearch />}/>
       <Route path="/confirm/:ConfirmationCode" element={<Welcome2 />} />
-      <Route path="/confirm/:PasswordReset" element={<ResetPassword />} />
+      <Route path="/reset/:PasswordReset" element={<ResetPassword />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route element={<Requiredlogin />}>
         <Route path="/admin/mainpage" element={<MainPage />} />
@@ -69,6 +76,7 @@ ReactDOM.render(
         <Route path="/admin/opportunities" element={<Opportunities />} />
         <Route path="/admin/partners" element={<Partners />} />
         <Route path="/admin/reviews" element={<Reviews />} />
+        <Route path="/admin/reports" element={<Reports />} />
         <Route path="/admin/stats" element={<Stats />} />
       </Route>
     </Routes>
