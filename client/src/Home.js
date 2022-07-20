@@ -7,11 +7,15 @@ import Axios from "axios";
 
 function Home() {
     useEffect(() => {
-        
-        Axios.get("http://localhost:3001/admin_get_opp").then((response) => {
+
+        Axios.get("http://localhost:3001/admin_get_opp", {
+            headers: {
+                "x-access-token": localStorage.getItem("token"),
+            },
+        }).then((response) => {
             console.log(response)
         })
-    }, [])
+    }, []) // the API to bring all data from the job opp data to UI - nehal
     return (
         <div className="Home_page">
             <div>
