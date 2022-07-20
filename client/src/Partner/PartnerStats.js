@@ -142,13 +142,13 @@ function PartnerStats() {
 
                 </div>
             </div>
-            <div className='reviews_box'>
+            <div className='reviews_text' style={{ padding: 20, margin: 30 }}>
                 <div className='Review_header'>
                     <h1>Youth Reviews</h1>
                 </div>
                 <div className='reviews_box_1'>
                     <div>
-                        <div className='reviews_text'>
+                        <div className='reviews_box'>
                             <StarRatings
                                 rating={4.403}
                                 starDimension="30px"
