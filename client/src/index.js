@@ -4,7 +4,13 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 
-import { BrowserRouter as Router, Routes, Route,Outlet,Navigate} from "react-router-dom"; //dont remove router
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+  Navigate,
+} from "react-router-dom"; //dont remove router
 import Home from "./Home";
 import Login from "./Login/Login";
 import ForgetPassword from "./Login/ForgetPassword";
@@ -35,6 +41,8 @@ import Reviews from "./Pages/Reviews/reviews";
 import Reports from "./Pages/Reports/reports";
 import Stats from "./Pages/Stats/Stats";
 import PartnerReview from "./Partner/PartnerReview";
+import "bootstrap/dist/css/bootstrap.css";
+import "./index.scss";
 
 const Requiredlogin = () => {
   return localStorage.getItem("token") ? (
@@ -52,7 +60,10 @@ ReactDOM.render(
       <Route path="Login/login" element={<Login />} />
       <Route path="Login/Partnerlogin" element={<PartnerLogin />} />
       <Route path="Login/ForgetPassword" element={<ForgetPassword />} />
-      <Route path="Login/ForgetPasswordPartner" element={<ForgetPasswordPartner />} />
+      <Route
+        path="Login/ForgetPasswordPartner"
+        element={<ForgetPasswordPartner />}
+      />
       <Route path="/Register/partnerRegister" element={<PartnerRegister />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/success" element={<Succes />} />
@@ -65,7 +76,10 @@ ReactDOM.render(
       <Route path="/Partner/PartnerStats" element={<PartnerStats />} />
       <Route path="/Partner/PartnerReview" element={<PartnerReview />} />
       <Route path="/Partner/PartnerJobAd" element={<PartnerJobAd />} />
-      <Route path="/Partner/PartnerUserSearch" element={<PartnerUserSearch />}/>
+      <Route
+        path="/Partner/PartnerUserSearch"
+        element={<PartnerUserSearch />}
+      />
       <Route path="/confirm/:ConfirmationCode" element={<Welcome2 />} />
       <Route path="/reset/:PasswordReset" element={<ResetPassword />} />
       <Route path="/admin/login" element={<AdminLogin />} />
