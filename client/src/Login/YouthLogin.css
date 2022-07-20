@@ -27,7 +27,7 @@
 }
 
 .Login_container{
-    background-color: #e5e5e5;
+    background-color: #ffd9b9;
     width: 40%;
     margin: 0 auto;
     height: 100%;
@@ -38,6 +38,12 @@
     align-items: center;
     justify-content: center;
     padding: 18px;
+    color: rgba(0, 0, 0, 0.87);
+    -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
 }
 
 .header{
