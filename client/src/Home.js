@@ -5,11 +5,15 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 import { Typeahead } from 'react-bootstrap-typeahead'; // ES2015
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import Button from 'react-bootstrap/Button';
+import Collapse from 'react-bootstrap/Collapse';
 
 
 function Home() {
   const [jobData, setJobData] = useState([]);
   const [multiSelections, setMultiSelections] = useState([]);
+  const [open, setOpen] = useState(false);
+
 
   useEffect(() => {
     Axios.get("http://localhost:3001/admin_get_opp", {
@@ -69,23 +73,55 @@ function Home() {
                   <div className="service-icon">
                     <i className="fa fa-solar-panel fa-3x"></i>
                   </div>
-                  <h4 className="mb-3">{x.name}</h4>
+                  <h4 className="mb-3"> Name: {x.name}</h4>
                   <p>
-                    {x.company_name}
+                    Company Name: {x.company_name}
                   </p>
                   <p>
-                    {x.position_level}
+                    Job Position: {x.position_level}
                   </p>
                   <p>
-                    {x.location}
+                    Location: {x.location}
                   </p>
-                  <a className="small fw-medium" href="">
-                    Read More<i className="fa fa-arrow-right ms-2"></i>
-                  </a>
+                  <Button
+                    onClick={() => setOpen(!open)}
+                    aria-controls="example-collapse-text"
+                    aria-expanded={open}
+                  >
+                    View more
+                  </Button>
+                  <Collapse in={open}>
+                    <div id="example-collapse-text">
+                    <p>
+                    ID: {x.opp_id}
+                  </p>
+                  <p>
+                    Years to serve: {x.required_yrs}
+                  </p>
+                  <p>
+                  Industry for {x.name}: {x.industry}
+                  </p>
+                  <p>
+                  Job salary for {x.name}: ${x.salary}
+                  </p>
+                  <p>
+                  Job qualification for {x.name}: {x.qualification}
+                  </p>
+                  <p>
+                    Any Additional requirements: {x.additional_requirements}
+                  </p>
+                  <p>
+                    Socpe for {x.name}: {x.job_scope}
+                  </p>
+                  <p>
+                  Job description: {x.description}
+                  </p>
+                    </div>
+                  </Collapse>
                   <div>
                   </div>
                   <a>
-                    _____________________________________________________________________________
+                    ________________________________________________________________________________________________________________________________________________________________
                   </a>
                 </div>
               </div>
@@ -100,23 +136,58 @@ function Home() {
                   <div className="service-icon">
                     <i className="fa fa-solar-panel fa-3x"></i>
                   </div>
-                  <h4 className="mb-3">{x.name}</h4>
+                  <h4 className="mb-3"> Name: {x.name}</h4>
                   <p>
-                    {x.company_name}
+                    Company Name: {x.company_name}
                   </p>
                   <p>
-                    {x.position_level}
+                    Job Position: {x.position_level}
                   </p>
                   <p>
-                    {x.location}
+                  Location: {x.location}
                   </p>
-                  <a className="small fw-medium" href="">
+                  {/* <a className="small fw-medium" href="">
                     Read More<i className="fa fa-arrow-right ms-2"></i>
-                  </a>
+                  </a> */}
+                  <Button
+                    onClick={() => setOpen(!open)}
+                    aria-controls="example-collapse-text"
+                    aria-expanded={open}
+                  >
+                    View more
+                  </Button>
+                  <Collapse in={open}>
+                    <div id="example-collapse-text">
+                    <p>
+                    ID: {x.opp_id}
+                  </p>
+                  <p>
+                    Years to serve: {x.required_yrs}
+                  </p>
+                  <p>
+                  Industry for {x.name}: {x.industry}
+                  </p>
+                  <p>
+                  Job salary for {x.name}: ${x.salary}
+                  </p>
+                  <p>
+                  Job qualification for {x.name}: {x.qualification}
+                  </p>
+                  <p>
+                    Any Additional requirements: {x.additional_requirements}
+                  </p>
+                  <p>
+                    Socpe for {x.name}: {x.job_scope}
+                  </p>
+                  <p>
+                  Job description: {x.description}
+                  </p>
+                    </div>
+                  </Collapse>
                   <div>
                   </div>
                   <a>
-                    _____________________________________________________________________________
+                    ________________________________________________________________________________________________________________________________________________________________
                   </a>
                 </div>
               </div>
