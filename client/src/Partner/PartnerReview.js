@@ -1,72 +1,74 @@
-/*
-import React, { useState, useEffect } from "react";
-import TableIcons from "../Components/MaterialTablesIcons/TablesIcons";
-import MaterialTable from "material-table";
-import Axios from "axios";
-function PartnerReview() {
-  const [data, setData] = useState([]);
-  const [reload, setReload] = useState(false);
-
-  useEffect(() => {
-    Axios.get("http://localhost:3001/admin_get_reviews").then((response) => {
-      setData(response.data);
-    });
-  }, [reload]);
-
-  const [columns, setColumns] = useState([
-    { title: "Reviews", field: "review" },
-    {
-      title: "Rating",
-      field: "rating",
-    },
-    {
-      title: "User name",
-      field: "full_name",
-    },
-    {
-      title: "Company",
-      field: "company_name",
-    },
-  ]);
-
-  return (
-    <MaterialTable
-      icons={TableIcons}
-      title=" Manage Reviews"
-      columns={columns}
-      data={data}
-      options={{
-        filtering: true,
-      }}
-    />
-  );
-}
-
-export default PartnerReview;
-*/
-
-
 import React, { useState, useEffect } from 'react';
 import Reviewspage from '../Components/reviews/Reviewspage';
 import Reviewspost from '../Components/reviews/Reviewspost';
-import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { useNavigate } from 'react-router-dom';
+import Axios from "axios";
 import './PartnerReview.css';
 
 const PartnerReview = () => {
+  const id = localStorage.getItem("user_id");
   const [Rposts, setRPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
+  const [msg, Setmsg] = useState("");
+
+  const token = localStorage.getItem("token");
+  const [AllowUser, SetAllowUser] = useState(false);
+
+  const nav = useNavigate();
+
+  const sortRatingbest = () =>{
+    setRPosts([]);
+    setLoading(true);
+    Axios.post("http://localhost:3001/sort_partners_reviews1", { PID: id }).then((response) => {
+        setRPosts(response.data);
+        console.log(response.data)
+      });
+      setLoading(false);
+  } 
+
+  const sortRatingworst = () =>{
+    setRPosts([]);
+    setLoading(true);
+    Axios.post("http://localhost:3001/sort_partners_reviews2", { PID: id }).then((response) => {
+        setRPosts(response.data);
+        console.log(response.data)
+      });
+      setLoading(false);
+  } 
+
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
-      setRPosts(res.data);
-      setLoading(false);
-    };
 
-    fetchPosts();
+    if (id == "" || token == "" || id == undefined || token == undefined) {
+      nav("../Login/PartnerLogin")
+      window.location.reload();
+    } else {
+
+      var decoded = jwt_decode(token);
+
+      if (decoded.id == id) {
+        Axios.post("http://localhost:3001/LoginCheckPartner", {
+          user_id: id
+        }).then((response) => {
+          Setmsg(response.data);
+        });
+      } else {
+        {localStorage.clear()
+        sessionStorage.clear()
+        nav("../Login/PartnerLogin")}
+      }
+
+      setLoading(true);
+      Axios.post("http://localhost:3001/partners_reviews", { PID: id }).then((response) => {
+        setRPosts(response.data);
+        console.log(response.data)
+      });
+      setLoading(false);
+    }
   }, []);
 
   // Get current posts
@@ -79,6 +81,17 @@ const PartnerReview = () => {
 
   return (
     <div className='container mt-5'>
+      <Dropdown>
+      <Dropdown.Toggle variant="success" id="dropdown-basic">
+        Sort By:
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+      <Dropdown.Item onClick={sortRatingbest}>Action</Dropdown.Item>
+      <Dropdown.Item onClick={sortRatingworst}>Another action</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+
       <h1 className='text-primary mb-3'>Reviews</h1>
       <Reviewspost Rposts={currentPosts} loading={loading} />
       <Reviewspage

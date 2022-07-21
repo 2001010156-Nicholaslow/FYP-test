@@ -981,6 +981,54 @@ app.post("/ClientLogin", (req, res) => {
   });
 });
 
+//get reviews for partners
+app.post("/partners_reviews", (req, res) => {
+  const PID = req.body.PID;
+  db.query(
+    "SELECT * FROM review WHERE partners_id = ?;",
+    [PID],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//get reviews for partners_rating_asec
+app.post("/sort_partners_reviews1", (req, res) => {
+  const PID = req.body.PID;
+  db.query(
+    "SELECT * FROM review WHERE partners_id = ? ORDER BY rating desc;",
+    [PID],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//get reviews for partners_rating_desc
+app.post("/sort_partners_reviews2", (req, res) => {
+  const PID = req.body.PID;
+  db.query(
+    "SELECT * FROM review WHERE partners_id = ? ORDER BY rating ASC;",
+    [PID],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
 //Login - Partner
 app.post("/PartnerLogin", (req, res) => {
   const email = req.body.email;
