@@ -23,9 +23,9 @@ function Home() {
 
     });
   }, []); // the API to bring all data from the job opp data to UI - nehal
-const onChange = () => {
+  const onChange = () => {
 
-}
+  }
   return (
     <div classNameName="Home_page">
       <div>
@@ -33,22 +33,17 @@ const onChange = () => {
           <h1 classNameName="home_title_text">Find your dream jobs with us!</h1>
           <p classNameName="home_title_text">Search by name or skills</p>
           <div classNameName="search_bar">
-          <Typeahead
-          id="basic-typeahead-multiple"
-          labelKey="name"
-          multiple
-          onChange={setMultiSelections}
-          options={jobData}
-          placeholder="pick a job..."
-          selected={multiSelections}
-          filterBy={['name', 'location', 'position_level', 'company_name']}
+            <Typeahead
+              id="basic-typeahead-multiple"
+              labelKey="name"
+              multiple
+              onChange={setMultiSelections}
+              options={jobData}
+              placeholder="pick a job..."
+              selected={multiSelections}
+              filterBy={['name', 'location', 'position_level', 'company_name', 'salary', 'qualification']}
 
-        />
-            <button type="button" classNameName="button_search_home">
-              <div classNameName="image_icon_home">
-                <BiSearchAlt />
-              </div>
-            </button>
+            />
           </div>
         </div>
       </div>
@@ -64,8 +59,8 @@ const onChange = () => {
             </h1>
           </div>
           <div className="row g-4">
-            {multiSelections.length > 0 && multiSelections.map(x => <div 
-              className="col-md-6 col-lg-4 wow fadeInUp"
+            {multiSelections.length > 0 && multiSelections.map(x => <div
+              className="col-md-5 col-lg-11 wow fadeInUp"
               data-wow-delay="0.1s"
             >
               <div className="service-item rounded overflow-hidden">
@@ -80,15 +75,23 @@ const onChange = () => {
                   </p>
                   <p>
                     {x.position_level}
+                  </p>
+                  <p>
+                    {x.location}
                   </p>
                   <a className="small fw-medium" href="">
                     Read More<i className="fa fa-arrow-right ms-2"></i>
                   </a>
+                  <div>
+                  </div>
+                  <a>
+                    _____________________________________________________________________________
+                  </a>
                 </div>
               </div>
             </div>)}
-            {multiSelections.length === 0 && jobData.map(x => <div 
-              className="col-md-6 col-lg-4 wow fadeInUp"
+            {multiSelections.length === 0 && jobData.map(x => <div
+              className="col-md-5 col-lg-11 wow fadeInUp"
               data-wow-delay="0.1s"
             >
               <div className="service-item rounded overflow-hidden">
@@ -104,8 +107,16 @@ const onChange = () => {
                   <p>
                     {x.position_level}
                   </p>
+                  <p>
+                    {x.location}
+                  </p>
                   <a className="small fw-medium" href="">
                     Read More<i className="fa fa-arrow-right ms-2"></i>
+                  </a>
+                  <div>
+                  </div>
+                  <a>
+                    _____________________________________________________________________________
                   </a>
                 </div>
               </div>
@@ -170,7 +181,7 @@ const onChange = () => {
                   <Link to="/Register/youthRegister">Youth Register</Link>
                 </li>
                 <li>
-                  <Link to="/JobListing">Job Listing</Link>
+                  <Link to="/">Job Listing</Link>
                 </li>
                 <li>
                   <Link to="/profile">My Profile</Link>
@@ -188,7 +199,7 @@ const onChange = () => {
               <div className="grid-item_home">
                 <h2>Job Search</h2>
                 <li>
-                  <Link to="/JobListing">Job Listing</Link>
+                  <Link to="/">Job Listing</Link>
                 </li>
               </div>
               <div className="grid-item_home">
@@ -209,5 +220,4 @@ const onChange = () => {
   );
 }
 
-// delete all of this
 export default Home;
