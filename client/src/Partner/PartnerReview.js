@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Reviewspage from '../Components/reviews/Reviewspage';
 import Reviewspost from '../Components/reviews/Reviewspost';
 import jwt_decode from 'jwt-decode';
+import { BiHome } from "react-icons/bi";
 import Dropdown from 'react-bootstrap/Dropdown';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Axios from "axios";
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import './PartnerReview.css';
 
 const PartnerReview = () => {
@@ -14,31 +16,38 @@ const PartnerReview = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
   const [msg, Setmsg] = useState("");
+  
 
   const token = localStorage.getItem("token");
   const [AllowUser, SetAllowUser] = useState(false);
 
   const nav = useNavigate();
 
-  const sortRatingbest = () =>{
+  const Exit = () => {
+    localStorage.clear()
+    sessionStorage.clear()
+    nav("../Login/PartnerLogin")
+}
+
+  const sortRatingbest = () => {
     setRPosts([]);
     setLoading(true);
     Axios.post("http://localhost:3001/sort_partners_reviews1", { PID: id }).then((response) => {
-        setRPosts(response.data);
-        console.log(response.data)
-      });
-      setLoading(false);
-  } 
+      setRPosts(response.data);
+      console.log(response.data)
+    });
+    setLoading(false);
+  }
 
-  const sortRatingworst = () =>{
+  const sortRatingworst = () => {
     setRPosts([]);
     setLoading(true);
     Axios.post("http://localhost:3001/sort_partners_reviews2", { PID: id }).then((response) => {
-        setRPosts(response.data);
-        console.log(response.data)
-      });
-      setLoading(false);
-  } 
+      setRPosts(response.data);
+      console.log(response.data)
+    });
+    setLoading(false);
+  }
 
 
   useEffect(() => {
@@ -57,9 +66,11 @@ const PartnerReview = () => {
           Setmsg(response.data);
         });
       } else {
-        {localStorage.clear()
-        sessionStorage.clear()
-        nav("../Login/PartnerLogin")}
+        {
+          localStorage.clear()
+          sessionStorage.clear()
+          nav("../Login/PartnerLogin")
+        }
       }
 
       setLoading(true);
@@ -80,25 +91,47 @@ const PartnerReview = () => {
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
-    <div className='container mt-5'>
-      <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        Sort By:
-      </Dropdown.Toggle>
+    <div>
+      {AllowUser}
+      <Navbar bg="dark" variant="dark">
+        <Nav.Link href="./Partner">
+          <div className="image_icon_nav">
+            <BiHome />
+          </div>
+        </Nav.Link>
+        <Nav className="me-auto">
+          <Nav.Link href="./PartnerJobAd">Job Ad</Nav.Link>
+          <Nav.Link href="./PartnerUserSearch">Search user</Nav.Link>
+          <Nav.Link href="./PartnerStats">Statics</Nav.Link>
+        </Nav>
+        <Navbar.Collapse className="justify-content-end">
+          <NavDropdown title={"Sign in as : " + msg} id="basic-nav-dropdown">
+            <NavDropdown.Item href="./PartnerProfile">Edit profile</NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item onClick={Exit}>Log Out</NavDropdown.Item>
+          </NavDropdown>
+        </Navbar.Collapse>
+      </Navbar>
+      <div className='container mt-5'>
+        <Dropdown>
+          <Dropdown.Toggle variant="success" id="dropdown-basic">
+            Sort By:
+          </Dropdown.Toggle>
 
-      <Dropdown.Menu>
-      <Dropdown.Item onClick={sortRatingbest}>Newest</Dropdown.Item>
-      <Dropdown.Item onClick={sortRatingworst}>Oldest</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={sortRatingbest}>Newest</Dropdown.Item>
+            <Dropdown.Item onClick={sortRatingworst}>Oldest</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
 
-      <h1 className='text-primary mb-3'>Reviews</h1>
-      <Reviewspost Rposts={currentPosts} loading={loading} />
-      <Reviewspage
-        postsPerPage={postsPerPage}
-        totalPosts={Rposts.length}
-        paginate={paginate}
-      />
+        <h1 className='text-primary mb-3'>Reviews</h1>
+        <Reviewspost Rposts={currentPosts} loading={loading} />
+        <Reviewspage
+          postsPerPage={postsPerPage}
+          totalPosts={Rposts.length}
+          paginate={paginate}
+        />
+      </div>
     </div>
   );
 };

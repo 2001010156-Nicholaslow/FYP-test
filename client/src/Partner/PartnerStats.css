@@ -23,6 +23,11 @@
     margin-left: 40px;
 }
 
+.simple_piechart{
+    width: 400px;
+    height: auto;
+}
+
 .review_details_text{
     padding-top: 10px;
 }

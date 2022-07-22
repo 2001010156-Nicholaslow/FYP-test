@@ -8,6 +8,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import './Partner.css';
 import './PartnerStats.css';
+import { Pie } from 'react-chartjs-2';
 import StarRatings from 'react-star-ratings';
 import jwt_decode from 'jwt-decode';
 
@@ -19,6 +20,21 @@ function PartnerStats() {
     const [AllowUser, SetAllowUser] = useState(false);
 
     const nav = useNavigate();
+
+    const data_view = {
+        labels: ['Applied', 'Accepted'],
+        datasets: [
+            {
+                data: [29, 5],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',]
+            },
+        ]
+    }
 
     const Exit = () => {
         localStorage.clear()
@@ -49,32 +65,18 @@ function PartnerStats() {
         }
     }, [])
 
-    const columns = [
+
+    const [columns, setColumns] = useState([
+        { title: "Job Name", field: "job_name" },
         {
-            name: "job_name",
-            label: "Job Name",
-            options: {
-                filter: true,
-                sort: true,
-            }
+          title: "Views",
+          field: "views",
         },
         {
-            name: "views",
-            label: "Views",
-            options: {
-                filter: false,
-                sort: false,
-            }
+          title: "Applied",
+          field: "applied",
         },
-        {
-            name: "applied",
-            label: "Youths Applied",
-            options: {
-                filter: false,
-                sort: false,
-            }
-        },
-    ];
+      ]);
 
     const data = [
         { job_name: "Intern", views: "120", applied: "30" },
@@ -120,8 +122,9 @@ function PartnerStats() {
                         <h2>{msg}</h2>
                     </div>
                     <div className='simple_stats_icon'>
-                        <div>
+                        <div className='simple_piechart'>
                             <h1>stats1</h1>
+                            <Pie data={data_view} />
                         </div>
                         <div>
                             <h1>stats2</h1>
@@ -134,7 +137,7 @@ function PartnerStats() {
                 <div className='status_partner'>
                     <MaterialTable
                         icons={TableIcons}
-                        title={<h2>Statistics</h2>}
+                        title="Statistic"
                         data={data}
                         columns={columns}
                     />

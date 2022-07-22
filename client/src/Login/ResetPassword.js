@@ -93,7 +93,7 @@ const ResetPassword = (req) => {
               <h1 className="image_icon_success"><GrStatusGood /></h1>
             </div>
             <div className="icon_success_reset">
-              <h3><strong>Password Change Succes</strong></h3>
+              <h3><strong>Password Change Success</strong></h3>
               <p>You have successfully change your password.</p>
               <button className='login_button' onClick={togglePopup} style={{ marginTop: 20, marginBottom: 20, alignItems: 'center', width: "30%", marginLeft: "24%" }} >Login</button>
 
