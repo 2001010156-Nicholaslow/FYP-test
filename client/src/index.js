@@ -30,6 +30,7 @@ import PartnerFormEdit from "./Partner/PartnerFormEdit";
 import Welcome2 from "./Login/Welcome2";
 import ResetPassword from "./Login/ResetPassword";
 import Succes from "./success";
+import JobDiscription from "./jobDiscription";
 //admin
 import AdminLogin from "./Pages/Login/Login";
 import User from "./Pages/User/User";
@@ -76,6 +77,7 @@ ReactDOM.render(
       <Route path="/Partner/PartnerStats" element={<PartnerStats />} />
       <Route path="/Partner/PartnerReview" element={<PartnerReview />} />
       <Route path="/Partner/PartnerJobAd" element={<PartnerJobAd />} />
+      <Route path="/jobDiscription" element={<JobDiscription />} />
       <Route
         path="/Partner/PartnerUserSearch"
         element={<PartnerUserSearch />}

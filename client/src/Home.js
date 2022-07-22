@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
-import { BiSearchAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import { Typeahead } from 'react-bootstrap-typeahead'; // ES2015
@@ -23,6 +22,7 @@ function Home() {
       },
     }).then((response) => {
       setJobData(response.data);
+      window.localStorage.setItem("jobData", JSON.stringify(response.data));
       console.log(jobData);
       console.log(response);
 
@@ -34,9 +34,9 @@ function Home() {
   return (
     <div classNameName="Home_page">
       <div>
-      <div>
-      <NavbarComp />
-    </div>
+        <div>
+          <NavbarComp />
+        </div>
         <div classNameName="search_banner">
           <h1 classNameName="home_title_text">Find your dream jobs with us!</h1>
           <p classNameName="home_title_text">Search by name or skills</p>
@@ -95,34 +95,34 @@ function Home() {
                     aria-controls="example-collapse-text"
                     aria-expanded={open}
                   >
-                    View more
+                    <Link to="/jobDiscription">View more</Link>
                   </Button>
                   <Collapse in={open}>
                     <div id="example-collapse-text">
-                    <p>
-                    ID: {x.opp_id}
-                  </p>
-                  <p>
-                    Years to serve: {x.required_yrs}
-                  </p>
-                  <p>
-                  Industry for {x.name}: {x.industry}
-                  </p>
-                  <p>
-                  Job salary for {x.name}: ${x.salary}
-                  </p>
-                  <p>
-                  Job qualification for {x.name}: {x.qualification}
-                  </p>
-                  <p>
-                    Any Additional requirements: {x.additional_requirements}
-                  </p>
-                  <p>
-                    Socpe for {x.name}: {x.job_scope}
-                  </p>
-                  <p>
-                  Job description: {x.description}
-                  </p>
+                      <p>
+                        ID: {x.opp_id}
+                      </p>
+                      <p>
+                        Years to serve: {x.required_yrs}
+                      </p>
+                      <p>
+                        Industry for {x.name}: {x.industry}
+                      </p>
+                      <p>
+                        Job salary for {x.name}: ${x.salary}
+                      </p>
+                      <p>
+                        Job qualification for {x.name}: {x.qualification}
+                      </p>
+                      <p>
+                        Any Additional requirements: {x.additional_requirements}
+                      </p>
+                      <p>
+                        Socpe for {x.name}: {x.job_scope}
+                      </p>
+                      <p>
+                        Job description: {x.description}
+                      </p>
                     </div>
                   </Collapse>
                   <div>
@@ -151,7 +151,7 @@ function Home() {
                     Job Position: {x.position_level}
                   </p>
                   <p>
-                  Location: {x.location}
+                    Location: {x.location}
                   </p>
                   <p>
                     salary: ${x.salary}
@@ -160,38 +160,41 @@ function Home() {
                     Read More<i className="fa fa-arrow-right ms-2"></i>
                   </a> */}
                   <Button
-                    onClick={() => setOpen(!open)}
+                    onClick={() => { 
+                      window.localStorage.setItem("opp_id",x.opp_id)
+                      setOpen(!open) }
+                    }
                     aria-controls="example-collapse-text"
                     aria-expanded={open}
                   >
-                    View more
+                    <Link to="/jobDiscription">View more</Link>
                   </Button>
                   <Collapse in={open}>
                     <div id="example-collapse-text">
-                    <p>
-                    ID: {x.opp_id}
-                  </p>
-                  <p>
-                    Years to serve: {x.required_yrs}
-                  </p>
-                  <p>
-                  Industry for {x.name}: {x.industry}
-                  </p>
-                  <p>
-                  Job salary for {x.name}: ${x.salary}
-                  </p>
-                  <p>
-                  Job qualification for {x.name}: {x.qualification}
-                  </p>
-                  <p>
-                    Any Additional requirements: {x.additional_requirements}
-                  </p>
-                  <p>
-                    Socpe for {x.name}: {x.job_scope}
-                  </p>
-                  <p>
-                  Job description: {x.description}
-                  </p>
+                      <p>
+                        ID: {x.opp_id}
+                      </p>
+                      <p>
+                        Years to serve: {x.required_yrs}
+                      </p>
+                      <p>
+                        Industry for {x.name}: {x.industry}
+                      </p>
+                      <p>
+                        Job salary for {x.name}: ${x.salary}
+                      </p>
+                      <p>
+                        Job qualification for {x.name}: {x.qualification}
+                      </p>
+                      <p>
+                        Any Additional requirements: {x.additional_requirements}
+                      </p>
+                      <p>
+                        Socpe for {x.name}: {x.job_scope}
+                      </p>
+                      <p>
+                        Job description: {x.description}
+                      </p>
                     </div>
                   </Collapse>
                   <div>
