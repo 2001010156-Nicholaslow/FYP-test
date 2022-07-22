@@ -4,6 +4,7 @@ import './YouthLogin.css';
 import Axios from "axios";
 import validator from "validator";
 import { Form, Alert } from 'react-bootstrap';
+import NavbarComp from "../Components/NavBar/NavbarComp";
 
 function PartnerLogin() {
 
@@ -97,6 +98,11 @@ function PartnerLogin() {
 
 
     return (
+        <div>
+<div>
+      <NavbarComp />
+    </div>
+        
         <div className='container_loginPage1'>
             <div className='Login_container'>
             {LoginStatus && <Alert variant="warning" >{LoginMSG}</Alert>}
@@ -120,7 +126,7 @@ function PartnerLogin() {
 
             </div>
         </div>
-
+</div>
     );
 }
 export default PartnerLogin;
