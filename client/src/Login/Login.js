@@ -47,6 +47,8 @@ export default function Login() {
                             localStorage.setItem("token", response.data.token)
                             sess = response.data.result[0]
                             localStorage.setItem("Uid", sess.user_id)
+                            localStorage.setItem("user_data", JSON.stringify(response.data))
+                            
                             nav("../")
 
 

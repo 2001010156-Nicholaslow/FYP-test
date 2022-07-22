@@ -31,182 +31,19 @@ function Home() {
   const onChange = () => {
 
   }
+  const user_data = JSON.parse(window.localStorage.getItem("user_data"));
+  const user = user_data?.result[0];
+  
+  console.log("user_data", user);
   return (
     <div classNameName="Home_page">
       <div>
         <div>
           <NavbarComp />
         </div>
-        <div classNameName="search_banner">
-          <h1 classNameName="home_title_text">Find your dream jobs with us!</h1>
-          <p classNameName="home_title_text">Search by name or skills</p>
-          <div classNameName="search_bar">
-            <Typeahead
-              id="basic-typeahead-multiple"
-              labelKey="name"
-              multiple
-              onChange={setMultiSelections}
-              options={jobData}
-              placeholder="pick a job..."
-              selected={multiSelections}
-              filterBy={['name', 'location', 'position_level', 'company_name', 'salary', 'qualification', 'opp_id']}
-
-            />
-          </div>
-        </div>
-      </div>
-      <div className="container-xxl py-5">
-        <div className="container">
-          <div
-            className="text-center mx-auto mb-5 wow fadeInUp"
-            data-wow-delay="0.1s"
-          >
-            <h6 className="text-primary">jobs</h6>
-            <h1 className="mb-4">
-              Job Opportunities
-            </h1>
-          </div>
-          <div className="row g-4">
-            {multiSelections.length > 0 && multiSelections.map(x => <div
-              className="col-md-5 col-lg-11 wow fadeInUp"
-              data-wow-delay="0.1s"
-            >
-              <div className="service-item rounded overflow-hidden">
-                <img className="img-fluid" src="img/img-600x400-1.jpg" alt="" />
-                <div className="position-relative p-4 pt-0">
-                  <div className="service-icon">
-                    <i className="fa fa-solar-panel fa-3x"></i>
-                  </div>
-                  <h4 className="mb-3"> Name: {x.name}</h4>
-                  <p>
-                    Company Name: {x.company_name}
-                  </p>
-                  <p>
-                    Job Position: {x.position_level}
-                  </p>
-                  <p>
-                    Location: {x.location}
-                  </p>
-                  <p>
-                    salary: ${x.salary}
-                  </p>
-                  <Button
-                    onClick={() => setOpen(!open)}
-                    aria-controls="example-collapse-text"
-                    aria-expanded={open}
-                  >
-                    <Link to="/jobDiscription">View more</Link>
-                  </Button>
-                  <Collapse in={open}>
-                    <div id="example-collapse-text">
-                      <p>
-                        ID: {x.opp_id}
-                      </p>
-                      <p>
-                        Years to serve: {x.required_yrs}
-                      </p>
-                      <p>
-                        Industry for {x.name}: {x.industry}
-                      </p>
-                      <p>
-                        Job salary for {x.name}: ${x.salary}
-                      </p>
-                      <p>
-                        Job qualification for {x.name}: {x.qualification}
-                      </p>
-                      <p>
-                        Any Additional requirements: {x.additional_requirements}
-                      </p>
-                      <p>
-                        Socpe for {x.name}: {x.job_scope}
-                      </p>
-                      <p>
-                        Job description: {x.description}
-                      </p>
-                    </div>
-                  </Collapse>
-                  <div>
-                  </div>
-                  <a>
-                    ________________________________________________________________________________________________________________________________________________________________
-                  </a>
-                </div>
-              </div>
-            </div>)}
-            {multiSelections.length === 0 && jobData.map(x => <div
-              className="col-md-5 col-lg-11 wow fadeInUp"
-              data-wow-delay="0.1s"
-            >
-              <div className="service-item rounded overflow-hidden">
-                <img className="img-fluid" src="img/img-600x400-1.jpg" alt="" />
-                <div className="position-relative p-4 pt-0">
-                  <div className="service-icon">
-                    <i className="fa fa-solar-panel fa-3x"></i>
-                  </div>
-                  <h4 className="mb-3"> Name: {x.name}</h4>
-                  <p>
-                    Company Name: {x.company_name}
-                  </p>
-                  <p>
-                    Job Position: {x.position_level}
-                  </p>
-                  <p>
-                    Location: {x.location}
-                  </p>
-                  <p>
-                    salary: ${x.salary}
-                  </p>
-                  {/* <a className="small fw-medium" href="">
-                    Read More<i className="fa fa-arrow-right ms-2"></i>
-                  </a> */}
-                  <Button
-                    onClick={() => { 
-                      window.localStorage.setItem("opp_id",x.opp_id)
-                      setOpen(!open) }
-                    }
-                    aria-controls="example-collapse-text"
-                    aria-expanded={open}
-                  >
-                    <Link to="/jobDiscription">View more</Link>
-                  </Button>
-                  <Collapse in={open}>
-                    <div id="example-collapse-text">
-                      <p>
-                        ID: {x.opp_id}
-                      </p>
-                      <p>
-                        Years to serve: {x.required_yrs}
-                      </p>
-                      <p>
-                        Industry for {x.name}: {x.industry}
-                      </p>
-                      <p>
-                        Job salary for {x.name}: ${x.salary}
-                      </p>
-                      <p>
-                        Job qualification for {x.name}: {x.qualification}
-                      </p>
-                      <p>
-                        Any Additional requirements: {x.additional_requirements}
-                      </p>
-                      <p>
-                        Socpe for {x.name}: {x.job_scope}
-                      </p>
-                      <p>
-                        Job description: {x.description}
-                      </p>
-                    </div>
-                  </Collapse>
-                  <div>
-                  </div>
-                  <a>
-                    ________________________________________________________________________________________________________________________________________________________________
-                  </a>
-                </div>
-              </div>
-            </div>)}
-          </div>
-        </div>
+        <h2>
+          Hello {user?.full_name}
+        </h2>
       </div>
       <br></br>
       <br></br>
