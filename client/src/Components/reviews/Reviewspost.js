@@ -10,14 +10,14 @@ const Reviewspost = ({ Rposts, loading }) => {
     <div className='list-group mb-4'>
       {Rposts.map((Rpost) => (
         <div key={Rpost.review_id} className='list-group-item'>
+
           <div className='reviews_box'>
             <StarRatings
               rating={Rpost.rating}
               starDimension="30px"
               starSpacing="10px"
             />
-
-            {Rpost.review}
+            <h3 className='review_details_text'> {Rpost.review}</h3>
           </div>
 
         </div>

@@ -87,8 +87,8 @@ const PartnerReview = () => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-      <Dropdown.Item onClick={sortRatingbest}>Action</Dropdown.Item>
-      <Dropdown.Item onClick={sortRatingworst}>Another action</Dropdown.Item>
+      <Dropdown.Item onClick={sortRatingbest}>Newest</Dropdown.Item>
+      <Dropdown.Item onClick={sortRatingworst}>Oldest</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
 

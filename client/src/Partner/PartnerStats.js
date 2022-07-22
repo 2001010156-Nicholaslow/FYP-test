@@ -4,7 +4,7 @@ import TableIcons from "../Components/MaterialTablesIcons/TablesIcons";
 import MaterialTable from "material-table";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import './Partner.css';
 import './PartnerStats.css';
@@ -121,10 +121,10 @@ function PartnerStats() {
                     </div>
                     <div className='simple_stats_icon'>
                         <div>
-                            <h1>hi</h1>
+                            <h1>stats1</h1>
                         </div>
                         <div>
-                            <h1>Bye</h1>
+                            <h1>stats2</h1>
                         </div>
                     </div>
                 </div>
@@ -137,7 +137,6 @@ function PartnerStats() {
                         title={<h2>Statistics</h2>}
                         data={data}
                         columns={columns}
-                        options={options}
                     />
 
                 </div>
@@ -155,7 +154,6 @@ function PartnerStats() {
                                 starSpacing="10px"
                             />
                             <h3 className='review_details_text'>A good place to work</h3>
-                            <p>Payout is quite fast and accurate</p>
                         </div>
                     </div>
                     <div>
@@ -166,7 +164,6 @@ function PartnerStats() {
                                 starSpacing="10px"
                             />
                             <h3 className='review_details_text'>Analytical and task oriented</h3>
-                            <p>Always provide opportunities for career advancement.</p>
                         </div>
                     </div>
                     <div>
@@ -181,6 +178,7 @@ function PartnerStats() {
                     </div>
 
                 </div>
+                <button className='ADbutton_edit'><Link to="../Partner/PartnerReview" >View All</Link></button>
             </div>
         </div>
     );
