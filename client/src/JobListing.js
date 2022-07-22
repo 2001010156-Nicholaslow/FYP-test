@@ -106,7 +106,7 @@ function JobListing() {
                                     <p>
                                         salary: ${x.salary}
                                     </p>
-                                    <Button
+                                    <Button variant="warning"
                                         onClick={() => {
                                             window.localStorage.setItem("opp_id", x.opp_id)
                                             setOpen(!open)
@@ -179,7 +179,7 @@ function JobListing() {
                                     {/* <a className="small fw-medium" href="">
                     Read More<i className="fa fa-arrow-right ms-2"></i>
                   </a> */}
-                                    <Button
+                                    <Button variant="warning"
                                         onClick={() => {
                                             window.localStorage.setItem("opp_id", x.opp_id)
                                             setOpen(!open)
