@@ -4,6 +4,8 @@ import './YouthLogin.css';
 import Axios from "axios";
 import validator from "validator";
 import { Form, Alert } from 'react-bootstrap';
+import NavbarComp from "../Components/NavBar/NavbarComp";
+
 
 export default function Login() {
 
@@ -90,7 +92,7 @@ export default function Login() {
     }*/
 
     useEffect(() => {
-        
+
         Axios.get("http://localhost:3001/loginSession").then((response) => {
             if (response.data.loggedIn == true) {
                 SetLoginStatus(false)
@@ -100,25 +102,31 @@ export default function Login() {
 
 
     return (
-        <div className='container_loginPage1'>
-            <div className='Login_container'>
-            {LoginStatus && <Alert variant="warning" >{LoginMSG}</Alert>}
-                <div classname='login'>
-                    <div className='header'>
-                        <h3 className='headertext'>Youth Login</h3>
-                        <p>Find the right job with us</p>
-                        <hr className='hr'></hr>
+        <div>
+            <div>
+                <NavbarComp />
+            </div>
+
+            <div className='container_loginPage1'>
+                <div className='Login_container'>
+                    {LoginStatus && <Alert variant="warning" >{LoginMSG}</Alert>}
+                    <div classname='login'>
+                        <div className='header'>
+                            <h3 className='headertext'>Youth Login</h3>
+                            <p>Find the right job with us</p>
+                            <hr className='hr'></hr>
+                        </div>
+                        <Form>
+                            <input classname="login_box" type="email" onChange={(e) => { Setemail(e.target.value) }} placeholder="Email" style={{ marginTop: 10 }} required />
+                            <br></br>
+                            <input type="password" classname="login_box" placeholder="Password" onChange={(e) => { Setpassword(e.target.value) }} style={{ marginTop: 10 }} required />
+                            <p><Link to="../Login/ForgetPassword">Forget Password?</Link></p>
+
+                        </Form>
                     </div>
-                    <Form>
-                        <input classname="login_box" type="email" onChange={(e) => { Setemail(e.target.value) }} placeholder="Email" style={{ marginTop: 10 }} required />
-                        <br></br>
-                        <input type="password" classname="login_box" placeholder="Password" onChange={(e) => { Setpassword(e.target.value) }} style={{ marginTop: 10 }} required />
-                        <p><Link to="../Login/ForgetPassword">Forget Password?</Link></p>
-                        
-                    </Form>
+                    <button className='login_button' type="submit" onClick={login} style={{ marginTop: 20, marginBottom: 20, alignItems: 'center' }} >Login</button>
+                    <p>Not a Youth <Link to="../Register/YouthRegister">Sign up here</Link>?</p>
                 </div>
-                <button className='login_button' type="submit" onClick={login} style={{ marginTop: 20, marginBottom: 20, alignItems: 'center' }} >Login</button>
-                <p>Not a Youth <Link to="../Register/YouthRegister">Sign up here</Link>?</p>
             </div>
         </div>
 

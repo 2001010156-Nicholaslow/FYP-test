@@ -7,6 +7,7 @@ import { Typeahead } from 'react-bootstrap-typeahead'; // ES2015
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
+import NavbarComp from "./Components/NavBar/NavbarComp";
 
 
 function Home() {
@@ -33,6 +34,9 @@ function Home() {
   return (
     <div classNameName="Home_page">
       <div>
+      <div>
+      <NavbarComp />
+    </div>
         <div classNameName="search_banner">
           <h1 classNameName="home_title_text">Find your dream jobs with us!</h1>
           <p classNameName="home_title_text">Search by name or skills</p>
@@ -45,7 +49,7 @@ function Home() {
               options={jobData}
               placeholder="pick a job..."
               selected={multiSelections}
-              filterBy={['name', 'location', 'position_level', 'company_name', 'salary', 'qualification']}
+              filterBy={['name', 'location', 'position_level', 'company_name', 'salary', 'qualification', 'opp_id']}
 
             />
           </div>
@@ -82,6 +86,9 @@ function Home() {
                   </p>
                   <p>
                     Location: {x.location}
+                  </p>
+                  <p>
+                    salary: ${x.salary}
                   </p>
                   <Button
                     onClick={() => setOpen(!open)}
@@ -145,6 +152,9 @@ function Home() {
                   </p>
                   <p>
                   Location: {x.location}
+                  </p>
+                  <p>
+                    salary: ${x.salary}
                   </p>
                   {/* <a className="small fw-medium" href="">
                     Read More<i className="fa fa-arrow-right ms-2"></i>
