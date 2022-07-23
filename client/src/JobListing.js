@@ -93,6 +93,7 @@ function JobListing() {
                                     <div className="service-icon">
                                         <i className="fa fa-solar-panel fa-3x"></i>
                                     </div>
+                                    <div class="container p-5 my-5 bg-dark text-white">
                                     <h4 className="mb-3"> Name: {x.name}</h4>
                                     <p>
                                         Company Name: {x.company_name}
@@ -117,7 +118,8 @@ function JobListing() {
                                     >
                                         <Link to="/jobDiscription">View more</Link>
                                     </Button>
-                                    <Collapse in={open}>
+                                    </div>
+                                    {/* <Collapse in={open}>
                                         <div id="example-collapse-text">
                                             <p>
                                                 ID: {x.opp_id}
@@ -144,7 +146,7 @@ function JobListing() {
                                                 Job description: {x.description}
                                             </p>
                                         </div>
-                                    </Collapse>
+                                    </Collapse> */}
                                     <div>
                                     </div>
                                     <a>
@@ -163,6 +165,7 @@ function JobListing() {
                                     <div className="service-icon">
                                         <i className="fa fa-solar-panel fa-3x"></i>
                                     </div>
+                                    <div class="container p-5 my-5 bg-dark text-white">
                                     <h4 className="mb-3"> Name: {x.name}</h4>
                                     <p>
                                         Company Name: {x.company_name}
@@ -190,7 +193,8 @@ function JobListing() {
                                     >
                                         <Link to="/jobDiscription">View more</Link>
                                     </Button>
-                                    <Collapse in={open}>
+                                    </div>
+                                    {/* <Collapse in={open}>
                                         <div id="example-collapse-text">
                                             <p>
                                                 ID: {x.opp_id}
@@ -217,7 +221,7 @@ function JobListing() {
                                                 Job description: {x.description}
                                             </p>
                                         </div>
-                                    </Collapse>
+                                    </Collapse> */}
                                     <div>
                                     </div>
                                     <a>
@@ -286,7 +290,7 @@ function JobListing() {
                                     <Link to="/Register/youthRegister">Youth Register</Link>
                                 </li>
                                 <li>
-                                    <Link to="/">Job Listing</Link>
+                                    <Link to="/JobListing">Job Listing</Link>
                                 </li>
                                 <li>
                                     <Link to="/profile">My Profile</Link>
@@ -304,7 +308,7 @@ function JobListing() {
                             <div className="grid-item_home">
                                 <h2>Job Search</h2>
                                 <li>
-                                    <Link to="/">Job Listing</Link>
+                                    <Link to="/JobListing">Job Listing</Link>
                                 </li>
                             </div>
                             <div className="grid-item_home">
