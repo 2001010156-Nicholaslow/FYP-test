@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
 import Axios from "axios";
-import { Typeahead } from 'react-bootstrap-typeahead'; // ES2015
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import Button from 'react-bootstrap/Button';
-import Collapse from 'react-bootstrap/Collapse';
+
 import NavbarComp from "./Components/NavBar/NavbarComp";
 
 
 function Home() {
   const [jobData, setJobData] = useState([]);
-  const [multiSelections, setMultiSelections] = useState([]);
-  const [open, setOpen] = useState(false);
+
 
 
   useEffect(() => {
@@ -102,7 +99,7 @@ function Home() {
                   <Link to="/Register/youthRegister">Youth Register</Link>
                 </li>
                 <li>
-                  <Link to="/">Job Listing</Link>
+                  <Link to="/JobListing">Job Listing</Link>
                 </li>
                 <li>
                   <Link to="/profile">My Profile</Link>
@@ -120,7 +117,7 @@ function Home() {
               <div className="grid-item_home">
                 <h2>Job Search</h2>
                 <li>
-                  <Link to="/">Job Listing</Link>
+                  <Link to="/JobListing">Job Listing</Link>
                 </li>
               </div>
               <div className="grid-item_home">
