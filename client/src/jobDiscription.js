@@ -84,6 +84,7 @@ function JobDiscription() {
                     >
                         <Link to="/JobListing">Back</Link>
                     </Button>
+
                     <button onClick={save_to_fav} type="button" class="btn btn-warning">Add to Favorite</button>
 
                 </div>

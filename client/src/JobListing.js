@@ -57,7 +57,7 @@ function JobListing() {
         <div classNameName="search_banner">
           <h1 classNameName="home_title_text">Find your dream jobs with us!</h1>
           <p classNameName="home_title_text">Search by name or skills</p>
-          <div classNameName="search_bar">
+          <div class="col-sm-2" classNameName="search_bar">
             <Typeahead
               id="basic-typeahead-multiple"
               labelKey="name"
@@ -77,9 +77,9 @@ function JobListing() {
               ]}
             />
           </div>
-          <button
+          <button 
             type="button"
-            class="btn btn-warning"
+            class="btn col-sm-1 btn-warning"
             onClick={() => {
                 const datedata = [...jobData]
                 datedata.sort(function (a, b) {
