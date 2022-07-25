@@ -90,6 +90,37 @@ app.get("/admin_get_users", (req, res) => {
   });
 });
 
+// Get fav 
+app.get("/profile_get_fav", (req, res) => {
+  db.query("SELECT * FROM user_fav", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
+
+// User Fav
+app.post("/profile_save_fav", (req, res) => {
+  const user_id = req.body.user_id;
+  const opp_id = req.body.opp_id;
+
+  db.query("INSERT INTO user_fav (user_id, opp_id) VALUES (?,?)",
+  [
+    user_id,
+    opp_id
+  ],
+  (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
 app.put("/admin_update_users", (req, res) => {
   const full_name = req.body.full_name;
   const email = req.body.email;
