@@ -40,6 +40,14 @@ function Reports() {
         title: "partners_id",
         field: "partners_id",
       },
+      {
+        title: "status",
+        field: "status",
+      },
+      {
+        title: "created_at",
+        field: "created_at",
+      },
   ]);
 
   return (

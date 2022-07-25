@@ -18,6 +18,8 @@ function PartnerStats() {
     const token = localStorage.getItem("token");
     const [msg, Setmsg] = useState("");
     const [AllowUser, SetAllowUser] = useState(false);
+    const [Applied, SetApplied] = useState("");
+    const [Views, SetViews] = useState([]);
 
     const nav = useNavigate();
 
@@ -49,13 +51,27 @@ function PartnerStats() {
         } else {
             var decoded = jwt_decode(token);
 
+
             if (decoded.id == id) {
                 SetAllowUser(true)
-                Axios.post("http://localhost:3001/LoginCheckPartner", {
-                    user_id: id
+                
+                Axios.post("http://localhost:3001/get_status_view", {
+                    Pid: id
                 }).then((response) => {
-                    Setmsg(response.data);
+                    SetViews(response.data);
+                    console.log(response)
                 });
+
+                Axios.post("http://localhost:3001/get_status_count", {
+                    Pid: id
+                }).then((response) => {
+                    SetApplied(response.data);
+                    console.log(response);
+
+                });
+
+               
+                
             } else {
                 SetAllowUser(false)
                 localStorage.clear()
@@ -66,17 +82,17 @@ function PartnerStats() {
     }, [])
 
 
-    const [columns, setColumns] = useState([
+    const [columns] = useState([
         { title: "Job Name", field: "job_name" },
         {
-          title: "Views",
-          field: "views",
+            title: "Views",
+            field: "views",
         },
         {
-          title: "Applied",
-          field: "applied",
+            title: "Applied",
+            field: "applied",
         },
-      ]);
+    ]);
 
     const data = [
         { job_name: "Intern", views: "120", applied: "30" },
@@ -146,7 +162,7 @@ function PartnerStats() {
             </div>
             <div className='reviews_text' style={{ padding: 20, margin: 30 }}>
                 <div className='Review_header'>
-                    <h1>Youth Reviews</h1>
+                    <h1>Reviews</h1>
                 </div>
                 <div className='reviews_box_1'>
                     <div>
