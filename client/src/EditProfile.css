@@ -1,0 +1,30 @@
+.editProfile{
+    margin: auto;
+    max-width: 50rem;
+}
+
+.editProfileSection{
+    border: 2px solid #e7e7e7;
+    border-radius: 10px;
+    padding: 30px;
+    
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.editProfileSection h1{
+    font-size: 150%;
+}
+
+.editProfileRow{
+    font-size: 100%;
+
+    padding: 0.5rem;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.editProfileRow:hover{
+    background-color: #f4f3f3;
+}

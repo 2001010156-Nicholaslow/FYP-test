@@ -5,6 +5,7 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
 const JWTKey = "abc";
 const bcrypt = require("bcrypt"); //for hashing
 const { response } = require("express");
@@ -26,6 +27,7 @@ const db = mysql.createConnection({
 });
 
 app.use(express.json());
+app.use(fileUpload());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -158,14 +160,87 @@ app.put("/admin_update_users", (req, res) => {
   );
 });
 
-app.put("/admin_delete_users", (req, res) => {
-  const user_id = req.body.user_id;
-  console.log(req.body);
-  db.query("DELETE FROM users WHERE user_id =?", [user_id], (err, results) => {
+//Client - Profile
+app.get("/users/:id", (req, res) => {
+  const id = req.params.id
+
+  db.query("SELECT user_id, full_name, email, dob, gender, contact_number, user_bio, postalcode, education, country, citizenship, address FROM users WHERE user_id = '" + id + "'", (err, results) => {
     if (err) {
-      console.log(err);
+      res.status(400).send({ err: err });
+    } else {
+      if(results.length == 0) // not found
+        res.status(404).send();
+      res.status(200).send(results[0]);
+    }
+  });
+});
+
+//Client - PartnerProfile
+app.get("/partners/:id", (req, res) => {
+  const id = req.params.id
+
+  db.query("SELECT email, company_name, contact_name, contact_number, UEN, company_industry, company_overview FROM partners WHERE partners_id = '" + id + "'", (err, results) => {
+    if (err) {
+      res.status(400).send({ err: err });
+    } else {
+      if(results.length == 0) // not found
+        res.status(404).send();
+      res.status(200).send(results[0]);
+    }
+  });
+});
+
+//Client - Application
+app.get("/opportunity/:id", (req, res) => {
+  const id = req.params.id
+
+  db.query("SELECT * FROM opportunity WHERE opp_id='" + id + "'", (err, results) => {
+    if (err) {
       res.status(401).send({ err: err });
     } else {
+      if(results.length == 0) // not found
+        res.status(404).send();
+      res.status(200).send(results[0]);
+    }
+  });
+});
+
+app.post("/opportunity/:id/apply", (req,res) => {
+  const id = req.params.id;
+  const f = req.files;
+
+  if(f == null)
+    res.status(406).send("no file");
+
+  console.log(f.File.name);
+
+  db.query("INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
+    [
+      f.File.data,
+      "0",
+      "2",
+      id
+    ],
+    (err,result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send("okay");
+      }     
+    }
+  )
+});
+
+//Client - Review Application
+app.get("/opportunity/:id/application", (req,res) => {
+  const id = req.params.id
+
+  db.query("SELECT * FROM application INNER JOIN users ON application.user_id = users.user_id WHERE opp_id='" + id + "'", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      if(results.length == 0) // not found
+        res.status(404).send();
       res.status(200).send(results);
     }
   });
@@ -488,6 +563,7 @@ app.post("/YouthConfirmation", (req, res) => {
   const country = req.body.country;
   const postalcode = req.body.postalcode;
 
+  console.log("1");
   bcrypt.hash(password, saltRounds, (err, hash) => {
     //hashing
 
@@ -507,10 +583,13 @@ app.post("/YouthConfirmation", (req, res) => {
         postalcode,
       ],
       (err, result) => {
+        console.log("2");
         const Uid = result.insertId;
         const token = jwt.sign({ Uid }, "jwtSecret"); //remember to change secret! important
         const newUser = { email, fullname };
-        sendConfirmationEmail({ toUser: newUser, ConfirmationCode: token });
+        //sendConfirmationEmail({ toUser: newUser, ConfirmationCode: token });
+        console.log("3");
+        res.send(result);
       }
     );
   });
@@ -987,6 +1066,7 @@ const verifyJWT = (req, res, next) => {
         res.json({ auth: false, message: " Authentication Failed." });
       } else {
         req.userId = decoded.id;
+        
         next();
       }
     });
@@ -1033,6 +1113,54 @@ app.post("/get_status_view", (req, res) => {
   })
 })
 
+app.post("/users/save", verifyJWT, (req, res) => {
+  console.log(req.body);
+  console.log(req.userId);
+
+  var decoded = jwt.decode(req.headers["x-access-token"]);
+  console.log(decoded.Uid)
+
+  db.query("UPDATE users SET full_name=?, dob=?, gender=?, contact_number=?, user_bio=?, education=?, citizenship=?, address=?, country=?, postalcode=? WHERE user_id=?;", [
+    req.body.fullName,
+    req.body.dob,
+    req.body.gender,
+    req.body.number,
+    req.body.bio,
+    req.body.education,
+    req.body.citizenship,
+    req.body.address,
+    req.body.country,
+    req.body.postalcode,
+    decoded.Uid
+  ], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      res.status(200).send(result);
+    }
+  })
+});
+
+app.post("/partners/save", verifyJWT, (req, res) => {
+  var decoded = jwt.decode(req.headers["x-access-token"]);
+  console.log(decoded.id)
+
+  db.query("UPDATE partners SET company_name=?, contact_name=?, contact_number=?, UEN=?, company_industry=?, company_overview=? WHERE partners_id=?;", [
+    req.body.companyName,
+    req.body.contactName,
+    req.body.contactNumber,
+    req.body.UEN,
+    req.body.companyIndustry,
+    req.body.companyOverview,
+    decoded.id
+  ], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      res.status(200).send(result);
+    }
+  })
+});
 
 //client Login
 app.post("/ClientLogin", (req, res) => {
