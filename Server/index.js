@@ -713,6 +713,23 @@ app.post("/UserEmailVerify", (req, res) => {
   db.query("UPDATE users SET not_verify= ? WHERE user_id = ?", [verified, id]);
 });
 
+//Partner stars rating total
+app.post("/getstars", (req, res) => {
+  const Pid = req.body.Pid;
+  db.query(
+    "SELECT AVG(rating) as Average FROM fyp_db.review WHERE partners_id = ?;",
+    [Pid],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        let results = JSON.parse(JSON.stringify(result));
+        res.send(results);
+      }
+    }
+  );
+});
+
 
 //Partners Add job
 app.post("/JobAddFormADD", (req, res) => {
@@ -980,6 +997,42 @@ const verifyJWT = (req, res, next) => {
 app.get("/isAuth", verifyJWT, (req, res) => {
   res.send("You are authenticated.");
 });
+
+
+//get stats (count applied)
+app.post("/get_status_count1", (req, res) => {
+  const Pid = req.body.Pid;
+  const opp_id = req.body.result;
+  
+
+    db.query("SELECT count(*) AS Applied FROM application a, opportunity o WHERE a.opp_id = o.opp_id AND o.fk_partners_id = ? AND a.opp_id = ?;", [Pid, opp_id], (err,result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        let results = JSON.parse(JSON.stringify(result));
+        res.send(results)
+        return;
+
+      }
+      
+    })
+ 
+})
+
+//get stats (views)
+app.post("/get_status_view", (req, res) => {
+  const Pid = req.body.Pid;
+
+  db.query("SELECT o.name,o.opp_id,o.views FROM application a, opportunity o WHERE a.opp_id = o.opp_id AND o.fk_partners_id = ? GROUP BY o.opp_id;", [Pid], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      let results = JSON.parse(JSON.stringify(result));
+      res.send(results);
+    }
+  })
+})
+
 
 //client Login
 app.post("/ClientLogin", (req, res) => {

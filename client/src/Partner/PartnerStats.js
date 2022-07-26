@@ -17,9 +17,15 @@ function PartnerStats() {
     const id = localStorage.getItem("user_id");
     const token = localStorage.getItem("token");
     const [msg, Setmsg] = useState("");
+    const [ratingTotal, SetratingTotal] = useState(0);
+    const [numberRatings, SetnumberRatings] = useState(0);
+    const [TotalViews, SetTotalViews] = useState(0);
+    const [TotalApplied, SetTotalApplied] = useState(0);
     const [AllowUser, SetAllowUser] = useState(false);
-    const [Applied, SetApplied] = useState("");
+    const [Applied, SetApplied] = useState([]);
     const [Views, SetViews] = useState([]);
+    const [Data, setData] = useState([]);
+
 
     const nav = useNavigate();
 
@@ -44,34 +50,62 @@ function PartnerStats() {
         nav("../Login/PartnerLogin")
     }
 
+
+    /*const status_data = () => {
+        for (let i = 0; i < Views.length; i++) {
+            Data.push({ job_name: Views[i].name, views: Views[i].views, applied: Applied[i].Applied })
+        }
+        console.log(Data)
+
+    }*/
+
+    //const [tableData] = useState([]);
+
     useEffect(() => {
 
         if (id == "" || token == "" || id == undefined || token == undefined) {
             nav("../Login/PartnerLogin")
         } else {
             var decoded = jwt_decode(token);
-
+            Axios.post("http://localhost:3001/LoginCheckPartner", {
+                user_id: id
+            }).then((response) => {
+                Setmsg(response.data);
+            });
 
             if (decoded.id == id) {
                 SetAllowUser(true)
-                
                 Axios.post("http://localhost:3001/get_status_view", {
                     Pid: id
                 }).then((response) => {
                     SetViews(response.data);
-                    console.log(response)
+
+                    Axios.post("http://localhost:3001/getstars", {
+                        Pid: id
+                    }).then((response) => {
+                        SetratingTotal(response.data[0].Average);
+                        SetnumberRatings(response.data.length);
+                    });
+
+                    for (let i = 0; i < response.data.length; i++) {
+                        Axios.post("http://localhost:3001/get_status_count1", {
+                            Pid: id,
+                            result: response.data[i].opp_id
+                        }).then((res) => {
+                            Applied.push(res.data[0]);
+                            setData(Data => [...Data, { job_name: response.data[i].name, views: response.data[i].views, applied: Applied[i].Applied }]);
+                            //setData({ job_name: response.data[i].name, views: response.data[i].views, applied: Applied[i].Applied })
+                            //tableData.push([{ job_name: response.data[i].name, views: response.data[i].views, applied: Applied[i].Applied  }])
+                        });
+                    
+
+                        //SetTotalViews(parseInt(Data[i].views ) + TotalViews)
+                        console.log(TotalViews)
+                    }
+
                 });
 
-                Axios.post("http://localhost:3001/get_status_count", {
-                    Pid: id
-                }).then((response) => {
-                    SetApplied(response.data);
-                    console.log(response);
 
-                });
-
-               
-                
             } else {
                 SetAllowUser(false)
                 localStorage.clear()
@@ -94,12 +128,6 @@ function PartnerStats() {
         },
     ]);
 
-    const data = [
-        { job_name: "Intern", views: "120", applied: "30" },
-        { job_name: "Linux Admin", views: "80", applied: "7" },
-        { job_name: "Python developer", views: "302", applied: "47" },
-        { job_name: "Help Desk intern", views: "194", applied: "22" },
-    ];
 
     const options = {
         filterType: 'checkbox',
@@ -144,6 +172,13 @@ function PartnerStats() {
                         </div>
                         <div>
                             <h1>stats2</h1>
+                            <h2>{ratingTotal}</h2>
+                            <StarRatings
+                                rating={ratingTotal}
+                                starDimension="30px"
+                                starSpacing="10px"
+                            />
+                            <p>Number of Ratings: {numberRatings}</p>
                         </div>
                     </div>
                 </div>
@@ -154,7 +189,7 @@ function PartnerStats() {
                     <MaterialTable
                         icons={TableIcons}
                         title="Statistic"
-                        data={data}
+                        data={Data}
                         columns={columns}
                     />
 
