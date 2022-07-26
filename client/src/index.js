@@ -22,6 +22,9 @@ import JobListing from './JobListing';
 import PartnerFormEdit from './Partner/PartnerFormEdit';
 import Welcome2 from './Login/Welcome2';
 import Succes from './success';
+import ModalTest from './Application/ModalTest';
+import EditProfile from './EditProfile';
+import EditPartnerProfile from './EditPartnerProfile';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -43,6 +46,9 @@ ReactDOM.render(
           <Route path="/Partner/PartnerUserSearch" element={<PartnerUserSearch />}/>
           <Route path="/Partner/PartnerStats" element={<PartnerStats />}/>
           <Route path="/confirm/:ConfirmationCode" element={<Welcome2 />} />
+          <Route path="/ModalTest" element={<ModalTest />} />
+          <Route path="/Profile/Edit" element={<EditProfile />} />
+          <Route path="/Partner/PartnerProfile/Edit" element={<EditPartnerProfile />} />
 
         </Routes>
   </BrowserRouter>,document.getElementById("root")
