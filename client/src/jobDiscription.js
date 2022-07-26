@@ -17,9 +17,10 @@ function JobDiscription() {
     console.log("hello hello", jov);
     // setJobData(jov[0]);
     const jobData = jov[0];
-    const save_to_fav = () => {
-        Axios.post('http://localhost:3001/profile_get_fav',{
-            user_id: JSON.parse(localStorage.getItem("user_data")).result.user_id,
+    const save_to_fav = () => {    
+        //  console.log(JSON.parse(localStorage.getItem("user_data")).result[0].user_id) 
+        Axios.post('http://localhost:3001/profile_save_fav',{
+            user_id: JSON.parse(localStorage.getItem("user_data")).result[0].user_id,
             opp_id: jobData.opp_id
         }, {
 
