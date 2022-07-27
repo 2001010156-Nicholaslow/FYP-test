@@ -21,10 +21,11 @@ class Confirmation extends Component{
             country : this.props.inputValues.country,
             postalcode : this.props.inputValues.postalcode
           
-        }).then((Response) => {
-            
+        }).then((response) => {
+            window.location.href = "../success";
+        }, (error) => {
+            console.log(error);
         })
-        window.location.href = "../success";
     }
 
     back  = (e) => {

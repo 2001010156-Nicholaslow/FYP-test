@@ -1,10 +1,10 @@
 import React from "react";
-import NavbarComp from "./Components/NavBar/NavbarComp";
+import NavbarComp from "../Components/NavBar/NavbarComp";
 import Axios from "axios";
 
 
 
-function Profile(){
+function PartnersPage(){
     // useEffect(() => {
     //     Axios.get("http://localhost:3001/admin_get_opp", {
     //       headers: {
@@ -22,9 +22,9 @@ function Profile(){
             <div>
       <NavbarComp />
     </div>
-            <h1>This is the Profile page</h1>
+            <h1>PartnersPage</h1>
         </div>
     );
 }
 // delete all of this
-export default Profile;
+export default PartnersPage;

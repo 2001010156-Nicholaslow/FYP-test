@@ -6,8 +6,9 @@ import { BiHome } from "react-icons/bi";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useNavigate, Link } from 'react-router-dom';
 import Axios from "axios";
-import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, Nav, Navbar, NavDropdown, Form} from 'react-bootstrap';
 import './PartnerReview.css';
+import Searchable from 'react-searchable-dropdown';
 
 const PartnerReview = () => {
   const id = localStorage.getItem("user_id");
@@ -16,7 +17,10 @@ const PartnerReview = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
   const [msg, Setmsg] = useState("");
-  
+  const [filterby, Setfilterby] = useState("");
+  const [filterby2, Setfilterby2] = useState("");
+  const [Numsqlsearch, SetNumsqlsearch] = useState("");
+  const [sqlsearch, Setsqlsearch] = useState("");
 
   const token = localStorage.getItem("token");
   const [AllowUser, SetAllowUser] = useState(false);
@@ -27,26 +31,81 @@ const PartnerReview = () => {
     localStorage.clear()
     sessionStorage.clear()
     nav("../Login/PartnerLogin")
-}
-
-  const sortRatingbest = () => {
-    setRPosts([]);
-    setLoading(true);
-    Axios.post("http://localhost:3001/sort_partners_reviews1", { PID: id }).then((response) => {
-      setRPosts(response.data);
-      console.log(response.data)
-    });
-    setLoading(false);
   }
 
-  const sortRatingworst = () => {
-    setRPosts([]);
-    setLoading(true);
-    Axios.post("http://localhost:3001/sort_partners_reviews2", { PID: id }).then((response) => {
-      setRPosts(response.data);
-      console.log(response.data)
-    });
-    setLoading(false);
+  const refreshPage = () => {
+    window.location.reload(false);
+  }
+
+  const mysqlfilter = (e) => {
+    e.preventDefault()
+
+    //console.log(Numsqlsearch)
+    if (sqlsearch == "" && Numsqlsearch !== "") {
+      setRPosts([]);
+      
+      Axios.post("http://localhost:3001/sort_partners_reviews4", { PID: id, fillby: Numsqlsearch }).then((response) => {
+        setRPosts(response.data);
+        console.log(response.data)
+      });
+
+    } else if (Numsqlsearch == "" && sqlsearch !== "") {
+
+
+      setRPosts([]);
+      setLoading(true);
+      if (sqlsearch == "Newest") {
+
+        Axios.post("http://localhost:3001/sort_partners_reviews3", { PID: id }).then((response) => {
+          setRPosts(response.data);
+        });
+        setLoading(false);
+
+      } else if (sqlsearch == "Highest") {
+
+        Axios.post("http://localhost:3001/sort_partners_reviews1", { PID: id }).then((response) => {
+          setRPosts(response.data);
+        });
+        setLoading(false);
+
+      } else if (sqlsearch == "Lowest") {
+
+        Axios.post("http://localhost:3001/sort_partners_reviews2", { PID: id }).then((response) => {
+          setRPosts(response.data);
+        });
+        setLoading(false);
+
+      }
+
+    } else if (Numsqlsearch !== "" && sqlsearch == "Newest") {
+
+      setRPosts([]);
+      Axios.post("http://localhost:3001/sort_partners_reviews5", { PID: id, fillby: Numsqlsearch }).then((response) => {
+        setRPosts(response.data);
+      });
+
+
+    }else if(Numsqlsearch !== "" && sqlsearch == "Highest"){
+      setRPosts([]);
+      
+      Axios.post("http://localhost:3001/sort_partners_reviews4", { PID: id, fillby: Numsqlsearch }).then((response) => {
+        setRPosts(response.data);
+        console.log(response.data)
+      });
+
+    }else if(Numsqlsearch !== "" && sqlsearch == "Lowest"){
+      setRPosts([]);
+      
+      Axios.post("http://localhost:3001/sort_partners_reviews4", { PID: id, fillby: Numsqlsearch }).then((response) => {
+        setRPosts(response.data);
+        console.log(response.data)
+      });
+
+    }else {
+      //do nothing
+    }
+
+
   }
 
 
@@ -76,7 +135,6 @@ const PartnerReview = () => {
       setLoading(true);
       Axios.post("http://localhost:3001/partners_reviews", { PID: id }).then((response) => {
         setRPosts(response.data);
-        console.log(response.data)
       });
       setLoading(false);
     }
@@ -112,74 +170,94 @@ const PartnerReview = () => {
           </NavDropdown>
         </Navbar.Collapse>
       </Navbar>
+
       <div className='container mt-5'>
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
-            Sort By:
-          </Dropdown.Toggle>
 
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={sortRatingbest}>Newest</Dropdown.Item>
-            <Dropdown.Item onClick={sortRatingworst}>Oldest</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        <div className='reviews_text' style={{ padding: 20, margin: 30, width: "100%", maxWidth: 800 }}>
+          <h1 className='text-primary mb-3'>Reviews</h1>
+          <div className='total_chart_t'>
+            
+                <Searchable
+                  value=""
+                  placeholder="Filter By Rating" // by default "Search"
+                  notFoundText="No result found" // by default "No result found"
+                  noInput
+                  options={[
+                     {
+                      value: '5',
+                      label: '5 Stars'
+                    }, {
+                      value: '4',
+                      label: '4 Stars'
+                    }, {
+                      value: '3',
+                      label: '3 Stars'
+                    }, {
+                      value: '2',
+                      label: '2 Stars'
+                    }, {
+                      value: '1',
+                      label: '1 Stars'
+                    }
+                  ]}
+                  onSelect={(e) => {
+                    SetNumsqlsearch(e)
+                    console.log(e)
+                  }}
+                  listMaxHeight={140} //by default 140
+                />
+             
+                
+                <Searchable
+                  value=""
+                  placeholder="Sorting" // by default "Search"
+                  notFoundText="No result found" // by default "No result found"
+                  noInput
+                  options={[
+                  {
+                    value: 'Newest',
+                    label: 'Most Recent'
+                  }, {
+                    value: 'Highest',
+                    label: 'Highest Rating'
+                  }, {
+                    value: 'Lowest',
+                    label: 'Lowest Rating'
+                  },
+                  ]}
+                  onSelect={(e) => {
 
-        <h1 className='text-primary mb-3'>Reviews</h1>
-        <Reviewspost Rposts={currentPosts} loading={loading} />
-        <Reviewspage
-          postsPerPage={postsPerPage}
-          totalPosts={Rposts.length}
-          paginate={paginate}
-        />
+                    Setsqlsearch(e)
+                    
+                  //console.log(e)
+                  }}
+                  listMaxHeight={140} //by default 140
+                />
+              
+
+              <Button variant="primary" className='buttonmysqlfilter' onClick={mysqlfilter}>filter</Button>
+              <button onClick={refreshPage}>Reset Filters</button>
+          
+
+
+          </div>
+
+        </div>
+
+        <div className='reviews_text' style={{ padding: 20, margin: 30, width: "100%", maxWidth: 800 }}>
+          <Reviewspost Rposts={currentPosts} loading={loading} />
+          <Reviewspage
+            postsPerPage={postsPerPage}
+            totalPosts={Rposts.length}
+            paginate={paginate}
+          />
+
+        </div>
+
+
       </div>
     </div>
   );
 };
 
 export default PartnerReview;
-
-/*
-import React, { useState, useEffect } from "react";
-import LineChart from "../Components/LineChart";
-import Axios from "axios";
-import moment from "moment";
-
-function PartnerReview() {
-  const [userData, setUserData] = useState();
-  useEffect(() => {
-    Axios.get("http://localhost:3001/getUserCreated1").then((response) => {
-      console.log(response.data);
-      let payload = response.data;
-      setUserData({
-        labels: payload.map((data) => moment(data.date).format("YYYY/MM/DD")),
-        datasets: [
-          {
-            label: "Users Gained",
-            data: payload.map((data) => data.count),
-            backgroundColor: [
-              "rgba(75,192,192,1)",
-              "#ecf0f1",
-              "#50AF95",
-              "#f3ba2f",
-              "#2a71d0",
-            ],
-            borderColor: "black",
-            borderWidth: 2,
-          },
-        ],
-      });
-      console.log(moment().format("YYYY/MM/DD"));
-    });
-  }, []);
-
-  return (
-    <div className="App">
-      <div style={{ width: 700 }}>
-        <LineChart chartData={userData} />
-      </div>
-    </div>
-  );
-}
-
-export default PartnerReview;
-*/
