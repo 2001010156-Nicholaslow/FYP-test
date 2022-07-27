@@ -1,4 +1,4 @@
-body {
+#MainPage_body_1 {
     background-color: #282c34;
     padding: 40px;
     font-family: Arial;
@@ -31,11 +31,7 @@ h1 {
 
 }
 
-h2 {
-    color: white;
 
-
-}
 
 h2:hover {
     color: red;

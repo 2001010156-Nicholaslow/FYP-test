@@ -9,7 +9,7 @@ function removeSession() {
 export default function MainPage() {
   return (
     <section>
-      <div>
+      <div className="MainPage_body_1">
         <h1>Main Page </h1>
 
         <h2>
