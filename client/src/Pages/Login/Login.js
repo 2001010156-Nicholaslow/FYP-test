@@ -38,36 +38,38 @@ export default function Login() {
   }
 
   return (
-    <Form onSubmit={handleSubmit} className="Form">
-      <h3>
-        <img src={logo} alt="Logo" />
-      </h3>
-      <h1>Admin Panel</h1>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-          placeholder="Enter email"
-          required
-        />
-        <Form.Text className="text-muted"></Form.Text>
-      </Form.Group>
+    <div className="MainPage_body_1">
+      <Form onSubmit={handleSubmit} className="Form">
+        <h3>
+          <img src={logo} alt="Logo" />
+        </h3>
+        <h1>Admin Panel</h1>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder="Enter email"
+            required
+          />
+          <Form.Text className="text-muted"></Form.Text>
+        </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          placeholder="Password"
-          required
-        />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
-    </Form>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder="Password"
+            required
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </Form>
+    </div>
   );
 }

@@ -72,48 +72,50 @@ function Opportunities() {
     },
   ]);
   return (
-    <MaterialTable
-      icons={TableIcons}
-      title=" Manage Opportunities"
-      columns={columns}
-      data={data}
-      options={{
-        filtering: true,
-      }}
-      editable={{
-        onRowUpdate: (newData, oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataUpdate = [...data];
-              const index = oldData.tableData.id;
-              dataUpdate[index] = newData;
+    <div className="MainPage_body_1">
+      <MaterialTable
+        icons={TableIcons}
+        title=" Manage Opportunities"
+        columns={columns}
+        data={data}
+        options={{
+          filtering: true,
+        }}
+        editable={{
+          onRowUpdate: (newData, oldData) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                const dataUpdate = [...data];
+                const index = oldData.tableData.id;
+                dataUpdate[index] = newData;
 
-              setData([...dataUpdate]);
-              updateopp(
-                newData.opp_id,
-                newData.name,
-                newData.position_level,
-                newData.salary,
-                newData.job_scope,
-                newData.description,
-                newData.additional_requirements
-              );
-              resolve();
-            }, 1000);
-          }),
-        onRowDelete: (oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataDelete = [...data];
-              const index = oldData.tableData.id;
-              deleteopp(oldData.opp_id);
-              dataDelete.splice(index, 1);
-              setData([...dataDelete]);
-              resolve();
-            }, 1000);
-          }),
-      }}
-    />
+                setData([...dataUpdate]);
+                updateopp(
+                  newData.opp_id,
+                  newData.name,
+                  newData.position_level,
+                  newData.salary,
+                  newData.job_scope,
+                  newData.description,
+                  newData.additional_requirements
+                );
+                resolve();
+              }, 1000);
+            }),
+          onRowDelete: (oldData) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                const dataDelete = [...data];
+                const index = oldData.tableData.id;
+                deleteopp(oldData.opp_id);
+                dataDelete.splice(index, 1);
+                setData([...dataDelete]);
+                resolve();
+              }, 1000);
+            }),
+        }}
+      />
+    </div>
   );
 }
 

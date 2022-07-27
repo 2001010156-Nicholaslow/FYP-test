@@ -45,7 +45,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="MainPage_body_1">
       <div style={{ width: 700 }}>
         <LineChart chartData={userData} />
         <LineChart chartData={PartnerData} />

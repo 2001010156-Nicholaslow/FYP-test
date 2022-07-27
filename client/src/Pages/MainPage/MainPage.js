@@ -10,12 +10,10 @@ export default function MainPage() {
   return (
     <section>
       <div className="MainPage_body_1">
-        <h1>Main Page </h1>
+        <div className="MainPage_h1">Main Page </div>
 
-        <h2>
+        <div className="MainPage_h2">
           <Link to="/admin/users">Manage Users</Link>
-          <br></br>
-          <Link to="/admin/partners">Manage Partner Accounts </Link>
           <br></br>
           <Link to="/admin/partners">Manage Partner Accounts </Link>
           <br></br>
@@ -25,10 +23,12 @@ export default function MainPage() {
           <br></br>
           <Link to="/admin/stats">View Statistics</Link>
           <br></br>
+          <Link to="/admin/reports">View Reports</Link>
+          <br></br>
           <Link to="/admin/login" onClick={removeSession}>
             Logout
           </Link>
-        </h2>
+        </div>
         <h3>
           <img src={logo} alt="Logo" />
         </h3>

@@ -1,15 +1,21 @@
-#MainPage_body_1 {
+.MainPage_body_1 {
     background-color: #282c34;
     padding: 40px;
     font-family: Arial;
     text-align: center;
-
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
 }
 
-h2 {
-    animation-duration: 3s;
+.MainPage_h2 {
+    animation-duration: 2s;
     animation-name: slidein;
     color: white;
+    font-family: Arial;
+    font-size: 2em;
 }
 
 @keyframes slidein {
@@ -24,15 +30,8 @@ h2 {
     }
 }
 
-h1 {
+.MainPage_h1 {
     color: white;
     text-decoration: underline;
-
-
-}
-
-
-
-h2:hover {
-    color: red;
+    font-size: 4em;
 }
