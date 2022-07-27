@@ -23,15 +23,13 @@ function PartnerLogin() {
         localStorage.clear()
         sessionStorage.clear()
         if (
-            !validator.isEmpty(email) &
-            !validator.isEmpty(password) &
             email === "admin" & 
             password === "admin"
 
-        ) {
+        ) { 
             SetLoginMSG("admin login")
             SetLoginStatus(true)
-            //nav("")  //change to admin login page
+            nav("../admin/login") 
 
 
         } else if(!validator.isEmpty(email) & !validator.isEmpty(password) ){
