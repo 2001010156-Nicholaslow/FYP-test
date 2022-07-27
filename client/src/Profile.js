@@ -92,7 +92,7 @@ function Profile(){
                         
                         >
                             
-                          <Link to="/jobDiscription">Delete Favorite</Link>
+                          <Link to="/JobListing">Delete Favorite</Link>
                         </Button>
                       </div>
                       {/* <Collapse in={open}>
