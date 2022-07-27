@@ -504,6 +504,49 @@ app.get("/getPartnerCreated1", (req, res) => {
   );
 });
 
+//stats for partner side
+app.get("/getPartnerViews", (req, res) => {
+  db.query(
+    "SELECT views AS count,CAST(Curdate() as Date) AS date FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) \
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 1 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 1 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 2 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 2 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 3 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 3 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 4 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 4 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 5 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 5 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 6 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 6 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 7 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 7 day",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
 // function getCustomerCount( callback ){
 //   var count = 0;
 //   db.transaction(function(tx) {
@@ -792,11 +835,27 @@ app.post("/UserEmailVerify", (req, res) => {
   db.query("UPDATE users SET not_verify= ? WHERE user_id = ?", [verified, id]);
 });
 
-//Partner stars rating total
+//Partner stars rating
 app.post("/getstars", (req, res) => {
   const Pid = req.body.Pid;
   db.query(
-    "SELECT AVG(rating) as Average FROM fyp_db.review WHERE partners_id = ?;",
+    "SELECT AVG(rating) as Average FROM review WHERE partners_id = ?;",
+    [Pid],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        let results = JSON.parse(JSON.stringify(result));
+        res.send(results);
+      }
+    }
+  );
+});
+//Partner stars rating total
+app.post("/getstarsNum", (req, res) => {
+  const Pid = req.body.Pid;
+  db.query(
+    "SELECT count(rating) as length FROM review WHERE partners_id = ?;",
     [Pid],
     (err, result) => {
       if (err) {
@@ -1080,30 +1139,28 @@ app.get("/isAuth", verifyJWT, (req, res) => {
 
 
 //get stats (count applied)
-app.post("/get_status_count1", (req, res) => {
+
+app.post("/get_status_count2", (req, res) => {
   const Pid = req.body.Pid;
   const opp_id = req.body.result;
   
-
-    db.query("SELECT count(*) AS Applied FROM application a, opportunity o WHERE a.opp_id = o.opp_id AND o.fk_partners_id = ? AND a.opp_id = ?;", [Pid, opp_id], (err,result) => {
+    db.query("UPDATE opportunity SET applied = (SELECT count(*) AS ApplyTotal FROM (SELECT count(*) AS NumApply FROM application a, opportunity o WHERE o.fk_partners_id = ? AND a.opp_id = ?  GROUP BY a.id_application) AS FOO) WHERE opp_id = ?;", [Pid, opp_id, opp_id], (err,result) => {
       if (err) {
         res.status(401).send({ err: err });
       } else {
         let results = JSON.parse(JSON.stringify(result));
-        res.send(results)
+        //res.send(result)
         return;
-
       }
-      
     })
- 
 })
+
 
 //get stats (views)
 app.post("/get_status_view", (req, res) => {
   const Pid = req.body.Pid;
 
-  db.query("SELECT o.name,o.opp_id,o.views FROM application a, opportunity o WHERE a.opp_id = o.opp_id AND o.fk_partners_id = ? GROUP BY o.opp_id;", [Pid], (err, result) => {
+  db.query("SELECT o.name,o.opp_id,o.views FROM application a, opportunity o WHERE o.fk_partners_id = ? GROUP BY o.opp_id;", [Pid], (err, result) => {
     if (err) {
       res.send({ err: err });
     } else {
@@ -1112,6 +1169,53 @@ app.post("/get_status_view", (req, res) => {
     }
   })
 })
+
+
+//stats page partner
+app.post("/get_status_view_final", (req, res) => {
+  const Pid = req.body.Pid;
+
+  db.query("SELECT opp_id, views, name, applied, fk_partners_id FROM opportunity WHERE fk_partners_id = ?;", [Pid], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      let results = JSON.parse(JSON.stringify(result));
+      res.send(results);
+      //console.log(result)
+
+    }
+  })
+})
+
+// stats total views
+app.post("/get_total_views", (req, res) => {
+  const Pid = req.body.Pid;
+
+  db.query("SELECT SUM(views) AS Vtotal FROM opportunity WHERE fk_partners_id = ?;", [Pid], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      let results = JSON.parse(JSON.stringify(result));
+      res.send(results);
+    }
+  })
+})
+
+// stats total applied
+app.post("/get_total_applied", (req, res) => {
+  const Pid = req.body.Pid;
+
+  db.query("SELECT SUM(applied) AS Atotal FROM opportunity WHERE fk_partners_id = ?;", [Pid], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      let results = JSON.parse(JSON.stringify(result));
+      res.send(results);
+    }
+  })
+})
+
+
 
 app.post("/users/save", verifyJWT, (req, res) => {
   console.log(req.body);
@@ -1209,6 +1313,22 @@ app.post("/partners_reviews", (req, res) => {
   );
 });
 
+//get reviews for partners
+app.post("/partners_reviews_top", (req, res) => {
+  const PID = req.body.PID;
+  db.query(
+    "SELECT * FROM review WHERE partners_id = ? ORDER BY created_at desc LIMIT 3;",
+    [PID],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
 //get reviews for partners_rating_asec
 app.post("/sort_partners_reviews1", (req, res) => {
   const PID = req.body.PID;
@@ -1231,6 +1351,58 @@ app.post("/sort_partners_reviews2", (req, res) => {
   db.query(
     "SELECT * FROM review WHERE partners_id = ? ORDER BY rating ASC;",
     [PID],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//get reviews for sort date
+app.post("/sort_partners_reviews3", (req, res) => {
+  const PID = req.body.PID;
+  db.query(
+    "SELECT * FROM review WHERE partners_id = ? ORDER BY created_at desc;",
+    [PID],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//get reviews for sort date
+app.post("/sort_partners_reviews4", (req, res) => {
+  const PID = req.body.PID;
+  const filterby = req.body.fillby;
+  console.log(filterby)
+  db.query(
+    "SELECT * FROM review WHERE partners_id = ? and rating = ?;",
+    [PID,filterby],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//get reviews for sort date
+app.post("/sort_partners_reviews5", (req, res) => {
+  const PID = req.body.PID;
+  const filterby = req.body.fillby;
+  console.log(filterby)
+  db.query(
+    "SELECT * FROM review WHERE partners_id = ? and rating = ? ORDER BY created_at desc;",
+    [PID,filterby],
     (err, results) => {
       if (err) {
         res.status(401).send({ err: err });
