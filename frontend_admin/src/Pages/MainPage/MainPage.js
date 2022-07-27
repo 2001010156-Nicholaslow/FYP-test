@@ -11,7 +11,6 @@ export default function MainPage() {
     <section>
       <div>
         <h1>Main Page </h1>
-        <p>Hello</p>
 
         <h2>
           <Link to="/admin/users">Manage Users</Link>

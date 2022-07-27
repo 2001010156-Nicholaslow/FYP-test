@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
 import Axios from "axios";
 import { decodeToken } from "react-jwt";
+import logo from "../../Components/cyc.png";
 export default function Login() {
   const [email, setEmail] = useState("Isaac@gmail.com");
   const [password, setPassword] = useState("password");
@@ -38,6 +39,9 @@ export default function Login() {
 
   return (
     <Form onSubmit={handleSubmit} className="Form">
+      <h3>
+        <img src={logo} alt="Logo" />
+      </h3>
       <h1>Admin Panel</h1>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>

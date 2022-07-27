@@ -1,0 +1,42 @@
+body {
+    background-color: #282c34;
+    padding: 40px;
+    font-family: Arial;
+    text-align: center;
+
+}
+
+h2 {
+    animation-duration: 3s;
+    animation-name: slidein;
+    color: white;
+}
+
+@keyframes slidein {
+    from {
+        margin-left: 100%;
+        width: 300%;
+    }
+
+    to {
+        margin-left: 0%;
+        width: 100%;
+    }
+}
+
+h1 {
+    color: white;
+    text-decoration: underline;
+
+
+}
+
+h2 {
+    color: white;
+
+
+}
+
+h2:hover {
+    color: red;
+}

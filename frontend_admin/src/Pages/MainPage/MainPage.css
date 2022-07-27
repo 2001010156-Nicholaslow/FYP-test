@@ -6,7 +6,7 @@ body {
 
 }
 
-h2{
+h2 {
     animation-duration: 3s;
     animation-name: slidein;
     color: white;
@@ -26,6 +26,7 @@ h2{
 
 h1 {
     color: white;
+    text-decoration: underline;
 
 
 }
@@ -33,6 +34,9 @@ h1 {
 h2 {
     color: white;
 
+
 }
 
-h3 {}
+h2:hover {
+    color: red;
+}
