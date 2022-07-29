@@ -14,7 +14,7 @@ function Partners() {
     Axios.put("http://localhost:3001/admin_verify_partner", {
       partner_id: partner_id,
     }).then((response) => {
-      alert("Verified");
+      alert("Disabled");
       setReload(!reload);
     });
   };
@@ -83,11 +83,11 @@ function Partners() {
       title: "Status",
       field: "verified",
       filtering: false,
-      lookup: { 0: "Not Verified", 1: "Verified" },
+      lookup: { 0: "Enabled", 1: "Disable" },
       editable: "never",
     },
     {
-      title: "Verify",
+      title: "Disable",
       field: "partners_id",
       filtering: false,
       editable: "never",
@@ -99,7 +99,7 @@ function Partners() {
               verifyPartners(rowData.partners_id);
             }}
           >
-            Verify
+            Disable
           </button>
         );
       },
