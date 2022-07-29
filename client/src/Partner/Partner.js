@@ -63,7 +63,7 @@ function Partner() {
                 </Nav>
                 <Navbar.Collapse className="justify-content-end">
                     <NavDropdown title={"Sign in as : " + msg} id="basic-nav-dropdown">
-                        <NavDropdown.Item href="./PartnerProfile">Edit profile</NavDropdown.Item>
+                        <NavDropdown.Item href="./EditPartnerProfile">Edit profile</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={Exit}>Log Out</NavDropdown.Item>
                     </NavDropdown>

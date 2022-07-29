@@ -87,7 +87,7 @@ function PartnerHome() {
           <br></br>
           <p className="text_alertmsg">
             {AlertMSG} To complete your profile{" "}
-            <a href="../Partner/PartnerProfile">Click Here</a>
+            <a href="../Partner/EditPartnerProfile">Click Here</a>
           </p>
         </Alert>
       )}
@@ -137,7 +137,7 @@ function PartnerHome() {
               </div>
               <div className="Profile_Edit">
                 <div className="icon">
-                  <Link to="../Partner/PartnerProfile" style={{ padding: 10 }}>
+                  <Link to="../Partner/EditPartnerProfile" style={{ padding: 10 }}>
                     <button type="button">
                       <div className="image_icon">
                         <BiUser />

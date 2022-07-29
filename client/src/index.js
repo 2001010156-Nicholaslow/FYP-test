@@ -20,7 +20,6 @@ import PartnerRegister from "./Register/PartnerRegister";
 import Profile from "./Profile";
 import YouthRegister from "./Register/YouthRegister"; //import from the js file
 import Partner from "./Partner/Partner";
-import PartnerProfile from "./Partner/PartnerProfile";
 import PartnerForm from "./Partner/PartnerForm";
 import PartnerJobAd from "./Partner/PartnerJobAd";
 import PartnerStats from "./Partner/PartnerStats";
@@ -46,6 +45,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./index.scss";
 import PartnersPage from "./company/PartnersPage";
 import PartnersSearch from "./company/PartnersSearch";
+import EditPartnerProfile from "./Partner/EditPartnerProfile";
 
 const Requiredlogin = () => {
   return localStorage.getItem("token") ? (
@@ -73,7 +73,6 @@ ReactDOM.render(
       <Route path="/JobListing" element={<JobListing />} />
       <Route path="/Register/youthRegister" element={<YouthRegister />} />
       <Route path="/Partner/Partner/" element={<Partner />} />
-      <Route path="/Partner/PartnerProfile" element={<PartnerProfile />} />
       <Route path="/Partner/PartnerForm" element={<PartnerForm />} />
       <Route path="/Partner/PartnerFormEdit" element={<PartnerFormEdit />} />
       <Route path="/Partner/PartnerStats" element={<PartnerStats />} />
@@ -82,6 +81,7 @@ ReactDOM.render(
       <Route path="/company/PartnersPage" element={<PartnersPage />} />
       <Route path="/company/PartnersSearch" element={<PartnersSearch />} />
       <Route path="/jobDiscription" element={<JobDiscription />} />
+      <Route path="/Partner/EditPartnerProfile" element={< EditPartnerProfile/>} />
       <Route
         path="/Partner/PartnerUserSearch"
         element={<PartnerUserSearch />}

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import NavbarComp from "../Components/NavBar/NavbarComp";
 import Axios from "axios";
 import './PartnersSearch.css';
-import { Form } from "react-bootstrap";
+import { BiSearchAlt } from "react-icons/bi";
+import { Form} from "react-bootstrap";
+import { Link, useNavigate } from 'react-router-dom';
 
 function PartnersSearch() {
 
@@ -16,40 +18,25 @@ function PartnersSearch() {
                 <NavbarComp />
             </div>
 
-            <div className="search_partners_home">
-                <p>Search for Partners</p>
+            <div style={{ marginTop: 80 }}>
+                <div className="search_banner">
+                    <p className="home_title_text">Search by company name</p>
+                    <div className="search_bar_1">
+                        <input type="text" placeholder="Search partners" className="text_search" />
+                        <button type="button" className="button_search_home">
+                            <div className="image_icon_home">
+                                <BiSearchAlt />
+                            </div>
+                        </button>
+                    </div>
+                    <small id="passwordHelpInline" class="text-muted" style={{ color: "black" }}>
+                        <Link to="../Partner/PartnerFormEdit" >Edit</Link>
+                    </small>
 
-                <Form>
-                    <Form.Group controlId="searchValue" style={{ marginTop: 30 }} >
-                        <Form.Label className="label">Search</Form.Label>
-                        <Form.Control
-                            style={{ width: 380, color: "black" }}
-                            type="text"
-                            value={searchValue}
-                            name="searchValue"
-                            required
-                            onChange={(e) => { SetsearchValue(e.target.value) }}
-                        />
-
-                        <Form.Control
-                            
-                            type="radio"
-                            value="Option 1"
-                            name="searchUEN"
-                            required
-                            id="searchUEN"
-                            onChange={(e) => { SetsearchUEN(e.target.value) }}
-                        />
-                        <Form.Label className="label">Search</Form.Label>
-                       
-
-
-                    </Form.Group>
-
-                </Form>
+                </div>
 
             </div>
-            <h1>This is the ParnterSEARCH page</h1>
+
         </div>
     );
 }
