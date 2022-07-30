@@ -23,13 +23,26 @@ function JobDetails() {
     const [jobQ, SetjobQ] = useState("");
     const [jobA, SetjobA] = useState("");
     const [jobDate, SetjobDate] = useState("");
+    const [jobPK, SetjobPK] = useState("");
 
     useEffect(() => {
         Axios.post('http://localhost:3001/getjobdetails', {
             opp_id: UDetails
         }).then((response) => {
             SetjobName(response.data[0].name)
-            console.log(response);
+            SetjobCName(response.data[0].company_name)
+            SetPLevel(response.data[0].position_level)
+            SetjobY(response.data[0].required_yrs)
+            SetjobScope(response.data[0].job_scope)
+            SetjobIndustry(response.data[0].industry)
+            SetjobDesc(response.data[0].description)
+            SetjobPK(response.data[0].fk_partners_id)
+            SetjobLoc(response.data[0].location)
+            SetjobSalary(response.data[0].salary)
+            SetjobQ(response.data[0].qualification)
+            SetjobA(response.data[0].additional_requirements)
+            SetjobDate(response.data[0].created_at)
+            SetjobPK(response.data[0].fk_partners_id)
         });
     },[]);
     return (
@@ -37,10 +50,11 @@ function JobDetails() {
             <div>
                 <NavbarComp />
             </div>
-            <div class="container p-5 my-5 bg-dark  text-white">
-                <Button variant="warning">
-                    <Link to="../company/PartnersPage" state={UDetails}>Back</Link>
+            <Button variant="warning">
+                    <Link to="../company/PartnersPage" state={jobPK}>Back</Link>
                 </Button>
+            <div class="container p-5 my-5 bg-dark  text-white">
+               
                 <h4 className="mb-3"> Name: {jobName}</h4>
                 <p>
                     Company Name: {jobCName}
