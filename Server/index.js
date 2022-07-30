@@ -116,6 +116,22 @@ app.get("/profile_get_fav", (req, res) => {
   });
 });
 
+// fav delete
+app.post("/profile_delete_fav", (req, res) => {
+  const idFav = req.body.idFav;
+  const query = `DELETE FROM user_fav WHERE idFav = ${idFav}`
+  
+    db.query(query,
+  (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
+
 // User Fav
 app.post("/profile_save_fav", (req, res) => {
   const user_id = req.body.user_id;
