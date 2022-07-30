@@ -164,7 +164,7 @@ const PartnerReview = () => {
         </Nav>
         <Navbar.Collapse className="justify-content-end">
           <NavDropdown title={"Sign in as : " + msg} id="basic-nav-dropdown">
-            <NavDropdown.Item href="./PartnerProfile">Edit profile</NavDropdown.Item>
+            <NavDropdown.Item href="./EditPartnerProfile">Edit profile</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={Exit}>Log Out</NavDropdown.Item>
           </NavDropdown>
@@ -176,8 +176,7 @@ const PartnerReview = () => {
         <div className='reviews_text' style={{ padding: 20, margin: 30, width: "100%", maxWidth: 800 }}>
           <h1 className='text-primary mb-3'>Reviews</h1>
           <div className='total_chart_t'>
-            <Form>
-              <Form.Group>
+            
                 <Searchable
                   value=""
                   placeholder="Filter By Rating" // by default "Search"
@@ -207,9 +206,7 @@ const PartnerReview = () => {
                   }}
                   listMaxHeight={140} //by default 140
                 />
-              </Form.Group>
-
-              <Form.Group>
+             
                 
                 <Searchable
                   value=""
@@ -236,11 +233,11 @@ const PartnerReview = () => {
                   }}
                   listMaxHeight={140} //by default 140
                 />
-              </Form.Group>
+              
 
               <Button variant="primary" className='buttonmysqlfilter' onClick={mysqlfilter}>filter</Button>
               <button onClick={refreshPage}>Reset Filters</button>
-            </Form>
+          
 
 
           </div>
