@@ -46,6 +46,7 @@ import "./index.scss";
 import PartnersPage from "./company/PartnersPage";
 import PartnersSearch from "./company/PartnersSearch";
 import EditPartnerProfile from "./Partner/EditPartnerProfile";
+import JobDetails from "./company/JobDetails";
 
 const Requiredlogin = () => {
   return localStorage.getItem("token") ? (
@@ -80,6 +81,7 @@ ReactDOM.render(
       <Route path="/Partner/PartnerJobAd" element={<PartnerJobAd />} />
       <Route path="/company/PartnersPage" element={<PartnersPage />} />
       <Route path="/company/PartnersSearch" element={<PartnersSearch />} />
+      <Route path="/company/JobDetails" element={<JobDetails />} />
       <Route path="/jobDiscription" element={<JobDiscription />} />
       <Route path="/Partner/EditPartnerProfile" element={< EditPartnerProfile/>} />
       <Route

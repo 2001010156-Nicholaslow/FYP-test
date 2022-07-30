@@ -6,7 +6,7 @@ import { BiHome } from "react-icons/bi";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useNavigate, Link } from 'react-router-dom';
 import Axios from "axios";
-import { Button, Nav, Navbar, NavDropdown, Form} from 'react-bootstrap';
+import { Button, Nav, Navbar, NavDropdown, Form } from 'react-bootstrap';
 import './PartnerReview.css';
 import Searchable from 'react-searchable-dropdown';
 
@@ -34,7 +34,7 @@ const PartnerReview = () => {
   }
 
   const refreshPage = () => {
-    window.location.reload(false);
+    nav(("../Partner/PartnerStats"))
   }
 
   const mysqlfilter = (e) => {
@@ -43,7 +43,7 @@ const PartnerReview = () => {
     //console.log(Numsqlsearch)
     if (sqlsearch == "" && Numsqlsearch !== "") {
       setRPosts([]);
-      
+
       Axios.post("http://localhost:3001/sort_partners_reviews4", { PID: id, fillby: Numsqlsearch }).then((response) => {
         setRPosts(response.data);
         console.log(response.data)
@@ -85,23 +85,23 @@ const PartnerReview = () => {
       });
 
 
-    }else if(Numsqlsearch !== "" && sqlsearch == "Highest"){
+    } else if (Numsqlsearch !== "" && sqlsearch == "Highest") {
       setRPosts([]);
-      
+
       Axios.post("http://localhost:3001/sort_partners_reviews4", { PID: id, fillby: Numsqlsearch }).then((response) => {
         setRPosts(response.data);
         console.log(response.data)
       });
 
-    }else if(Numsqlsearch !== "" && sqlsearch == "Lowest"){
+    } else if (Numsqlsearch !== "" && sqlsearch == "Lowest") {
       setRPosts([]);
-      
+
       Axios.post("http://localhost:3001/sort_partners_reviews4", { PID: id, fillby: Numsqlsearch }).then((response) => {
         setRPosts(response.data);
         console.log(response.data)
       });
 
-    }else {
+    } else {
       //do nothing
     }
 
@@ -172,76 +172,76 @@ const PartnerReview = () => {
       </Navbar>
 
       <div className='container mt-5'>
+      <p>
+            <Button onClick={refreshPage}>Back</Button>
+          </p>
 
         <div className='reviews_text' style={{ padding: 20, margin: 30, width: "100%", maxWidth: 800 }}>
           <h1 className='text-primary mb-3'>Reviews</h1>
-          <div className='total_chart_t'>
-            
-                <Searchable
-                  value=""
-                  placeholder="Filter By Rating" // by default "Search"
-                  notFoundText="No result found" // by default "No result found"
-                  noInput
-                  options={[
-                     {
-                      value: '5',
-                      label: '5 Stars'
-                    }, {
-                      value: '4',
-                      label: '4 Stars'
-                    }, {
-                      value: '3',
-                      label: '3 Stars'
-                    }, {
-                      value: '2',
-                      label: '2 Stars'
-                    }, {
-                      value: '1',
-                      label: '1 Stars'
-                    }
-                  ]}
-                  onSelect={(e) => {
-                    SetNumsqlsearch(e)
-                    console.log(e)
-                  }}
-                  listMaxHeight={140} //by default 140
-                />
-             
-                
-                <Searchable
-                  value=""
-                  placeholder="Sorting" // by default "Search"
-                  notFoundText="No result found" // by default "No result found"
-                  noInput
-                  options={[
-                  {
-                    value: 'Newest',
-                    label: 'Most Recent'
-                  }, {
-                    value: 'Highest',
-                    label: 'Highest Rating'
-                  }, {
-                    value: 'Lowest',
-                    label: 'Lowest Rating'
-                  },
-                  ]}
-                  onSelect={(e) => {
+          <div className='total_chart_t1'>
 
-                    Setsqlsearch(e)
-                    
-                  //console.log(e)
-                  }}
-                  listMaxHeight={140} //by default 140
-                />
-              
+            <Searchable
+              value=""
+              placeholder="Filter By Rating" // by default "Search"
+              notFoundText="No result found" // by default "No result found"
+              noInput
+              options={[
+                {
+                  value: '5',
+                  label: '5 Stars'
+                }, {
+                  value: '4',
+                  label: '4 Stars'
+                }, {
+                  value: '3',
+                  label: '3 Stars'
+                }, {
+                  value: '2',
+                  label: '2 Stars'
+                }, {
+                  value: '1',
+                  label: '1 Stars'
+                }
+              ]}
+              onSelect={(e) => {
+                SetNumsqlsearch(e)
+                console.log(e)
+              }}
+              listMaxHeight={140} //by default 140
+            />
 
-              <Button variant="primary" className='buttonmysqlfilter' onClick={mysqlfilter}>filter</Button>
-              <button onClick={refreshPage}>Reset Filters</button>
-          
+
+            <Searchable
+              value=""
+              placeholder="Sorting" // by default "Search"
+              notFoundText="No result found" // by default "No result found"
+              noInput
+              options={[
+                {
+                  value: 'Newest',
+                  label: 'Most Recent'
+                }, {
+                  value: 'Highest',
+                  label: 'Highest Rating'
+                }, {
+                  value: 'Lowest',
+                  label: 'Lowest Rating'
+                },
+              ]}
+              onSelect={(e) => {
+
+                Setsqlsearch(e)
+
+                //console.log(e)
+              }}
+              listMaxHeight={140} //by default 140
+            />
+
+
+            <Button variant="primary" className='buttonmysqlfilter' onClick={mysqlfilter}>filter</Button>
 
 
           </div>
-
         </div>
 
         <div className='reviews_text' style={{ padding: 20, margin: 30, width: "100%", maxWidth: 800 }}>

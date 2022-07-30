@@ -1443,7 +1443,7 @@ app.post("/sort_partners_reviews3", (req, res) => {
 app.post("/sort_partners_reviews4", (req, res) => {
   const PID = req.body.PID;
   const filterby = req.body.fillby;
-  console.log(filterby);
+  //console.log(filterby);
   db.query(
     "SELECT * FROM review WHERE partners_id = ? and rating = ?;",
     [PID, filterby],
@@ -1461,7 +1461,7 @@ app.post("/sort_partners_reviews4", (req, res) => {
 app.post("/sort_partners_reviews5", (req, res) => {
   const PID = req.body.PID;
   const filterby = req.body.fillby;
-  console.log(filterby);
+  //console.log(filterby);
   db.query(
     "SELECT * FROM review WHERE partners_id = ? and rating = ? ORDER BY created_at desc;",
     [PID, filterby],
@@ -1474,6 +1474,55 @@ app.post("/sort_partners_reviews5", (req, res) => {
     }
   );
 });
+
+//search company
+app.post("/company_search", (req, res) => {
+  const search = req.body.searchV;
+  const insert = '%' + search + '%'
+  db.query(
+    "SELECT * FROM fyp_db.partners WHERE admin_acc = 0 AND company_name LIKE ? AND emailverify = 1 AND verified = 0",
+    [insert],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+//search company
+app.post("/company_search2", (req, res) => {
+  const search = req.body.searchF;
+  db.query(
+    "SELECT email,company_name,contact_number,UEN,company_industry,company_overview FROM fyp_db.partners WHERE partners_id = ?",
+    [search],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//get job details (company)
+app.post("/getjobdetails", (req,res) => {
+  const id = req.body.opp_id;
+
+  db.query(
+    "SELECT * FROM opportunity WHERE opp_id = ?;",
+    [id],
+    (err, result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(result);
+      }
+    })
+})
+
 
 //Login - Partner
 app.post("/PartnerLogin", (req, res) => {

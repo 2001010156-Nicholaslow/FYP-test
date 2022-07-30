@@ -25,6 +25,7 @@ function PartnerStats() {
     const [ReviewPosts, setReviewPosts] = useState([]);
     const [TotalApplied, SetTotalApplied] = useState("");
     const [AllowUser, SetAllowUser] = useState(false);
+    const [validcomp, Setvalidcomp] = useState(false);
     const [Applied, SetApplied] = useState([]);
     const [Views, SetViews] = useState([]);
 
@@ -100,7 +101,13 @@ function PartnerStats() {
                     });
 
                     Axios.post("http://localhost:3001/partners_reviews_top", { PID: id }).then((response) => {
-                        setReviewPosts(response.data);
+                        console.log(response.data.length)
+                        if(response.data.length > 0) {
+                            Setvalidcomp(true)
+                            setReviewPosts(response.data);
+                        }else{
+                            setReviewPosts("");
+                        }
                     });
 
                     for (let i = 0; i < response.data.length; i++) {
@@ -268,12 +275,13 @@ function PartnerStats() {
                     <p>Number of Ratings: {numberRatings}</p>
                 </div>
             </div>
-
-            <div className='reviews_text' style={{ padding: 20, margin: 30 }}>
+            {validcomp && (
+                <div className='reviews_text' style={{ padding: 20, margin: 30 }}>
 
                 <div className='Review_header'>
                     <h1>Reviews</h1>
                 </div>
+
 
                 <div className='reviews_box_1'>
                 {ReviewPosts.map((ReviewPostslist) => {
@@ -294,7 +302,7 @@ function PartnerStats() {
                         </>
                     )
                     return list
-                }
+                }   
                 )}
                     
                    
@@ -302,6 +310,7 @@ function PartnerStats() {
                 </div>
                 <button className='ADbutton_edit'><Link to="../Partner/PartnerReview" >View All</Link></button>
             </div>
+            )}
         </div>
     );
 }
