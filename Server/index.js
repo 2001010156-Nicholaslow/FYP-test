@@ -55,25 +55,31 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   db.query(
-    "SELECT * FROM admin WHERE email =? and password =?",
+    "SELECT * FROM partners WHERE email =? AND admin_acc=1",
     [email, password],
     (err, results) => {
       if (err) {
         res.status(401).send({ err: err });
       }
-      if (results.length != 0) {
-        const responseBody = {
-          token: jwt.sign(
-            {
-              email: results[0].email,
-            },
-            JWTKey,
-            {
-              expiresIn: 86400, //Expires in 24 hrs
-            }
-          ),
-        }; //End of data variable setup
-        res.status(200).send(responseBody);
+      if (results.length > 0) {
+        bcrypt.compare(password, results[0].password, (error, response) => {
+          if (response) {
+            const responseBody = {
+              token: jwt.sign(
+                {
+                  email: results[0].email,
+                },
+                JWTKey,
+                {
+                  expiresIn: 86400, //Expires in 24 hrs
+                }
+              ),
+            }; //End of data variable setup
+            res.status(200).send(responseBody);
+          } else {
+            res.send({ message: "Wrong password!" });
+          }
+        });
       } else {
         res.status(401).send({ message: "Wrong Email/password combination!" });
       }
@@ -119,10 +125,9 @@ app.get("/profile_get_fav", (req, res) => {
 // fav delete
 app.post("/profile_delete_fav", (req, res) => {
   const idFav = req.body.idFav;
-  const query = `DELETE FROM user_fav WHERE idFav = ${idFav}`
-  
-    db.query(query,
-  (err, results) => {
+  const query = `DELETE FROM user_fav WHERE idFav = ${idFav}`;
+
+  db.query(query, (err, results) => {
     if (err) {
       res.status(401).send({ err: err });
     } else {
@@ -130,7 +135,6 @@ app.post("/profile_delete_fav", (req, res) => {
     }
   });
 });
-
 
 // User Fav
 app.post("/profile_save_fav", (req, res) => {
@@ -1494,7 +1498,7 @@ app.post("/sort_partners_reviews5", (req, res) => {
 //search company
 app.post("/company_search", (req, res) => {
   const search = req.body.searchV;
-  const insert = '%' + search + '%'
+  const insert = "%" + search + "%";
   db.query(
     "SELECT * FROM fyp_db.partners WHERE admin_acc = 0 AND company_name LIKE ? AND emailverify = 1 AND verified = 0",
     [insert],
@@ -1524,7 +1528,7 @@ app.post("/company_search2", (req, res) => {
 });
 
 //get job details (company)
-app.post("/getjobdetails", (req,res) => {
+app.post("/getjobdetails", (req, res) => {
   const id = req.body.opp_id;
 
   db.query(
@@ -1536,9 +1540,9 @@ app.post("/getjobdetails", (req,res) => {
       } else {
         res.status(200).send(result);
       }
-    })
-})
-
+    }
+  );
+});
 
 //Login - Partner
 app.post("/PartnerLogin", (req, res) => {

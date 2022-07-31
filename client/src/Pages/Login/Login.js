@@ -6,8 +6,8 @@ import Axios from "axios";
 import { decodeToken } from "react-jwt";
 import logo from "../../Components/cyc.png";
 export default function Login() {
-  const [email, setEmail] = useState("Isaac@gmail.com");
-  const [password, setPassword] = useState("password");
+  const [email, setEmail] = useState("RPTestAdmin1@gmail.com");
+  const [password, setPassword] = useState("Admin123");
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
