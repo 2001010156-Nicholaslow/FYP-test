@@ -470,19 +470,6 @@ app.get("/users/:id", (req, res) => {
   );
 });
 
-// get reviews
-app.get("/get_reviews", (req, res) => {
-  db.query(
-    "SELECT r.review_id,r.review,r.rating,u.full_name,p.company_name FROM review r,users u,partners p WHERE u.user_id=r.user_id AND p.partners_id=r.partners_id",
-    (err, results) => {
-      if (err) {
-        res.status(401).send({ err: err });
-      } else {
-        res.status(200).send(results);
-      }
-    }
-  );
-});
 
 //Client - PartnerProfile
 app.get("/partners/:id", (req, res) => {
@@ -500,6 +487,20 @@ app.get("/partners/:id", (req, res) => {
           // not found
           res.status(404).send();
         res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+
+// get reviews
+app.get("/get_reviews", (req, res) => {
+  db.query(
+    "SELECT r.review_id,r.review,r.rating,u.full_name,p.company_name FROM review r,users u,partners p WHERE u.user_id=r.user_id AND p.partners_id=r.partners_id",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
       }
     }
   );
