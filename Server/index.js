@@ -991,6 +991,15 @@ app.post("/PartnerEmailVerify", (req, res) => {
   ]);
 });
 
+//view count add
+app.post("/view_count_add", (req, res) => {
+  const id = req.body.Op_id;
+  db.query("UPDATE opportunity SET views = views + 1 WHERE opp_id = ?", [
+    id,
+  ]);
+});
+
+
 //User verify email
 app.post("/UserEmailVerify", (req, res) => {
   const id = req.body.Uid;
