@@ -23,21 +23,19 @@ function PartnerLogin() {
         localStorage.clear()
         sessionStorage.clear()
         if (
-            !validator.isEmpty(email) &
-            !validator.isEmpty(password) &
-            email === "admin" & 
+            email === "admin" &
             password === "admin"
 
         ) {
-            SetLoginMSG("admin login")
+            //SetLoginMSG("admin login")
             SetLoginStatus(true)
-            //nav("")  //change to admin login page
+            nav("../admin/login")
 
 
-        } else if(!validator.isEmpty(email) & !validator.isEmpty(password) ){
-            SetLoginMSG("admin login")
-                    SetLoginStatus(true)
-                    Axios.post("http://localhost:3001/Partneremailverifycheck", {
+        } else if (!validator.isEmpty(email) & !validator.isEmpty(password)) {
+            //SetLoginMSG("admin login")
+            //SetLoginStatus(true)
+            Axios.post("http://localhost:3001/Partneremailverifycheck", {
                 email: email
             }).then((res) => {
                 if (res.data.message) {
@@ -48,23 +46,31 @@ function PartnerLogin() {
                         email: email,
                         password: password
                     }).then((response) => {
-                        if (!response.data.auth) {
-                            SetLoginStatus(true)
-                            SetLoginMSG("Invalid Password/Email")
-                        } else {
-                            localStorage.setItem("token", response.data.token)
-                            sess = response.data.result[0]
-                            localStorage.setItem("user_id", sess.partners_id)
-                            nav("../Partner/Partner")
+                        if (response.data.result[0].verified == 0) {
 
-                            //check auth
-                            Axios.get("http://localhost:3001/isAuth", {
-                                headers: {
-                                    "x-access-token": localStorage.getItem("token"),
-                                },
-                            }).then((response) => {
-                                console.log(response);
-                            });
+                            if (!response.data.auth) {
+                                SetLoginStatus(true)
+                                SetLoginMSG("Invalid Password/Email")
+                            } else {
+                                //if(response.data.result[0].emailverify)
+                                localStorage.setItem("token", response.data.token)
+                                sess = response.data.result[0]
+                                localStorage.setItem("user_id", sess.partners_id)
+                                nav("../Partner/Partner")
+
+                                //check auth
+                                Axios.get("http://localhost:3001/isAuth", {
+                                    headers: {
+                                        "x-access-token": localStorage.getItem("token"),
+                                    },
+                                }).then((response) => {
+                                    console.log(response);
+                                });
+                            }
+
+                        } else {
+                            SetLoginStatus(true)
+                            SetLoginMSG("Your Account has been locked. Please contact us")
                         }
                     });
                 }
@@ -99,34 +105,34 @@ function PartnerLogin() {
 
     return (
         <div>
-<div>
-      <NavbarComp />
-    </div>
-        
-        <div className='container_loginPage1'>
-            <div className='Login_container'>
-            {LoginStatus && <Alert variant="warning" >{LoginMSG}</Alert>}
-                <div classname='login'>
-                    <div className='header'>
-                        <h3 className='headertext_2'>Partner Login</h3>
-                        
-                        <hr className='hr'></hr>
+            <div>
+                <NavbarComp />
+            </div>
+
+            <div className='container_loginPage1'>
+                <div className='Login_container'>
+                    {LoginStatus && <Alert variant="warning" >{LoginMSG}</Alert>}
+                    <div classname='login'>
+                        <div className='header'>
+                            <h3 className='headertext_2'>Partner Login</h3>
+
+                            <hr className='hr'></hr>
+                        </div>
+
+                        <Form>
+                            <input classname="login_box" type="email" onChange={(e) => { Setemail(e.target.value) }} placeholder="Email" style={{ marginTop: 10 }} required />
+                            <br></br>
+                            <input type="password" classname="login_box" placeholder="Password" onChange={(e) => { Setpassword(e.target.value) }} style={{ marginTop: 10 }} required />
+                            <p><Link to="../Login/ForgetPasswordPartner">Forget Password?</Link></p>
+
+                        </Form>
                     </div>
+                    <button className='login_button' type="submit" onClick={login} style={{ marginTop: 20, marginBottom: 20, alignItems: 'center' }} >Login</button>
+                    <p>Want to be a Partner? <Link to="../Register/PartnerRegister">Sign up here</Link></p>
 
-                    <Form>
-                        <input classname="login_box" type="email" onChange={(e) => { Setemail(e.target.value) }} placeholder="Email" style={{ marginTop: 10 }} required />
-                        <br></br>
-                        <input type="password" classname="login_box" placeholder="Password" onChange={(e) => { Setpassword(e.target.value) }} style={{ marginTop: 10 }} required />
-                        <p><Link to="../Login/ForgetPasswordPartner">Forget Password?</Link></p>
-                        
-                    </Form>
                 </div>
-                <button className='login_button' type="submit" onClick={login} style={{ marginTop: 20, marginBottom: 20, alignItems: 'center' }} >Login</button>
-                <p>Want to be a Partner? <Link to="../Register/PartnerRegister">Sign up here</Link></p>
-
             </div>
         </div>
-</div>
     );
 }
 export default PartnerLogin;

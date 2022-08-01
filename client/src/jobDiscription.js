@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NavbarComp from "./Components/NavBar/NavbarComp";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Axios from "axios";
 
@@ -16,9 +16,15 @@ function JobDiscription() {
     console.log("hello hello", jov);
     // setJobData(jov[0]);
     const jobData = jov[0];
-    const save_to_fav = () => {
-        Axios.post('http://localhost:3001/profile_get_fav',{
-            user_id: JSON.parse(localStorage.getItem("user_data")).result.user_id,
+
+    useEffect(() => {
+        if (!localStorage.getItem("user_data"))window.location.href = "http://localhost:3000/Login/login";
+    }, [])
+
+    const save_to_fav = () => {    
+        //  console.log(JSON.parse(localStorage.getItem("user_data")).result[0].user_id) 
+        Axios.post('http://localhost:3001/profile_save_fav',{
+            user_id: JSON.parse(localStorage.getItem("user_data")).result[0].user_id,
             opp_id: jobData.opp_id
         }, {
 
@@ -104,7 +110,11 @@ function JobDiscription() {
                     </Button>
 
                     <button onClick={save_to_fav} type="button" class="btn btn-warning">Add to Favorite</button>
-
+                    
+                    <Button variant="warning"
+                    >
+                        <Link to="/Review">Post a Review</Link>
+                    </Button>
                 </div>
             </div>
         </div >

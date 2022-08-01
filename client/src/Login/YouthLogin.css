@@ -1,9 +1,9 @@
-.container{
+.container {
     margin: 0 auto;
     height: 100%;
     text-align: left;
     font-size: 20px;
-    display:flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -11,12 +11,13 @@
     width: 80%;
     background-color: #dedede;
 }
-.container_loginPage1{
+
+.container_loginPage1 {
     margin: 0 auto;
     height: 100%;
     text-align: left;
     font-size: 20px;
-    display:flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -25,8 +26,8 @@
     padding-bottom: 25px;
 }
 
-.Login_container{
-    background-color: #ffd9b9;
+.Login_container {
+    background-color: #282c34;
     width: 40%;
     margin: 0 auto;
     height: 100%;
@@ -37,37 +38,37 @@
     align-items: center;
     justify-content: center;
     padding: 18px;
-    color: rgba(0, 0, 0, 0.87);
-    -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    color: #f8f9fa;
     transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     border-radius: 4px;
     padding: 20px;
     box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
 }
 
-.header{
+
+.header {
     align-items: left;
     text-align: left;
     width: 250px;
 }
 
-.hr{
+.hr {
     display: block;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     border-width: 1px;
     border-top: 1px solid rgb(0, 0, 0);
-    
+
 }
 
-.headertext{
+.headertext {
     font-size: 22px;
     border-bottom: 0;
     margin: 10px 0;
     padding: 0;
 }
 
-.headertext_2{
+.headertext_2 {
     font-size: 22px;
     border-bottom: 0;
     margin: 10px 0;
@@ -75,7 +76,7 @@
     padding-bottom: 10px;
 }
 
-.login_button{
+.login_button {
     background-color: #97caf7;
     border-radius: 4px;
     padding: 1px;

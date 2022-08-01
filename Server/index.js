@@ -69,29 +69,36 @@ const verifyJWT = (req, res, next) => {
 };
 
 //Admin
+//////////////////////////////////////////////////////////////////////Admin
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   db.query(
-    "SELECT * FROM admin WHERE email =? and password =?",
+    "SELECT * FROM partners WHERE email =? AND admin_acc=1",
     [email, password],
     (err, results) => {
       if (err) {
         res.status(401).send({ err: err });
       }
-      if (results.length != 0) {
-        const responseBody = {
-          token: jwt.sign(
-            {
-              email: results[0].email,
-            },
-            JWTKey,
-            {
-              expiresIn: 86400, //Expires in 24 hrs
-            }
-          ),
-        }; //End of data variable setup
-        res.status(200).send(responseBody);
+      if (results.length > 0) {
+        bcrypt.compare(password, results[0].password, (error, response) => {
+          if (response) {
+            const responseBody = {
+              token: jwt.sign(
+                {
+                  email: results[0].email,
+                },
+                JWTKey,
+                {
+                  expiresIn: 86400, //Expires in 24 hrs
+                }
+              ),
+            }; //End of data variable setup
+            res.status(200).send(responseBody);
+          } else {
+            res.send({ message: "Wrong password!" });
+          }
+        });
       } else {
         res.status(401).send({ message: "Wrong Email/password combination!" });
       }
@@ -110,30 +117,12 @@ app.get("/admin_get_users", (req, res) => {
   });
 });
 
-// Get fav 
-app.get("/profile_get_fav", (req, res) => {
-  db.query("SELECT * FROM user_fav", (err, results) => {
-    if (err) {
-      res.status(401).send({ err: err });
-    } else {
-      res.status(200).send(results);
-    }
-  });
-});
-
-
-// User Fav
-app.post("/profile_save_fav", (req, res) => {
+app.put("/admin_delete_users", (req, res) => {
   const user_id = req.body.user_id;
-  const opp_id = req.body.opp_id;
-
-  db.query("INSERT INTO user_fav (user_id, opp_id) VALUES (?,?)",
-  [
-    user_id,
-    opp_id
-  ],
-  (err, results) => {
+  console.log(req.body);
+  db.query("DELETE FROM users WHERE user_id =?", [user_id], (err, results) => {
     if (err) {
+      console.log(err);
       res.status(401).send({ err: err });
     } else {
       res.status(200).send(results);
@@ -458,6 +447,7 @@ app.get("/admin_get_reviews", (req, res) => {
     }
   );
 });
+
 app.put("/admin_update_reviews", (req, res) => {
   const review_id = req.body.review_id;
   const review = req.body.review;
@@ -494,8 +484,51 @@ app.put("/admin_delete_review", (req, res) => {
   );
 });
 
-//Stats
+//Admin reports
+app.get("/admin_get_reports", (req, res) => {
+  db.query("SELECT * FROM reports", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
 
+app.put("/admin_resolve_report", (req, res) => {
+  const report_id = req.body.report_id;
+  console.log(req.body);
+  db.query(
+    "UPDATE reports SET status='Resolved' WHERE report_id=?",
+    [report_id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+app.put("/admin_delete_reports", (req, res) => {
+  const report_id = req.body.report_id;
+  console.log(req.body);
+  db.query(
+    "DELETE FROM reports WHERE report_id =?",
+    [report_id],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+//Admin Stats
 app.get("/getUserCreated1", (req, res) => {
   db.query(
     "SELECT Count(user_id) AS count,CAST(Curdate() as Date) AS date FROM users\
@@ -579,38 +612,61 @@ app.get("/getPartnerCreated1", (req, res) => {
     }
   );
 });
+/////////////////////////////////////////////////////////////////////////////////////////////////////////End of Admin
 
-// function getCustomerCount( callback ){
-//   var count = 0;
-//   db.transaction(function(tx) {
-//   tx.executeSql('SELECT * FROM users WHERE last_login>=CURDATE();', [], function(tx, results) {
-//            // this function is called when the executeSql is ended
-//            count = results.rows.length;
-//            callback( count );   // <-- call the callback when is done
-//       });
-//   });
-// }
+//Client - Profile
+app.get("/users/:id", (req, res) => {
+  const id = req.params.id;
 
-//Admin reports
-app.get("/admin_get_reports", (req, res) => {
   db.query(
-    "SELECT * FROM reports",
+    "SELECT user_id, full_name, email, dob, gender, contact_number, user_bio, postalcode, education, country, citizenship, address FROM users WHERE user_id = '" +
+      id +
+      "'",
     (err, results) => {
       if (err) {
-        res.status(401).send({ err: err });
+        res.status(400).send({ err: err });
       } else {
-        res.status(200).send(results);
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
       }
     }
   );
 });
 
-app.put("/admin_delete_reports", (req, res) => {
-  const report_id = req.body.report_id;
+
+//Client - PartnerProfile
+app.get("/partners/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT email, company_name, contact_name, contact_number, UEN, company_industry, company_overview FROM partners WHERE partners_id = '" +
+      id +
+      "'",
+    (err, results) => {
+      if (err) {
+        res.status(400).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+
+//add reviews
+app.post("/add_reviews", (req, res) => {
+  const user_id = req.body.user_id;
+  const review = req.body.review;
+  const rating = req.body.rating;
+  const partners_id = req.body.partners_id;
   console.log(req.body);
   db.query(
-    "DELETE FROM report WHERE report_id =?",
-    [report_id],
+    "INSERT INTO review SET partners_id=?, review=?, rating=?,user_id =?",
+    [partners_id, review, rating, user_id],
     (err, results) => {
       if (err) {
         console.log(err);
@@ -622,8 +678,271 @@ app.put("/admin_delete_reports", (req, res) => {
   );
 });
 
+// user View Status
+app.get("/opportunity/application", (req, res) => {
+  db.query(
+    "SELECT * FROM application INNER JOIN opportunity ON application.opp_id = opportunity.opp_id  ",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if (results.length == 0)
+          res.status(404).send();
+        res.status(200).send(results);
+      }
+    }
+  );
+});
 
-//End of Admin
+//Client - Application
+app.get("/opportunity/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT * FROM opportunity WHERE opp_id='" + id + "'",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+
+app.post("/opportunity/:id/apply", (req, res) => {
+  const id = req.params.id;
+  const f = req.files;
+
+  if (f == null) res.status(406).send("no file");
+
+  console.log(f.File.name);
+
+  db.query(
+    "INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
+    [f.File.data, "0", "2", id],
+    (err, result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send("okay");
+      }
+    }
+  );
+});
+
+//Client - Review Application
+app.get("/opportunity/:id/application", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT * FROM application INNER JOIN users ON application.user_id = users.user_id WHERE opp_id='" +
+      id +
+      "'",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+// Get fav
+app.get("/profile_get_fav", (req, res) => {
+  db.query("SELECT * FROM user_fav", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
+// fav delete
+app.post("/profile_delete_fav", (req, res) => {
+  const idFav = req.body.idFav;
+  const query = `DELETE FROM user_fav WHERE idFav = ${idFav}`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
+// User Fav
+app.post("/profile_save_fav", (req, res) => {
+  const user_id = req.body.user_id;
+  const opp_id = req.body.opp_id;
+
+  db.query(
+    "INSERT INTO user_fav (user_id, opp_id) VALUES (?,?)",
+    [user_id, opp_id],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//Client - Profile
+app.get("/users/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT user_id, full_name, email, dob, gender, contact_number, user_bio, postalcode, education, country, citizenship, address FROM users WHERE user_id = '" +
+      id +
+      "'",
+    (err, results) => {
+      if (err) {
+        res.status(400).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+
+//Client - PartnerProfile
+app.get("/partners/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT email, company_name, contact_name, contact_number, UEN, company_industry, company_overview FROM partners WHERE partners_id = '" +
+      id +
+      "'",
+    (err, results) => {
+      if (err) {
+        res.status(400).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+
+//Client - Application
+app.get("/opportunity/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT * FROM opportunity WHERE opp_id='" + id + "'",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+
+app.post("/opportunity/:id/apply", (req, res) => {
+  const id = req.params.id;
+  const f = req.files;
+
+  if (f == null) res.status(406).send("no file");
+
+  console.log(f.File.name);
+
+  db.query(
+    "INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
+    [f.File.data, "0", "2", id],
+    (err, result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send("okay");
+      }
+    }
+  );
+});
+
+//Client - Review Application
+app.get("/opportunity/:id/application", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT * FROM application INNER JOIN users ON application.user_id = users.user_id WHERE opp_id='" +
+      id +
+      "'",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//stats for partner side
+app.get("/getPartnerViews", (req, res) => {
+  db.query(
+    "SELECT views AS count,CAST(Curdate() as Date) AS date FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) \
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 1 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 1 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 2 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 2 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 3 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 3 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 4 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 4 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 5 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 5 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 6 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 6 day\
+    UNION\
+    SELECT views AS count,CAST(Curdate() as Date) -interval 7 day AS date\
+    FROM opportunity\
+    WHERE CAST(created_at as Date) =  CAST( curdate() as Date) -interval 7 day",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
 
 //Client - YouthRegister
 app.post("/YouthConfirmation", (req, res) => {
@@ -698,45 +1017,41 @@ app.post("/PartnerConfirmation", (req, res) => {
 });
 app.get("/confirm/:confirmationCode"); //for mailerjs
 
-app.get("/confirm/:PasswordReset")//for mailerPS.js
+app.get("/confirm/:PasswordReset"); //for mailerPS.js
 
 //User Password reset email
 app.post("/ClientPasswordForget", (req, res) => {
   const email = req.body.email;
-  db.query("SELECT * FROM users WHERE email = ?",
-    [email],
-    (err, result) => {
-      if (err) {
-        res.send({ err: err });
-      } else {
-        let results = JSON.parse(JSON.stringify(result));
-        const name = results[0].full_name;
-        const Uid = results[0].user_id;
-        const token = jwt.sign({ Uid }, "jwtSecret2"); //remember to change secret! important
-        const UserDetails = { email, name }
-        sendPasswordResetEmail({ toUser: UserDetails, PasswordReset: token });
-      }
-    })
-})
+  db.query("SELECT * FROM users WHERE email = ?", [email], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      let results = JSON.parse(JSON.stringify(result));
+      const name = results[0].full_name;
+      const Uid = results[0].user_id;
+      const token = jwt.sign({ Uid }, "jwtSecret2"); //remember to change secret! important
+      const UserDetails = { email, name };
+      sendPasswordResetEmail({ toUser: UserDetails, PasswordReset: token });
+    }
+  });
+});
 
 //Partner Password reset email
 app.post("/PartnerPasswordForget", (req, res) => {
   const email = req.body.email;
-  db.query("SELECT * FROM partners WHERE email = ?",
-    [email],
-    (err, result) => {
-      if (err) {
-        res.send({ err: err });
-      } else {
-        let results = JSON.parse(JSON.stringify(result));
-        const name = results[0].company_name;
-        const id = results[0].partners_id;
-        const token = jwt.sign({ id }, "jwtSecret2"); //remember to change secret! important
-        const UserDetails = { email, name }
-        sendPasswordResetEmail({ toUser: UserDetails, PasswordReset: token });
-      }
-    })
-})
+  db.query("SELECT * FROM partners WHERE email = ?", [email], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      let results = JSON.parse(JSON.stringify(result));
+      const name = results[0].company_name;
+      const id = results[0].partners_id;
+      const token = jwt.sign({ id }, "jwtSecret2"); //remember to change secret! important
+      const UserDetails = { email, name };
+      sendPasswordResetEmail({ toUser: UserDetails, PasswordReset: token });
+    }
+  });
+});
 
 //reset password Partner
 app.post("/PartnerPasswordReset", (req, res) => {
@@ -750,9 +1065,10 @@ app.post("/PartnerPasswordReset", (req, res) => {
       [hash, Pid],
       (err, result) => {
         if (err) {
-          res.send({ err: err })
+          res.send({ err: err });
         } else {
-          db.query("SELECT * FROM partners WHERE partners_id = ?",
+          db.query(
+            "SELECT * FROM partners WHERE partners_id = ?",
             [Pid],
             (err, result) => {
               if (err) {
@@ -761,15 +1077,16 @@ app.post("/PartnerPasswordReset", (req, res) => {
                 let results = JSON.parse(JSON.stringify(result));
                 const name = results[0].company_name;
                 const email = results[0].email;
-                const UserDetails = { email, name }
+                const UserDetails = { email, name };
                 sendPasswordResetEmailconfirm({ toUser: UserDetails });
               }
-            })
+            }
+          );
         }
       }
-    )
+    );
   });
-})
+});
 
 //reset password User
 app.post("/UserPasswordReset", (req, res) => {
@@ -783,9 +1100,10 @@ app.post("/UserPasswordReset", (req, res) => {
       [hash, Uid],
       (err, result) => {
         if (err) {
-          res.send({ err: err })
+          res.send({ err: err });
         } else {
-          db.query("SELECT * FROM users WHERE user_id = ?",
+          db.query(
+            "SELECT * FROM users WHERE user_id = ?",
             [Uid],
             (err, result) => {
               if (err) {
@@ -794,16 +1112,16 @@ app.post("/UserPasswordReset", (req, res) => {
                 let results = JSON.parse(JSON.stringify(result));
                 const name = results[0].full_name;
                 const email = results[0].email;
-                const UserDetails = { email, name }
+                const UserDetails = { email, name };
                 sendPasswordResetEmailconfirm({ toUser: UserDetails });
               }
-            })
+            }
+          );
         }
       }
-    )
+    );
   });
-})
-
+});
 
 //Partner Verify email check
 app.post("/Partneremailverifycheck", (req, res) => {
@@ -868,11 +1186,11 @@ app.post("/UserEmailVerify", (req, res) => {
   db.query("UPDATE users SET not_verify= ? WHERE user_id = ?", [verified, id]);
 });
 
-//Partner stars rating total
+//Partner stars rating
 app.post("/getstars", (req, res) => {
   const Pid = req.body.Pid;
   db.query(
-    "SELECT AVG(rating) as Average FROM fyp_db.review WHERE partners_id = ?;",
+    "SELECT AVG(rating) as Average FROM review WHERE partners_id = ?;",
     [Pid],
     (err, result) => {
       if (err) {
@@ -884,7 +1202,22 @@ app.post("/getstars", (req, res) => {
     }
   );
 });
-
+//Partner stars rating total
+app.post("/getstarsNum", (req, res) => {
+  const Pid = req.body.Pid;
+  db.query(
+    "SELECT count(rating) as length FROM review WHERE partners_id = ?;",
+    [Pid],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        let results = JSON.parse(JSON.stringify(result));
+        res.send(results);
+      }
+    }
+  );
+});
 
 //Partners Add job
 app.post("/JobAddFormADD", (req, res) => {
@@ -1009,24 +1342,25 @@ app.post("/EmailCheck1", (req, res) => {
 
 //reporting system
 app.post("/HelpReport", (req, res) => {
-  const report_type = req.body.report_type
-  const report_title = req.body.report_title
-  const report_text = req.body.report_text
+  const report_type = req.body.report_type;
+  const report_title = req.body.report_title;
+  const report_text = req.body.report_text;
   const uid = req.body.user_id;
 
-  db.query("INSERT into reports (report_type, report_title, report_text, partners_id) VALUES (?,?,?,?)",
-  [report_type,report_title,report_text,uid],
-  (err, result) => {
-    if (err) {
-      res.send({ err: err });
-    } else {
-      res.send({
-        message:
-          "Your Report has been send to an Admin.",
-      });
+  db.query(
+    "INSERT into reports (report_type, report_title, report_text, partners_id) VALUES (?,?,?,?)",
+    [report_type, report_title, report_text, uid],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        res.send({
+          message: "Your Report has been send to an Admin.",
+        });
+      }
     }
-  })
-})
+  );
+});
 
 //Partner ACcount details check
 app.post("/CheckPartnerCompleted", (req, res) => {
@@ -1136,88 +1470,155 @@ app.get("/isAuth", verifyJWT, (req, res) => {
   res.send("You are authenticated.");
 });
 
-
 //get stats (count applied)
-app.post("/get_status_count1", (req, res) => {
+
+app.post("/get_status_count2", (req, res) => {
   const Pid = req.body.Pid;
   const opp_id = req.body.result;
-  
 
-    db.query("SELECT count(*) AS Applied FROM application a, opportunity o WHERE a.opp_id = o.opp_id AND o.fk_partners_id = ? AND a.opp_id = ?;", [Pid, opp_id], (err,result) => {
+  db.query(
+    "UPDATE opportunity SET applied = (SELECT count(*) AS ApplyTotal FROM (SELECT count(*) AS NumApply FROM application a, opportunity o WHERE o.fk_partners_id = ? AND a.opp_id = ?  GROUP BY a.id_application) AS FOO) WHERE opp_id = ?;",
+    [Pid, opp_id, opp_id],
+    (err, result) => {
       if (err) {
         res.status(401).send({ err: err });
       } else {
         let results = JSON.parse(JSON.stringify(result));
-        res.send(results)
+        //res.send(result)
         return;
-
       }
-      
-    })
- 
-})
+    }
+  );
+});
 
 //get stats (views)
 app.post("/get_status_view", (req, res) => {
   const Pid = req.body.Pid;
 
-  db.query("SELECT o.name,o.opp_id,o.views FROM application a, opportunity o WHERE a.opp_id = o.opp_id AND o.fk_partners_id = ? GROUP BY o.opp_id;", [Pid], (err, result) => {
-    if (err) {
-      res.send({ err: err });
-    } else {
-      let results = JSON.parse(JSON.stringify(result));
-      res.send(results);
+  db.query(
+    "SELECT o.name,o.opp_id,o.views FROM application a, opportunity o WHERE o.fk_partners_id = ? GROUP BY o.opp_id;",
+    [Pid],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        let results = JSON.parse(JSON.stringify(result));
+        res.send(results);
+      }
     }
-  })
-})
+  );
+});
+
+//stats page partner
+app.post("/get_status_view_final", (req, res) => {
+  const Pid = req.body.Pid;
+
+  db.query(
+    "SELECT opp_id, views, name, applied, fk_partners_id FROM opportunity WHERE fk_partners_id = ?;",
+    [Pid],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        let results = JSON.parse(JSON.stringify(result));
+        res.send(results);
+        //console.log(result)
+      }
+    }
+  );
+});
+
+// stats total views
+app.post("/get_total_views", (req, res) => {
+  const Pid = req.body.Pid;
+
+  db.query(
+    "SELECT SUM(views) AS Vtotal FROM opportunity WHERE fk_partners_id = ?;",
+    [Pid],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        let results = JSON.parse(JSON.stringify(result));
+        res.send(results);
+      }
+    }
+  );
+});
+
+// stats total applied
+app.post("/get_total_applied", (req, res) => {
+  const Pid = req.body.Pid;
+
+  db.query(
+    "SELECT SUM(applied) AS Atotal FROM opportunity WHERE fk_partners_id = ?;",
+    [Pid],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        let results = JSON.parse(JSON.stringify(result));
+        res.send(results);
+      }
+    }
+  );
+});
 
 app.post("/users/save", verifyJWT, (req, res) => {
   console.log(req.body);
   console.log(req.userId);
 
   var decoded = jwt.decode(req.headers["x-access-token"]);
-  console.log(decoded.Uid)
+  console.log(decoded.Uid);
 
-  db.query("UPDATE users SET full_name=?, dob=?, gender=?, contact_number=?, user_bio=?, education=?, citizenship=?, address=?, country=?, postalcode=? WHERE user_id=?;", [
-    req.body.fullName,
-    req.body.dob,
-    req.body.gender,
-    req.body.number,
-    req.body.bio,
-    req.body.education,
-    req.body.citizenship,
-    req.body.address,
-    req.body.country,
-    req.body.postalcode,
-    decoded.Uid
-  ], (err, result) => {
-    if (err) {
-      res.send({ err: err });
-    } else {
-      res.status(200).send(result);
+  db.query(
+    "UPDATE users SET full_name=?, dob=?, gender=?, contact_number=?, user_bio=?, education=?, citizenship=?, address=?, country=?, postalcode=? WHERE user_id=?;",
+    [
+      req.body.fullName,
+      req.body.dob,
+      req.body.gender,
+      req.body.number,
+      req.body.bio,
+      req.body.education,
+      req.body.citizenship,
+      req.body.address,
+      req.body.country,
+      req.body.postalcode,
+      decoded.Uid,
+    ],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        res.status(200).send(result);
+      }
     }
-  })
+  );
 });
 
 app.post("/partners/save", verifyJWT, (req, res) => {
   var decoded = jwt.decode(req.headers["x-access-token"]);
-  console.log(decoded.id)
+  console.log(decoded.id);
 
-  db.query("UPDATE partners SET company_name=?, contact_name=?, contact_number=?, UEN=?, company_industry=?, company_overview=? WHERE partners_id=?;", [
-    req.body.companyName,
-    req.body.contactName,
-    req.body.contactNumber,
-    req.body.UEN,
-    req.body.companyIndustry,
-    req.body.companyOverview,
-    decoded.id
-  ], (err, result) => {
-    if (err) {
-      res.send({ err: err });
-    } else {
-      res.status(200).send(result);
+  db.query(
+    "UPDATE partners SET company_name=?, contact_name=?, contact_number=?, UEN=?, company_industry=?, company_overview=? WHERE partners_id=?;",
+    [
+      req.body.companyName,
+      req.body.contactName,
+      req.body.contactNumber,
+      req.body.UEN,
+      req.body.companyIndustry,
+      req.body.companyOverview,
+      decoded.id,
+    ],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        res.status(200).send(result);
+      }
     }
-  })
+  );
 });
 
 //client Login
@@ -1267,6 +1668,22 @@ app.post("/partners_reviews", (req, res) => {
   );
 });
 
+//get reviews for partners
+app.post("/partners_reviews_top", (req, res) => {
+  const PID = req.body.PID;
+  db.query(
+    "SELECT * FROM review WHERE partners_id = ? ORDER BY created_at desc LIMIT 3;",
+    [PID],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
 //get reviews for partners_rating_asec
 app.post("/sort_partners_reviews1", (req, res) => {
   const PID = req.body.PID;
@@ -1294,6 +1711,107 @@ app.post("/sort_partners_reviews2", (req, res) => {
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//get reviews for sort date
+app.post("/sort_partners_reviews3", (req, res) => {
+  const PID = req.body.PID;
+  db.query(
+    "SELECT * FROM review WHERE partners_id = ? ORDER BY created_at desc;",
+    [PID],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//get reviews for sort date
+app.post("/sort_partners_reviews4", (req, res) => {
+  const PID = req.body.PID;
+  const filterby = req.body.fillby;
+  //console.log(filterby);
+  db.query(
+    "SELECT * FROM review WHERE partners_id = ? and rating = ?;",
+    [PID, filterby],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//get reviews for sort date
+app.post("/sort_partners_reviews5", (req, res) => {
+  const PID = req.body.PID;
+  const filterby = req.body.fillby;
+  //console.log(filterby);
+  db.query(
+    "SELECT * FROM review WHERE partners_id = ? and rating = ? ORDER BY created_at desc;",
+    [PID, filterby],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//search company
+app.post("/company_search", (req, res) => {
+  const search = req.body.searchV;
+  const insert = "%" + search + "%";
+  db.query(
+    "SELECT * FROM fyp_db.partners WHERE admin_acc = 0 AND company_name LIKE ? AND emailverify = 1 AND verified = 0",
+    [insert],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+//search company
+app.post("/company_search2", (req, res) => {
+  const search = req.body.searchF;
+  db.query(
+    "SELECT email,company_name,contact_number,UEN,company_industry,company_overview FROM fyp_db.partners WHERE partners_id = ?",
+    [search],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//get job details (company)
+app.post("/getjobdetails", (req, res) => {
+  const id = req.body.opp_id;
+
+  db.query(
+    "SELECT * FROM opportunity WHERE opp_id = ?;",
+    [id],
+    (err, result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(result);
       }
     }
   );

@@ -113,9 +113,9 @@ class PartnerForm extends Component {
                         </Nav>
                         <Navbar.Collapse className="justify-content-end">
                             <NavDropdown title={"Sign in as : " + fullname} id="basic-nav-dropdown">
-                                <NavDropdown.Item href="./PartnerProfile">Edit profile</NavDropdown.Item>
+                                <NavDropdown.Item href="./EditPartnerProfile">Edit profile</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">Log out</NavDropdown.Item>
+                                <NavDropdown.Item href="./Partner/Partner">Log out</NavDropdown.Item>
                             </NavDropdown>
                         </Navbar.Collapse>
                     </Navbar>
@@ -674,7 +674,7 @@ class PartnerForm extends Component {
                                 listMaxHeight={140} //by default 140
                             />
                             <small id="passwordHelpInline" class="text-muted">
-                                Choose the nearest MRT.
+                                Choose the nearest Location.
                             </small>
                         </Form.Group>
 

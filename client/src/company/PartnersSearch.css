@@ -1,0 +1,165 @@
+.search_partners_home{
+    padding: 30px 100px;
+    width: 80%;
+}
+
+.Home_page {
+    box-sizing: border-box;
+}
+
+.home_title_text{
+    padding-left: 0%;
+}
+
+.search_banner{
+    background-color: rgb(126 166 206);
+    margin: 0 auto;
+    width: 60%;
+    height: 100%;
+    text-align: center;
+    display: block;
+    padding: 8px;
+}
+
+.search_bar_1{
+    width:auto;
+    margin-right: auto;
+    margin-left: auto;
+    position: relative;
+}
+
+.partnerspage{
+    margin: 30px;
+    width: 100%;
+    margin-left: 15%;
+    max-width: 70%;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+    color: rgba(0, 0, 0, 0.87);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+}
+.total_company_t{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+.StarRatingTotal_company{
+    height: auto;
+    display: flex;
+    align-items: center;
+    border: 2px solid transparent;
+    font-size: 1.3em;
+    align-content: stretch;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.reviews_text_company{
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+    color: rgba(0, 0, 0, 0.87);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 4px;
+}
+
+.page_box_1{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    border-bottom: 1px solid #e4e4ed;
+}
+
+.task_diff{
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+    color: rgba(0, 0, 0, 0.87);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 4px;
+    padding: 20px;
+    border-bottom-color: #0061ff;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: center;
+    cursor: pointer;
+    font-family: 'General Sans', sans-serif;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    background-color: transparent;
+}
+
+.text_search{
+    width: 60%;
+    font-size: 24px;
+    padding: 10px;
+    padding-bottom: 9px;
+
+}
+
+.image_icon_home{
+    background-color: rebeccapurple;
+    width: 150px;
+    padding: 10px;
+    font-size: 25px;
+}
+
+.button_search_home{
+    color: white;
+    padding: 0;
+    font-size: 18px;
+}
+
+.home_footer{
+    background: #08080a;
+    color: #dddddd;
+    font-size: 14px;
+    margin: 0;
+    padding: 40px 0 0;
+    padding-bottom: 80px;
+}
+
+.home_footer_row{
+    background: #08080a;
+    color: #dddddd;
+    font-size: 14px;
+    margin: 0;
+    padding: 40px 0 0;
+    
+}
+
+.grid-container_home {
+    display: grid;
+    row-gap: 50px;
+    grid-template-columns: auto auto auto auto auto auto;
+    background-color: #08080a;
+    padding: 10px;
+  }
+  
+  .grid-item_home_empty {
+    display: grid;
+    row-gap: 50px;
+    grid-template-columns: auto auto auto auto auto auto;
+    background-color: #08080a;
+    padding: 10px;
+  }
+
+  .grid-item_home {
+    background-color: #08080a;
+    color: white;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 20px;
+    text-align: left;
+    padding-left: 20%;
+    list-style-type: none;
+  }

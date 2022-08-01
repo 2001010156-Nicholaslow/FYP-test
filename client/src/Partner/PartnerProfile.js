@@ -1,48 +1,88 @@
-import React, { useState } from 'react';
 import Axios from "axios";
-import { BiHome } from "react-icons/bi";
-import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import React from "react";
+import { Link, useParams } from "react-router-dom"; 
+import { useState, useEffect } from "react"
 
-function PartnerForm(){
+import '../EditProfile.css'
+import { Alert, Button } from "react-bootstrap";
 
-    const id = localStorage.getItem("user_id");
-    const [msg, Setmsg] = useState("");
+function PartnerProfile(){
 
-    Axios.post("http://localhost:3001/LoginCheckPartner", {
-        user_id: id
-    }).then((response) => {
-            Setmsg(response.data);
-    });
+    const { userId } = useParams();
+    
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [isUpdatedBefore, setUpdateBefore] = useState(false);
+    const [isUpdateSuccess, setUpdateSuccess] = useState(false);
+    const [isUpdateFailed, setUpdateFailed] = useState(false);
+    const [updateMessage, setUpdateMessage] = useState("");
+    const [items, setItems] = useState([]);
 
-    return(
+    const [selectedFile, setSelectedFile] = useState();
+
+    useEffect(() => {
+        Axios.get('http://localhost:3001/partners/' + userId).then(
+            (response) => {
+                setIsLoaded(true);
+                console.log(response.status);
+
+                setIsError(false);
+                setItems(response.data);
+                console.log(response.data);
+            }, (error) => {
+                console.log(error);
+                setIsLoaded(true);
+                setIsError(true);
+            }
+        )
+    }, []);
+
+    if(!isLoaded)
+    {
+        return(
+            <div>
+            <div className="editProfile">
+                <div>loading!</div>
+            </div>
+            </div>
+        );
+    }
+    else
+    {
+        if(isError)
+            return(<div>error</div>);
+
+        return(
         <div>
-        <Navbar bg="dark" variant="dark">
-            <Nav.Link href="./Partner">
-                <div className="image_icon_nav">
-                    <BiHome />
+            <div className="editProfile">
+                <h1>{items.company_name} Profile</h1>
+                <div style={{display: "flex", justifyContent: "flex-start"}}>
+                    <div style={{flexGrow: "1", paddingRight: "1em"}}>
+                        <div className="editProfileSection">
+                            <h1>{items.full_name}</h1>
+                                <div>UEN: {items.UEN}</div>
+                                <div>Industry: {items.company_industry}</div>
+                        </div>
+                        {localStorage.getItem("user_id") == userId ? <Button variant="warning">
+                            <Link to="/Partner/PartnerProfile/Edit">Edit</Link>
+                        </Button>: null}
+                    </div>
+                    <div style={{flexGrow: "3"}}>
+                        <div className="editProfileSection">
+                            <h1>Overview</h1>
+                            <textarea style={{width: "100%"}} readOnly defaultValue={items.company_overview}></textarea>
+                        </div>
+                        <div className="editProfileSection">
+                            <h1>Contact Info</h1>
+                            <div>Name: {items.contact_name}</div>
+                            <div>Contact Number: {items.contact_number}</div>
+                        </div>
+                    </div>
                 </div>
-            </Nav.Link>
-            <Nav className="me-auto">
-                <Nav.Link href="./PartnerJobAd">Job Ad</Nav.Link>
-                <Nav.Link href="./PartnerUserSearch">Search user</Nav.Link>
-                <Nav.Link href="./PartnerStats">Statics</Nav.Link>
-            </Nav>
-            <Navbar.Collapse className="justify-content-end">
-                    <NavDropdown title={"Sign in as : " + msg} id="basic-nav-dropdown">
-                        <NavDropdown.Item href="./PartnerProfile">Edit profile</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">Log out</NavDropdown.Item>
-                    </NavDropdown>
-                </Navbar.Collapse>
-        </Navbar>
-
-        <div>
-            <h1>This is the Partner profile page</h1>
+            </div>
         </div>
-    </div>
-       
-    );
+        )
+    }
 }
 
-  
-export default PartnerForm;
+export default PartnerProfile;

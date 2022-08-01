@@ -1,6 +1,12 @@
 .App {
     text-align: center;
   }
+
+  .size_reviews1{
+    max-width: 1024px;
+    width: 100%;
+    margin: 0 auto;
+  }
   
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -17,6 +23,16 @@
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
+  }
+
+  .total_chart_t1{
+    display: flex;
+    justify-content: center;
+  }
+
+  .buttonmysqlfilter{
+    display: flex;
+    justify-content: center;
   }
   
   .App-link {

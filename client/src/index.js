@@ -20,7 +20,6 @@ import PartnerRegister from "./Register/PartnerRegister";
 import Profile from "./Profile";
 import YouthRegister from "./Register/YouthRegister"; //import from the js file
 import Partner from "./Partner/Partner";
-import PartnerProfile from "./Partner/PartnerProfile";
 import PartnerForm from "./Partner/PartnerForm";
 import PartnerJobAd from "./Partner/PartnerJobAd";
 import PartnerStats from "./Partner/PartnerStats";
@@ -31,6 +30,7 @@ import Welcome2 from "./Login/Welcome2";
 import ResetPassword from "./Login/ResetPassword";
 import Succes from "./success";
 import JobDiscription from "./jobDiscription";
+import Review from "./Review";
 //admin
 import AdminLogin from "./Pages/Login/Login";
 import User from "./Pages/User/User";
@@ -49,7 +49,11 @@ import ModalTest from "./Application/ModalTest";
 import UserApplication from "./Application/UserApplication";
 import ReviewApplication from "./Application/ReviewApplication";
 import EditProfile from "./EditProfile";
-import EditPartnerProfile from "./EditPartnerProfile";
+import EditPartnerProfile from "./Partner/EditPartnerProfile";
+import PartnersPage from "./company/PartnersPage";
+import PartnersSearch from "./company/PartnersSearch";
+import JobDetails from "./company/JobDetails";
+import PartnerProfile from "./Partner/PartnerProfile";
 
 const Requiredlogin = () => {
   return localStorage.getItem("token") ? (
@@ -81,14 +85,18 @@ ReactDOM.render(
       <Route path="/JobListing" element={<JobListing />} />
       <Route path="/Register/youthRegister" element={<YouthRegister />} />
       <Route path="/Partner/Partner/" element={<Partner />} />
-      <Route path="/Partner/PartnerProfile" element={<PartnerProfile />} />
+      <Route path="/Partner/PartnerProfile/:userId" element={<PartnerProfile />} />
       <Route path="/Partner/PartnerProfile/Edit" element={<EditPartnerProfile />} />
       <Route path="/Partner/PartnerForm" element={<PartnerForm />} />
       <Route path="/Partner/PartnerFormEdit" element={<PartnerFormEdit />} />
       <Route path="/Partner/PartnerStats" element={<PartnerStats />} />
       <Route path="/Partner/PartnerReview" element={<PartnerReview />} />
       <Route path="/Partner/PartnerJobAd" element={<PartnerJobAd />} />
+      <Route path="/company/PartnersPage" element={<PartnersPage />} />
+      <Route path="/company/PartnersSearch" element={<PartnersSearch />} />
+      <Route path="/company/JobDetails" element={<JobDetails />} />
       <Route path="/jobDiscription" element={<JobDiscription />} />
+      <Route path="/Partner/EditPartnerProfile" element={< EditPartnerProfile/>} />
       <Route
         path="/Partner/PartnerUserSearch"
         element={<PartnerUserSearch />}
@@ -96,6 +104,7 @@ ReactDOM.render(
       <Route path="/confirm/:ConfirmationCode" element={<Welcome2 />} />
       <Route path="/reset/:PasswordReset" element={<ResetPassword />} />
       <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path ="/Review" element={<Review />}/>
       <Route element={<Requiredlogin />}>
         <Route path="/admin/mainpage" element={<MainPage />} />
         <Route path="/admin/users" element={<Users />} />
@@ -105,6 +114,7 @@ ReactDOM.render(
         <Route path="/admin/reviews" element={<Reviews />} />
         <Route path="/admin/reports" element={<Reports />} />
         <Route path="/admin/stats" element={<Stats />} />
+
       </Route>
     </Routes>
   </BrowserRouter>,

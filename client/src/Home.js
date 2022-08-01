@@ -2,35 +2,31 @@ import React, { useEffect, useState } from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
 import Axios from "axios";
-import 'react-bootstrap-typeahead/css/Typeahead.css';
-
+import "react-bootstrap-typeahead/css/Typeahead.css";
 import NavbarComp from "./Components/NavBar/NavbarComp";
 
-
 function Home() {
-  const [jobData, setJobData] = useState([]);
-
-
+  const [appData, setapplication] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/admin_get_opp", {
+    Axios.get("http://localhost:3001/opportunity/application", {
       headers: {
         "x-access-token": localStorage.getItem("token"),
       },
     }).then((response) => {
-      setJobData(response.data);
-      window.localStorage.setItem("jobData", JSON.stringify(response.data));
-      console.log(jobData);
+      window.localStorage.setItem("Application", JSON.stringify(response.data));
+      const userId = JSON.parse(localStorage.getItem("user_data")).result[0]
+        .user_id;
+      const jobStaus = response.data.filter((x) => x.user_id === userId);
+      setapplication(jobStaus);
+      console.log(appData);
       console.log(response);
-
     });
-  }, []); // the API to bring all data from the job opp data to UI - nehal
-  const onChange = () => {
-
-  }
+  }, []);
+  const onChange = () => {};
   const user_data = JSON.parse(window.localStorage.getItem("user_data"));
   const user = user_data?.result[0];
-  
+
   console.log("user_data", user);
   return (
     <div classNameName="Home_page">
@@ -38,10 +34,11 @@ function Home() {
         <div>
           <NavbarComp />
         </div>
-        <h2>
-          Hello {user?.full_name}
-        </h2>
+        <h2>Welcome</h2>
+        <h3>{user?.full_name}</h3>
       </div>
+      {appData && appData.map((x) => <div>{x.status}</div>)}
+      <div></div>
       <br></br>
       <br></br>
       <br></br>
@@ -99,7 +96,7 @@ function Home() {
                   <Link to="/Register/youthRegister">Youth Register</Link>
                 </li>
                 <li>
-                  <Link to="/JobListing">Job Listing</Link>
+                  <Link to="/JobListing">opp Listing</Link>
                 </li>
                 <li>
                   <Link to="/profile">My Profile</Link>
@@ -115,9 +112,9 @@ function Home() {
                 </li>
               </div>
               <div className="grid-item_home">
-                <h2>Job Search</h2>
+                <h2>opp Search</h2>
                 <li>
-                  <Link to="/JobListing">Job Listing</Link>
+                  <Link to="/JobListing">opp Listing</Link>
                 </li>
               </div>
               <div className="grid-item_home">
