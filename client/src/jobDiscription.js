@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Axios from "axios";
 
 function JobDiscription() {
+    
+    const [isOpen, setIsOpen] = useState(false);
     // const [jobData, setJobData] = useState({});
     const jobs = JSON.parse(window.localStorage.getItem("jobData"));
     console.log("12345", jobs);
@@ -31,13 +33,22 @@ function JobDiscription() {
             console.log(response);
           });
     }
+
+    function toggleModal(e) {
+        e.preventDefault();
+        setIsOpen(!isOpen);
+    }
+
     return (
         <div>
             <div>
                 <NavbarComp />
             </div>
+            
+
             <div class="container p-5 my-5 bg-dark  text-white">
                 <h4 className="mb-3"> Name: {jobData.name}</h4>
+                
                 <p>
                     Company Name: {jobData.company_name}
                 </p>
@@ -83,6 +94,16 @@ function JobDiscription() {
                         </p>
 
                     </div>
+
+                    
+                    {//<button onClick={toggleModal} type="button" class="btn btn-primary">Apply</button>
+                    }
+
+                    <Button variant="primary"
+                    >
+                        <Link to={"/UserApplication/" + jobData.opp_id}>Apply</Link>
+                    </Button>
+
                     <Button variant="warning"
                     >
                         <Link to="/JobListing">Back</Link>

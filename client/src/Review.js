@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Home from "./Home";
 import Login from "./Login/Login";
 import PartnerRegister from "./Register/PartnerRegister";
@@ -11,9 +11,19 @@ import "./App.scss";
 import { Form } from "react-bootstrap";
 import Axios from "axios";
 
+
 function Review() {
   const [review, setRiview] = useState("");
   const [rating, setRating] = useState(null);
+
+  useEffect(() => {
+    console.log(JSON.parse(localStorage.getItem("Application")))
+    console.log(localStorage.getItem("opp_id"))
+    console.log(JSON.parse(localStorage.getItem("user_data")).result[0].user_id)
+
+    if (!JSON.parse(localStorage.getItem("Application")).some((job)=> job.opp_id === parseInt(localStorage.getItem("opp_id")) && job.status === "Accepted" && JSON.parse(localStorage.getItem("user_data")).result[0]
+    .user_id === job.user_id)) window.location.href = "http://localhost:3000/";
+}, [])
 
   const add_reviews = () => {
     const user_id = JSON.parse(localStorage.getItem("user_data")).result[0]

@@ -37,7 +37,8 @@ function Home() {
         <h2>Welcome</h2>
         <h3>{user?.full_name}</h3>
       </div>
-      {appData && appData.map((x) => <div>{x.status}</div>)}
+      {appData && appData.map((x) => 
+      <h4>{x.status} by: {x.company_name}</h4>)}
       <div></div>
       <br></br>
       <br></br>
