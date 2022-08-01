@@ -9,6 +9,7 @@ import NavbarComp from "./Components/NavBar/NavbarComp";
 
 function Home() {
   const [jobData, setJobData] = useState([]);
+  const [Application,setapplication ] = useState([]);
 
 
 
@@ -18,13 +19,13 @@ function Home() {
         "x-access-token": localStorage.getItem("token"),
       },
     }).then((response) => {
-      setJobData(response.data);
-      window.localStorage.setItem("jobData", JSON.stringify(response.data));
-      console.log(jobData);
+      setapplication(response.data);
+      window.localStorage.setItem("Application", JSON.stringify(response.data));
+      console.log(Application);
       console.log(response);
 
     });
-  }, []); // the API to bring all data from the job opp data to UI - nehal
+  }, []); 
   const onChange = () => {
 
   }
@@ -100,7 +101,7 @@ function Home() {
                   <Link to="/Register/youthRegister">Youth Register</Link>
                 </li>
                 <li>
-                  <Link to="/JobListing">Job Listing</Link>
+                  <Link to="/JobListing">opp Listing</Link>
                 </li>
                 <li>
                   <Link to="/profile">My Profile</Link>
@@ -116,9 +117,9 @@ function Home() {
                 </li>
               </div>
               <div className="grid-item_home">
-                <h2>Job Search</h2>
+                <h2>opp Search</h2>
                 <li>
-                  <Link to="/JobListing">Job Listing</Link>
+                  <Link to="/JobListing">opp Listing</Link>
                 </li>
               </div>
               <div className="grid-item_home">

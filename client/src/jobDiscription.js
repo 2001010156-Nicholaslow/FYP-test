@@ -18,7 +18,6 @@ function JobDiscription() {
     console.log("hello hello", jov);
     // setJobData(jov[0]);
     const jobData = jov[0];
-    const navigate = useNavigate()
 
     useEffect(() => {
         if (!localStorage.getItem("user_data"))window.location.href = "http://localhost:3000/Login/login";
@@ -94,7 +93,11 @@ function JobDiscription() {
                     </Button>
 
                     <button onClick={save_to_fav} type="button" class="btn btn-warning">Add to Favorite</button>
-
+                    
+                    <Button variant="warning"
+                    >
+                        <Link to="/Review">Post a Review</Link>
+                    </Button>
                 </div>
             </div>
         </div >
