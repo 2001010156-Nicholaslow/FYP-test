@@ -674,7 +674,7 @@ class PartnerForm extends Component {
                                 listMaxHeight={140} //by default 140
                             />
                             <small id="passwordHelpInline" class="text-muted">
-                                Choose the nearest MRT.
+                                Choose the nearest Location.
                             </small>
                         </Form.Group>
 

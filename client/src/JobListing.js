@@ -48,6 +48,12 @@ function JobListing() {
     return 0;
   };
 
+  const viewCount = (e) =>{
+    Axios.post("http://localhost:3001/view_count_add", {
+      Op_id: e
+  })
+  }
+
   return (
     <div classNameName="Home_page">
       <div>
@@ -131,6 +137,7 @@ function JobListing() {
                           variant="warning"
                           onClick={() => {
                             window.localStorage.setItem("opp_id", x.opp_id);
+                            viewCount(x.opp_id)
                             setOpen(!open);
                           }}
                           aria-controls="example-collapse-text"
@@ -204,6 +211,7 @@ function JobListing() {
                           variant="warning"
                           onClick={() => {
                             window.localStorage.setItem("opp_id", x.opp_id);
+                            viewCount(x.opp_id);
                             setOpen(!open);
                           }}
                           aria-controls="example-collapse-text"
