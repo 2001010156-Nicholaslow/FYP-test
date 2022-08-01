@@ -93,7 +93,7 @@ function Reports() {
               setTimeout(() => {
                 const dataDelete = [...data];
                 const index = oldData.tableData.id;
-                deletereport(oldData.review_id);
+                deletereport(oldData.report_id);
                 dataDelete.splice(index, 1);
                 setData([...dataDelete]);
                 resolve();
