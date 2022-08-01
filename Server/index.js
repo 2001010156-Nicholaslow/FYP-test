@@ -50,7 +50,7 @@ app.use(
   })
 );
 
-//Admin
+//////////////////////////////////////////////////////////////////////Admin
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -111,49 +111,6 @@ app.put("/admin_delete_users", (req, res) => {
   });
 });
 
-// Get fav
-app.get("/profile_get_fav", (req, res) => {
-  db.query("SELECT * FROM user_fav", (err, results) => {
-    if (err) {
-      res.status(401).send({ err: err });
-    } else {
-      res.status(200).send(results);
-    }
-  });
-});
-
-// fav delete
-app.post("/profile_delete_fav", (req, res) => {
-  const idFav = req.body.idFav;
-  const query = `DELETE FROM user_fav WHERE idFav = ${idFav}`;
-
-  db.query(query, (err, results) => {
-    if (err) {
-      res.status(401).send({ err: err });
-    } else {
-      res.status(200).send(results);
-    }
-  });
-});
-
-// User Fav
-app.post("/profile_save_fav", (req, res) => {
-  const user_id = req.body.user_id;
-  const opp_id = req.body.opp_id;
-
-  db.query(
-    "INSERT INTO user_fav (user_id, opp_id) VALUES (?,?)",
-    [user_id, opp_id],
-    (err, results) => {
-      if (err) {
-        res.status(401).send({ err: err });
-      } else {
-        res.status(200).send(results);
-      }
-    }
-  );
-});
-
 app.put("/admin_update_users", (req, res) => {
   const full_name = req.body.full_name;
   const email = req.body.email;
@@ -189,112 +146,7 @@ app.put("/admin_update_users", (req, res) => {
       }
     }
   );
-});
-
-//Client - Profile
-app.get("/users/:id", (req, res) => {
-  const id = req.params.id;
-
-  db.query(
-    "SELECT user_id, full_name, email, dob, gender, contact_number, user_bio, postalcode, education, country, citizenship, address FROM users WHERE user_id = '" +
-      id +
-      "'",
-    (err, results) => {
-      if (err) {
-        res.status(400).send({ err: err });
-      } else {
-        if (results.length == 0)
-          // not found
-          res.status(404).send();
-        res.status(200).send(results[0]);
-      }
-    }
-  );
-});
-
-//Client - PartnerProfile
-app.get("/partners/:id", (req, res) => {
-  const id = req.params.id;
-
-  db.query(
-    "SELECT email, company_name, contact_name, contact_number, UEN, company_industry, company_overview FROM partners WHERE partners_id = '" +
-      id +
-      "'",
-    (err, results) => {
-      if (err) {
-        res.status(400).send({ err: err });
-      } else {
-        if (results.length == 0)
-          // not found
-          res.status(404).send();
-        res.status(200).send(results[0]);
-      }
-    }
-  );
-});
-
-//Client - Application
-app.get("/opportunity/:id", (req, res) => {
-  const id = req.params.id;
-
-  db.query(
-    "SELECT * FROM opportunity WHERE opp_id='" + id + "'",
-    (err, results) => {
-      if (err) {
-        res.status(401).send({ err: err });
-      } else {
-        if (results.length == 0)
-          // not found
-          res.status(404).send();
-        res.status(200).send(results[0]);
-      }
-    }
-  );
-});
-
-app.post("/opportunity/:id/apply", (req, res) => {
-  const id = req.params.id;
-  const f = req.files;
-
-  if (f == null) res.status(406).send("no file");
-
-  console.log(f.File.name);
-
-  db.query(
-    "INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
-    [f.File.data, "0", "2", id],
-    (err, result) => {
-      if (err) {
-        res.status(401).send({ err: err });
-      } else {
-        res.status(200).send("okay");
-      }
-    }
-  );
-});
-
-//Client - Review Application
-app.get("/opportunity/:id/application", (req, res) => {
-  const id = req.params.id;
-
-  db.query(
-    "SELECT * FROM application INNER JOIN users ON application.user_id = users.user_id WHERE opp_id='" +
-      id +
-      "'",
-    (err, results) => {
-      if (err) {
-        res.status(401).send({ err: err });
-      } else {
-        if (results.length == 0)
-          // not found
-          res.status(404).send();
-        res.status(200).send(results);
-      }
-    }
-  );
-});
-
-//Admin Manage Opportunities
+}); //Admin Manage Opportunities
 app.get("/admin_get_opp", (req, res) => {
   db.query("SELECT * FROM opportunity", (err, results) => {
     if (err) {
@@ -510,9 +362,7 @@ app.put("/admin_delete_reports", (req, res) => {
     }
   );
 });
-
-//Stats
-
+//Admin Stats
 app.get("/getUserCreated1", (req, res) => {
   db.query(
     "SELECT Count(user_id) AS count,CAST(Curdate() as Date) AS date FROM users\
@@ -596,6 +446,272 @@ app.get("/getPartnerCreated1", (req, res) => {
     }
   );
 });
+/////////////////////////////////////////////////////////////////////////////////////////////////////////End of Admin
+
+//Client - Profile
+app.get("/users/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT user_id, full_name, email, dob, gender, contact_number, user_bio, postalcode, education, country, citizenship, address FROM users WHERE user_id = '" +
+      id +
+      "'",
+    (err, results) => {
+      if (err) {
+        res.status(400).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+
+//Client - PartnerProfile
+app.get("/partners/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT email, company_name, contact_name, contact_number, UEN, company_industry, company_overview FROM partners WHERE partners_id = '" +
+      id +
+      "'",
+    (err, results) => {
+      if (err) {
+        res.status(400).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+app.get("/opportunity/application", (req, res) => {
+  console.log("abs");
+  db.query(
+    "SELECT * FROM application INNER JOIN users ON application.user_id = users.user_id INNER JOIN opportunity ON application.opp_id ",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//Client - Application
+app.get("/opportunity/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT * FROM opportunity WHERE opp_id='" + id + "'",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+
+app.post("/opportunity/:id/apply", (req, res) => {
+  const id = req.params.id;
+  const f = req.files;
+
+  if (f == null) res.status(406).send("no file");
+
+  console.log(f.File.name);
+
+  db.query(
+    "INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
+    [f.File.data, "0", "2", id],
+    (err, result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send("okay");
+      }
+    }
+  );
+});
+
+//Client - Review Application
+app.get("/opportunity/:id/application", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT * FROM application INNER JOIN users ON application.user_id = users.user_id WHERE opp_id='" +
+      id +
+      "'",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+// Get fav
+app.get("/profile_get_fav", (req, res) => {
+  db.query("SELECT * FROM user_fav", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
+// fav delete
+app.post("/profile_delete_fav", (req, res) => {
+  const idFav = req.body.idFav;
+  const query = `DELETE FROM user_fav WHERE idFav = ${idFav}`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
+// User Fav
+app.post("/profile_save_fav", (req, res) => {
+  const user_id = req.body.user_id;
+  const opp_id = req.body.opp_id;
+
+  db.query(
+    "INSERT INTO user_fav (user_id, opp_id) VALUES (?,?)",
+    [user_id, opp_id],
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+//Client - Profile
+app.get("/users/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT user_id, full_name, email, dob, gender, contact_number, user_bio, postalcode, education, country, citizenship, address FROM users WHERE user_id = '" +
+      id +
+      "'",
+    (err, results) => {
+      if (err) {
+        res.status(400).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+
+//Client - PartnerProfile
+app.get("/partners/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT email, company_name, contact_name, contact_number, UEN, company_industry, company_overview FROM partners WHERE partners_id = '" +
+      id +
+      "'",
+    (err, results) => {
+      if (err) {
+        res.status(400).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+
+//Client - Application
+app.get("/opportunity/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT * FROM opportunity WHERE opp_id='" + id + "'",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results[0]);
+      }
+    }
+  );
+});
+
+app.post("/opportunity/:id/apply", (req, res) => {
+  const id = req.params.id;
+  const f = req.files;
+
+  if (f == null) res.status(406).send("no file");
+
+  console.log(f.File.name);
+
+  db.query(
+    "INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
+    [f.File.data, "0", "2", id],
+    (err, result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send("okay");
+      }
+    }
+  );
+});
+
+//Client - Review Application
+app.get("/opportunity/:id/application", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "SELECT * FROM application INNER JOIN users ON application.user_id = users.user_id WHERE opp_id='" +
+      id +
+      "'",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if (results.length == 0)
+          // not found
+          res.status(404).send();
+        res.status(200).send(results);
+      }
+    }
+  );
+});
 
 //stats for partner side
 app.get("/getPartnerViews", (req, res) => {
@@ -639,19 +755,6 @@ app.get("/getPartnerViews", (req, res) => {
     }
   );
 });
-
-// function getCustomerCount( callback ){
-//   var count = 0;
-//   db.transaction(function(tx) {
-//   tx.executeSql('SELECT * FROM users WHERE last_login>=CURDATE();', [], function(tx, results) {
-//            // this function is called when the executeSql is ended
-//            count = results.rows.length;
-//            callback( count );   // <-- call the callback when is done
-//       });
-//   });
-// }
-
-//End of Admin
 
 //Client - YouthRegister
 app.post("/YouthConfirmation", (req, res) => {
