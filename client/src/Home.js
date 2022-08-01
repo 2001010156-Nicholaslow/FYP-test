@@ -37,9 +37,23 @@ function Home() {
         <h2>Welcome</h2>
         <h3>{user?.full_name}</h3>
       </div>
-      {appData && appData.map((x) => 
-      <h4>{x.status} by: {x.company_name}</h4>)}
-      <div></div>
+      {/* {appData &&
+        appData.map((x) => (
+          <h4>
+            {x.status} by: {x.company_name}
+          </h4>
+        ))} */}
+
+      {appData &&
+        appData.map((x) => (
+          <div className="parent">
+            <div className="child">
+              <h4>{x.status}</h4>
+              <div>{x.company_name}</div>
+            </div>
+          </div>
+        ))}
+
       <br></br>
       <br></br>
       <br></br>

@@ -31,6 +31,8 @@
 
 
 .home_footer{
+    bottom: 0;
+    position: absolute;
     background: #08080a;
     color: #dddddd;
     font-size: 14px;
@@ -39,14 +41,14 @@
     padding-bottom: 80px;
 }
 
-.home_footer_row{
+/* .home_footer_row{
     background: #08080a;
     color: #dddddd;
     font-size: 14px;
     margin: 0;
     padding: 40px 0 0;
     
-}
+} */
 
 .grid-container_home {
     display: grid;
@@ -74,3 +76,16 @@
     padding-left: 20%;
     list-style-type: none;
   }
+
+  .parent {
+    margin: 1rem;
+    padding: 2rem 2rem;
+  }
+  .child {
+    display: inline-block;
+    padding: 1rem 1rem;
+  }
+
+
+
+
