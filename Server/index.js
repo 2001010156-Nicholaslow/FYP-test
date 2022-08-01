@@ -232,7 +232,24 @@ app.get("/partners/:id", (req, res) => {
     }
   );
 });
-
+app.get("/opportunity/application", (req, res) => {
+  console.log("abs")
+    db.query(
+      
+      "SELECT * FROM application INNER JOIN users ON application.user_id = users.user_id INNER JOIN opportunity ON application.opp_id ",
+      (err, results) => {
+        if (err) {
+          res.status(401).send({ err: err });
+        } else {
+          if (results.length == 0)
+            // not found
+            res.status(404).send();
+          res.status(200).send(results);
+        }
+      }
+    );
+  });
+  
 //Client - Application
 app.get("/opportunity/:id", (req, res) => {
   const id = req.params.id;
@@ -293,6 +310,7 @@ app.get("/opportunity/:id/application", (req, res) => {
     }
   );
 });
+
 
 //Admin Manage Opportunities
 app.get("/admin_get_opp", (req, res) => {

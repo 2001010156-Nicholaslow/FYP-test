@@ -13,7 +13,7 @@ function Home() {
 
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/admin_get_opp", {
+    Axios.get("http://localhost:3001/opportunity/application", {
       headers: {
         "x-access-token": localStorage.getItem("token"),
       },
@@ -39,8 +39,9 @@ function Home() {
           <NavbarComp />
         </div>
         <h2>
-          Hello {user?.full_name}
+          Welcome
         </h2>
+        <h3>{user?.full_name}</h3>
       </div>
       <br></br>
       <br></br>

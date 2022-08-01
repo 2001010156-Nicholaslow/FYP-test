@@ -23,10 +23,6 @@ function JobDiscription() {
     useEffect(() => {
         if (!localStorage.getItem("user_data"))window.location.href = "http://localhost:3000/Login/login";
     }, [])
-    
-    useEffect(() => {
-        if (!localStorage.getItem("user_data"))window.location.href = "http://localhost:3000/Login/login";
-    }, [])
 
     const save_to_fav = () => {    
         //  console.log(JSON.parse(localStorage.getItem("user_data")).result[0].user_id) 
