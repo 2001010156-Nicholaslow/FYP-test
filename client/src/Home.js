@@ -9,7 +9,7 @@ function Home() {
   const [appData, setapplication] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/opportunity/application", {
+    Axios.get("http://localhost:3001/opportunitys/application", {
       headers: {
         "x-access-token": localStorage.getItem("token"),
       },

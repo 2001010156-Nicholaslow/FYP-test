@@ -296,6 +296,22 @@ app.post("/opportunity/:id/apply",verifyJWT, (req,res) => {
   )
 });
 
+// user View Status
+app.get("/opportunitys/application", (req, res) => {
+  db.query(
+    "SELECT * FROM application INNER JOIN opportunity ON application.opp_id = opportunity.opp_id  ",
+    (err, results) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if (results.length == 0)
+          res.status(404).send();
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
 //Client - Review Application
 app.get("/opportunity/:id/application", (req,res) => {
   const id = req.params.id
@@ -657,6 +673,8 @@ app.get("/partners/:id", (req, res) => {
   );
 });
 
+
+
 //add reviews
 app.post("/add_reviews", (req, res) => {
   const user_id = req.body.user_id;
@@ -672,22 +690,6 @@ app.post("/add_reviews", (req, res) => {
         console.log(err);
         res.status(401).send({ err: err });
       } else {
-        res.status(200).send(results);
-      }
-    }
-  );
-});
-
-// user View Status
-app.get("/opportunity/application", (req, res) => {
-  db.query(
-    "SELECT * FROM application INNER JOIN opportunity ON application.opp_id = opportunity.opp_id  ",
-    (err, results) => {
-      if (err) {
-        res.status(401).send({ err: err });
-      } else {
-        if (results.length == 0)
-          res.status(404).send();
         res.status(200).send(results);
       }
     }

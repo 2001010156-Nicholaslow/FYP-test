@@ -99,7 +99,7 @@ function JobDiscription() {
                     {//<button onClick={toggleModal} type="button" class="btn btn-primary">Apply</button>
                     }
 
-                    <Button variant="primary"
+                    <Button variant="warning"
                     >
                         <Link to={"/UserApplication/" + jobData.opp_id}>Apply</Link>
                     </Button>

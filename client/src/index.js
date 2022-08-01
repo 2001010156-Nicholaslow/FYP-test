@@ -44,8 +44,6 @@ import Stats from "./Pages/Stats/Stats";
 import PartnerReview from "./Partner/PartnerReview";
 import "bootstrap/dist/css/bootstrap.css";
 import "./index.scss";
-import UserApplicationModal from "./Application/UserApplicationModal";
-import ModalTest from "./Application/ModalTest";
 import UserApplication from "./Application/UserApplication";
 import ReviewApplication from "./Application/ReviewApplication";
 import EditProfile from "./EditProfile";
@@ -75,7 +73,6 @@ ReactDOM.render(
         path="Login/ForgetPasswordPartner"
         element={<ForgetPasswordPartner />}
       />
-      <Route path="/ModalTest/:id" element={<ModalTest />} />
       <Route path="/UserApplication/:oppId" element={<UserApplication />} />
       <Route path="/ReviewApplication/:oppId" element={<ReviewApplication />} />
       <Route path="/Register/partnerRegister" element={<PartnerRegister />} />
