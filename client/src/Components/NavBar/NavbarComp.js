@@ -17,6 +17,7 @@ export default class NavbarComp extends Component {
                                  <Nav.Link><Link to="/">Home</Link></Nav.Link>
                                  <Nav.Link><Link to="../Login/login">Login</Link> </Nav.Link>
                                  <Nav.Link><Link to="../JobListing">Job Listings</Link> </Nav.Link>
+                                 <Nav.Link><Link to="../company/PartnersSearch">Partners search</Link> </Nav.Link>
                                 <NavDropdown title="Register" id="basic-nav-dropdown" className="change-color">
                                     <NavDropdown.Item><Link to="../Login/Partnerlogin">Login Partner</Link></NavDropdown.Item>
                                     <NavDropdown.Item><Link to="../Login/login">Login Youth</Link></NavDropdown.Item>

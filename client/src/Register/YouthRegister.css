@@ -8,3 +8,24 @@
     background-color: #f3f3f3;
 }
 
+.pageRegister{
+    margin: 0 auto;
+    height: 100%;
+    text-align: left;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    padding-bottom: 25px;
+}
+
+.page2R{
+    padding: 40px;
+    background-color: #282c34;
+    color: white;
+    padding-left: 70px;
+    padding-right: 70px;
+}
+

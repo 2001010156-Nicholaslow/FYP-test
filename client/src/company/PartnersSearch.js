@@ -70,7 +70,7 @@ function PartnersSearch() {
                         </button>
                     </div>
                     <small id="passwordHelpInline" class="text-muted" style={{ color: "black" }}>
-                        <Link to="../Partner/PartnerFormEdit" >Edit</Link>
+                       <p> </p>
                     </small>
 
                 </div>

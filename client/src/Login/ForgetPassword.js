@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import './YouthLogin.css';
 import Axios from "axios";
 import validator from "validator";
+import NavbarComp from "../Components/NavBar/NavbarComp";
 import { Form, Alert } from 'react-bootstrap';
 import Popup from '../Partner/Popup';
 import '../Partner/Popup.css';
@@ -64,32 +65,37 @@ function ForgetPassword() {
     };
 
     return (
-        <div className='container_loginPage1'>
-            <div className='Login_container'>
-            {LoginStatus && <Alert variant="warning" >{LoginMSG}</Alert>}
-                <div classname='login'>
-                    <div className='header'>
-                        <h3 className='headertext'>Reset Password</h3>
-                        
-                        <hr className='hr'></hr>
-                    </div>
-                    <Form>
-                        <input classname="login_box" type="email" onChange={(e) => { Setemail(e.target.value) }} placeholder="Email" style={{ marginTop: 10 }} required />
-                        <br></br>
-                    </Form>
-                </div>
-                <button className='login_button' type="submit" onClick={resetPS} style={{ marginTop: 20, marginBottom: 20, alignItems: 'center' }} >Reset Password</button>
-                <p>Not a Youth <Link to="../Register/YouthRegister">Sign up here</Link>?</p>
+        <div>
+            <div>
+                <NavbarComp />
             </div>
-            {isOpen && <Popup
-                content={<>
-                    <h2>An email has been send to your email</h2>
-                    <p>Please check your email to reset your password.</p>
-                </>}
-                handleClose={togglePopup}
-            />}
-        </div>
 
+            <div className='container_loginPage1'>
+                <div className='Login_container'>
+                    {LoginStatus && <Alert variant="warning" >{LoginMSG}</Alert>}
+                    <div classname='login'>
+                        <div className='header'>
+                            <h3 className='headertext'>Reset Password</h3>
+
+                            <hr className='hr'></hr>
+                        </div>
+                        <Form>
+                            <input classname="login_box" type="email" onChange={(e) => { Setemail(e.target.value) }} placeholder="Email" style={{ marginTop: 10 }} required />
+                            <br></br>
+                        </Form>
+                    </div>
+                    <button className='login_button' type="submit" onClick={resetPS} style={{ marginTop: 20, marginBottom: 20, alignItems: 'center' }} >Reset Password</button>
+                    <p>Not a Youth <Link to="../Register/YouthRegister">Sign up here</Link>?</p>
+                </div>
+                {isOpen && <Popup
+                    content={<>
+                        <h2>An email has been send to your email</h2>
+                        <p>Please check your email to reset your password.</p>
+                    </>}
+                    handleClose={togglePopup}
+                />}
+            </div>
+        </div>
     );
 }
 

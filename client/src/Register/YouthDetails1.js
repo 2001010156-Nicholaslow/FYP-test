@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Form, Button, Container } from 'react-bootstrap';
 import validator from "validator";
+import NavbarComp from "../Components/NavBar/NavbarComp";
 import Axios from "axios";
+import './YouthRegister.css';
 
 class YouthDetails1 extends Component {
 
@@ -35,7 +37,7 @@ class YouthDetails1 extends Component {
                 if (response.data.message) {
                     this.setState({ LoginStatus: "Email Valid" })
                     this.props.nextStep();
-                    
+
 
                 } else {
                     this.setState({ LoginStatus: "This email is already in used. Try another Email." })
@@ -61,55 +63,64 @@ class YouthDetails1 extends Component {
 
     render() {
         return (
-            <Container>
-                <h1>Youth Register page</h1>
-                <p style={{ marginTop: 10, color: 'red' }}>{this.state.LoginStatus}</p>
-                <Form>
-                    <Form.Group controlId="formEmail" style={{ marginTop: 10 }} >
-                        <Form.Label className="label">Email Address</Form.Label>
-                        <Form.Control style={{ width: 300 }}
-                            type="email"
-                            defaultValue={this.props.inputValues.email}
-                            name="email"
-                            required
-                            onChange={this.props.handleChange}
-                        />
-                    </Form.Group>
+            <div>
 
-                    <Form.Group controlId="formFullName" style={{ marginTop: 10 }}>
-                        <Form.Label className="label">Full Name</Form.Label>
-                        <Form.Control
-                            type="text"
-                            defaultValue={this.props.inputValues.fullname}
-                            name="fullname"
-                            required
-                            onChange={this.props.handleChange}
-                        />
-                    </Form.Group>
+                <div>
+                    <NavbarComp />
+                </div>
+
+                <div className="pageRegister">
+                    <div className="page2R">
+
+                        <h1>Youth Register page</h1>
+                        <p style={{ marginTop: 10, color: 'red' }}>{this.state.LoginStatus}</p>
+                        <Form>
+                            <Form.Group controlId="formEmail" style={{ marginTop: 10 }} >
+                                <Form.Label className="label">Email Address</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    defaultValue={this.props.inputValues.email}
+                                    name="email"
+                                    required
+                                    onChange={this.props.handleChange}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId="formFullName" style={{ marginTop: 10 }}>
+                                <Form.Label className="label">Full Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    defaultValue={this.props.inputValues.fullname}
+                                    name="fullname"
+                                    required
+                                    onChange={this.props.handleChange}
+                                />
+                            </Form.Group>
 
 
-                    <Form.Group controlId="formPassword" style={{ marginTop: 10 }}>
-                        <Form.Label className="label">Password</Form.Label>
-                        <Form.Control
-                            type="password"
-                            defaultValue={this.props.inputValues.password}
-                            name="password"
-                            required
-                            minlength="8"
-                            onChange={this.props.handleChange}
-                        />
-                        <small id="passwordHelpInline" class="text-muted">
-                            Must be 8-20 characters long.
-                        </small>
-                    </Form.Group>
+                            <Form.Group controlId="formPassword" style={{ marginTop: 10 }}>
+                                <Form.Label className="label">Password</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    defaultValue={this.props.inputValues.password}
+                                    name="password"
+                                    required
+                                    minlength="8"
+                                    onChange={this.props.handleChange}
+                                />
+                                <small id="passwordHelpInline" class="text-muted">
+                                    Must be 8-20 characters long.
+                                </small>
+                            </Form.Group>
 
-                    <Button type="submit" variant="primary" onClick={this.checkEmail} style={{marginTop: 25, marginLeft : "35%" }}>Next</Button>
+                            <Button type="submit" variant="primary" onClick={this.checkEmail} style={{ marginTop: 25, marginLeft: "40%" }}>Next</Button>
 
-                </Form>
+                        </Form>
 
-                <Link to="../Login/login" style={{ marginTop: 20, marginRight: "3%" }}>Already a Youth?</Link>
-
-            </Container>
+                        <Link to="../Login/login" style={{ marginTop: 20, marginLeft: "30%" }}>Already a Youth?</Link>
+                    </div>
+                </div>
+            </div>
         );
     }
 }
