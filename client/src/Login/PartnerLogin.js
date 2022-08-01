@@ -27,14 +27,14 @@ function PartnerLogin() {
             password === "admin"
 
         ) {
-            SetLoginMSG("admin login")
+            //SetLoginMSG("admin login")
             SetLoginStatus(true)
             nav("../admin/login")
 
 
         } else if (!validator.isEmpty(email) & !validator.isEmpty(password)) {
-            SetLoginMSG("admin login")
-            SetLoginStatus(true)
+            //SetLoginMSG("admin login")
+            //SetLoginStatus(true)
             Axios.post("http://localhost:3001/Partneremailverifycheck", {
                 email: email
             }).then((res) => {

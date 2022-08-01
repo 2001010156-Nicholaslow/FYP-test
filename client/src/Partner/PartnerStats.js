@@ -102,10 +102,10 @@ function PartnerStats() {
 
                     Axios.post("http://localhost:3001/partners_reviews_top", { PID: id }).then((response) => {
                         console.log(response.data.length)
-                        if(response.data.length > 0) {
+                        if (response.data.length > 0) {
                             Setvalidcomp(true)
                             setReviewPosts(response.data);
-                        }else{
+                        } else {
                             setReviewPosts("");
                         }
                     });
@@ -263,54 +263,64 @@ function PartnerStats() {
                 </div>
             </div>
 
-            <div className='reviews_text' style={{ padding: 20, margin: 30 }}>
-                <div className='StarRatingTotal_1'>
-                    <p>Average Rating</p>
-                    <h2>{ratingTotal}</h2>
-                    <StarRatings
-                        rating={ratingTotal}
-                        starDimension="30px"
-                        starSpacing="10px"
-                    />
-                    <p>Number of Ratings: {numberRatings}</p>
-                </div>
-            </div>
-            {validcomp && (
-                <div className='reviews_text' style={{ padding: 20, margin: 30 }}>
+            <div>
+                {validcomp && (
+                    <div>
 
-                <div className='Review_header'>
-                    <h1>Reviews</h1>
-                </div>
-
-
-                <div className='reviews_box_1'>
-                {ReviewPosts.map((ReviewPostslist) => {
-                    const list = (
-
-                        <>
-                        <div>
-                        <div className='reviews_text'>
-                            <StarRatings
-                                rating={ReviewPostslist.rating}
-                                starDimension="30px"
-                                starSpacing="10px"
-                            />
-                            <h3 className='review_details_text'>{ReviewPostslist.review}</h3>
-                            <h5 className='review_details_text'>{ReviewPostslist.created_at}</h5>
+                        <div className='reviews_text' style={{ padding: 20, margin: 30 }}>
+                            <div className='StarRatingTotal_1'>
+                                <p>Average Rating</p>
+                                <h2>{ratingTotal}</h2>
+                                <StarRatings
+                                    rating={ratingTotal}
+                                    starDimension="30px"
+                                    starSpacing="10px"
+                                />
+                                <p>Number of Ratings: {numberRatings}</p>
+                            </div>
                         </div>
-                    </div>
-                        </>
-                    )
-                    return list
-                }   
-                )}
-                    
-                   
 
-                </div>
-                <button className='ADbutton_edit'><Link to="../Partner/PartnerReview" >View All</Link></button>
+                        <div className='reviews_text' style={{ padding: 20, margin: 30 }}>
+
+                            <div className='Review_header'>
+                                <h1>Reviews</h1>
+                            </div>
+
+
+                            <div className='reviews_box_1'>
+                                {ReviewPosts.map((ReviewPostslist) => {
+                                    const list = (
+
+                                        <>
+                                            <div>
+                                                <div className='reviews_text'>
+                                                    <StarRatings
+                                                        rating={ReviewPostslist.rating}
+                                                        starDimension="30px"
+                                                        starSpacing="10px"
+                                                    />
+                                                    <h3 className='review_details_text'>{ReviewPostslist.review}</h3>
+                                                    <h5 className='review_details_text'>{ReviewPostslist.created_at}</h5>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )
+                                    return list
+                                }
+                                )}
+
+
+
+                            </div>
+                            <button className='ADbutton_edit'><Link to="../Partner/PartnerReview" >View All</Link></button>
+                        </div>
+
+                    </div>
+
+                )}
             </div>
-            )}
+
+
         </div>
     );
 }
