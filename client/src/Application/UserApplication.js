@@ -1,9 +1,11 @@
 import Axios from "axios";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react"
 
 import './Application.css'
+import NavbarComp from "../Components/NavBar/NavbarComp";
+import { Button } from "react-bootstrap";
 
 function UserApplication(){
 
@@ -25,26 +27,34 @@ function UserApplication(){
     const handleSubmission = () => {
         console.log("yeah");
 
+        if(selectedFile == null)
+        {
+            window.alert('please provide your resume');
+            return;
+        }
+
         const f = new FormData();
 
         f.append('File', selectedFile);
 
         Axios.post('http://localhost:3001/opportunity/' + oppId + '/apply/', f, {
             headers:{
-                'Content-Type': 'multipart/form-data'
+                "Content-Type": "multipart/form-data",
+                "x-access-token": localStorage.getItem("token"),
             }
         }).then(
             (response) => {
-                console.log('oka');
+                window.alert('success!');
             },(error) => {
-                console.log('no');
                 console.log(error);
+                window.alert('something went wrong');
             }
 
         )
 	};
 
     useEffect(() => {
+
         Axios.get('http://localhost:3001/opportunity/' + oppId).then(
             (response) => {
                 setIsLoaded(true);
@@ -66,27 +76,35 @@ function UserApplication(){
 
     if(!isLoaded)
     {
-        return(<div>loading</div>);
+        return(<div><NavbarComp /><div class="container p-5 my-5 bg-dark  text-white">loading</div></div>);
     }
     else
     {
         if(!isError)
         {
             return(
-                <div className="Application">
-                    <h1>Apply for Opportunity ({items.name})</h1>
+                <div>
+                <NavbarComp />
+                <div class="container p-5 my-5 bg-dark  text-white">
+                    <h1>Application For</h1>
+                    <h2>({items.name})</h2>
                     <ul className="Details">
                         <li>{items.job_scope}</li>
                         <li>{items.description}</li>
                         <li>{items.sub_description}</li>
                     </ul>
                     <div>
-                        Upload Resume
+                        <span>Upload Your Resume (.pdf only): </span>
                         <input type="file" onChange={changeHandler} />
-                        <button onClick={handleSubmission}>
-                        Upload
-                        </button>
                     </div>
+                    <button onClick={handleSubmission} class="btn btn-primary">
+                        Submit Application
+                    </button>
+                    <Button variant="danger"
+                    >
+                        <Link to={"/jobDiscription"}>Back</Link>
+                    </Button>
+                </div>
                 </div>
             );
         }

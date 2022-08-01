@@ -19,7 +19,9 @@ function ModalTest(){
             onRequestClose={toggleModal}
             contentLabel="My dialog"
         >
-            <UserApplicationModal oppId='1'></UserApplicationModal>
+            
+            <UserApplicationModal oppId='14'></UserApplicationModal>
+            <div>test</div>
         </Modal>
     </div>)
 }

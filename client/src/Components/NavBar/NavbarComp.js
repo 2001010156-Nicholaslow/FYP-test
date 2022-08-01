@@ -22,7 +22,7 @@ export default class NavbarComp extends Component {
                                     <NavDropdown.Item><Link to="../Login/login">Login Youth</Link></NavDropdown.Item>
                                 </NavDropdown>
                                 <Nav.Link>
-                                <Link to="/profile">Profile</Link>
+                                <Link to={"/profile/" + localStorage.getItem("Uid")}>Profile</Link>
                                 </Nav.Link>
                             </Nav>
                         </Navbar.Collapse>

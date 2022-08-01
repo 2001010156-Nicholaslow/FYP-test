@@ -50,6 +50,24 @@ app.use(
   })
 );
 
+const verifyJWT = (req, res, next) => {
+  const token = req.headers["x-access-token"];
+
+  if (!token) {
+    res.send("You need a token. Try again later.");
+  } else {
+    jwt.verify(token, "jwtSecret", (err, decoded) => {
+      if (err) {
+        res.json({ auth: false, message: " Authentication Failed." });
+      } else {
+        req.userId = decoded.id;
+        
+        next();
+      }
+    });
+  }
+};
+
 //Admin
 app.post("/login", (req, res) => {
   const email = req.body.email;
@@ -205,9 +223,67 @@ app.get("/opportunity/:id", (req, res) => {
   });
 });
 
-app.post("/opportunity/:id/apply", (req,res) => {
+app.get("/opportunity/:id/applications", (req, res) => {
+  const id = req.params.id;
+
+  db.query("SELECT a.id_application, a.status, a.user_id, u.full_name, a.applied_date FROM application a INNER JOIN users u ON a.user_id = u.user_id WHERE opp_id='" + id + "'", (err, results) => {
+    if (err) {
+      res.status(401).send({ err: err });
+    } else {
+      if(results.length == 0) // not found
+        res.status(404).send();
+      else
+        res.status(200).send(results);
+    }
+  });
+});
+
+app.get("/application/:id/download", (req, res) => {
+  const id = req.params.id;
+
+  db.query("SELECT file FROM application WHERE id_application = ?",
+    [
+      id
+    ],
+    (err,result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        if(result.length == 0) // not found
+          res.status(404).send();
+        else if(result[0].file == null)
+          res.status(204).send();  
+        else
+          res.status(200).send(result[0].file);
+      }   
+    }
+  )
+});
+
+app.post("/application/:id/status", (req, res) => {
+  const id = req.params.id;
+  const status = req.body.status;
+
+  db.query("UPDATE application SET status = ? WHERE id_application = ?",
+    [
+      status,
+      id
+    ],
+    (err,result) => {
+      if (err) {
+        res.status(401).send({ err: err });
+      } else {
+        res.status(200).send("okay");
+      }     
+    }
+  )
+});
+
+app.post("/opportunity/:id/apply",verifyJWT, (req,res) => {
   const id = req.params.id;
   const f = req.files;
+
+  var decoded = jwt.decode(req.headers["x-access-token"]);
 
   if(f == null)
     res.status(406).send("no file");
@@ -217,8 +293,8 @@ app.post("/opportunity/:id/apply", (req,res) => {
   db.query("INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
     [
       f.File.data,
-      "0",
-      "2",
+      "Pending",
+      decoded.Uid,
       id
     ],
     (err,result) => {
@@ -1054,24 +1130,6 @@ app.get("/loginSession", (req, res) => {
     res.send({ loggedIn: false });
   }
 });
-
-const verifyJWT = (req, res, next) => {
-  const token = req.headers["x-access-token"];
-
-  if (!token) {
-    res.send("You need a token. Try again later.");
-  } else {
-    jwt.verify(token, "jwtSecret", (err, decoded) => {
-      if (err) {
-        res.json({ auth: false, message: " Authentication Failed." });
-      } else {
-        req.userId = decoded.id;
-        
-        next();
-      }
-    });
-  }
-};
 
 //check for auth
 app.get("/isAuth", verifyJWT, (req, res) => {

@@ -44,6 +44,12 @@ import Stats from "./Pages/Stats/Stats";
 import PartnerReview from "./Partner/PartnerReview";
 import "bootstrap/dist/css/bootstrap.css";
 import "./index.scss";
+import UserApplicationModal from "./Application/UserApplicationModal";
+import ModalTest from "./Application/ModalTest";
+import UserApplication from "./Application/UserApplication";
+import ReviewApplication from "./Application/ReviewApplication";
+import EditProfile from "./EditProfile";
+import EditPartnerProfile from "./EditPartnerProfile";
 
 const Requiredlogin = () => {
   return localStorage.getItem("token") ? (
@@ -65,13 +71,18 @@ ReactDOM.render(
         path="Login/ForgetPasswordPartner"
         element={<ForgetPasswordPartner />}
       />
+      <Route path="/ModalTest/:id" element={<ModalTest />} />
+      <Route path="/UserApplication/:oppId" element={<UserApplication />} />
+      <Route path="/ReviewApplication/:oppId" element={<ReviewApplication />} />
       <Route path="/Register/partnerRegister" element={<PartnerRegister />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/profile/:userId" element={<Profile />} />
+      <Route path="/profile/edit" element={<EditProfile />} />
       <Route path="/success" element={<Succes />} />
       <Route path="/JobListing" element={<JobListing />} />
       <Route path="/Register/youthRegister" element={<YouthRegister />} />
       <Route path="/Partner/Partner/" element={<Partner />} />
       <Route path="/Partner/PartnerProfile" element={<PartnerProfile />} />
+      <Route path="/Partner/PartnerProfile/Edit" element={<EditPartnerProfile />} />
       <Route path="/Partner/PartnerForm" element={<PartnerForm />} />
       <Route path="/Partner/PartnerFormEdit" element={<PartnerFormEdit />} />
       <Route path="/Partner/PartnerStats" element={<PartnerStats />} />

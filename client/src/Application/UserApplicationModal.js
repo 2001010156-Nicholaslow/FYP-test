@@ -16,7 +16,6 @@ function UserApplicationModal(props){
     const [selectedFile, setSelectedFile] = useState();
 	const [isFilePicked, setIsFilePicked] = useState(false);
 
-
     const changeHandler = (e) => {
 		setSelectedFile(e.target.files[0]);
 		setIsFilePicked(true);
@@ -31,7 +30,8 @@ function UserApplicationModal(props){
 
         Axios.post('http://localhost:3001/opportunity/' + oppId + '/apply/', f, {
             headers:{
-                'Content-Type': 'multipart/form-data'
+                "Content-Type": "multipart/form-data",
+                "x-access-token": localStorage.getItem("token"),
             }
         }).then(
             (response) => {
