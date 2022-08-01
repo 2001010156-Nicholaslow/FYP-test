@@ -10,7 +10,7 @@ const Companypost = ({ Cposts: Cposts, loading }) => {
   return (
     <div className='list-group mb-4'>
       {Cposts.map((Cpost) => (
-        <div key={Cpost.partners_id} className='list-group-item'>
+        <div key={Cpost.partners_id} className='list-group-item' style={{height: 200}}>
 
           <div className='reviews_box'>
             <h3 className='review_details_text'>{Cpost.company_name}</h3>
