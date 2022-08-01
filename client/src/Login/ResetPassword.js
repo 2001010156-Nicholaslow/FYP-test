@@ -41,7 +41,7 @@ const ResetPassword = (req) => {
             Pid: Pid
           })
           setIsOpen(true)
-          SetNavlink("../Login/PartnerLogin")
+          window.location.replace("../Login/PartnerLogin")
 
         } else if (decoded.Uid) {
           const Uid = decoded.Uid
@@ -51,7 +51,7 @@ const ResetPassword = (req) => {
             Uid: Uid
           })
           setIsOpen(true)
-          SetNavlink("../Login/Login")
+          window.location.replace("../Login/Login")
 
         } else {
           nav("../")

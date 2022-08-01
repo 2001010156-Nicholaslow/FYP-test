@@ -119,10 +119,10 @@ app.get("/admin_get_users", (req, res) => {
 
 app.put("/admin_delete_users", (req, res) => {
   const user_id = req.body.user_id;
-  console.log(req.body);
+  //console.log(req.body);
   db.query("DELETE FROM users WHERE user_id =?", [user_id], (err, results) => {
     if (err) {
-      console.log(err);
+      //console.log(err);
       res.status(401).send({ err: err });
     } else {
       res.status(200).send(results);
@@ -141,7 +141,7 @@ app.put("/admin_update_users", (req, res) => {
   const postalcode = req.body.postalcode;
   const country = req.body.country;
   const user_id = req.body.user_id;
-  console.log(req.body);
+  //console.log(req.body);
   db.query(
     "UPDATE users SET full_name=?,email=?,education=?,contact_number=?,gender=?,citizenship=?,address=?,postalcode=?,country=? WHERE user_id =?",
     [
@@ -158,7 +158,7 @@ app.put("/admin_update_users", (req, res) => {
     ],
     (err, results) => {
       if (err) {
-        console.log(err);
+        //console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -262,6 +262,17 @@ app.post("/application/:id/status", (req, res) => {
       if (err) {
         res.status(401).send({ err: err });
       } else {
+        db.query("SELECT O.full_name, O.email FROM users O, application A WHERE A.id_application = ? AND O.user_id = A.user_id",[id],(error,results) =>{
+          if (err) {
+            res.status(401).send({ err: err });
+          } else {
+            let final1 = JSON.parse(JSON.stringify(results));
+            const email = final1[0].email;
+            const fullname = final1[0].full_name;
+            const newUser = { email, fullname };
+            sendNotifaEmail({ toUser: newUser });          
+          }
+        })
         res.status(200).send("okay");
       }     
     }
@@ -277,7 +288,7 @@ app.post("/opportunity/:id/apply",verifyJWT, (req,res) => {
   if(f == null)
     res.status(406).send("no file");
 
-  console.log(f.File.name);
+  //console.log(f.File.name);
 
   db.query("INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
     [
@@ -345,7 +356,7 @@ app.put("/admin_update_opp", (req, res) => {
   const job_scope = req.body.job_scope;
   const description = req.body.description;
   const additional_requirements = req.body.additional_requirements;
-  console.log(req.body);
+  //console.log(req.body);
   db.query(
     "UPDATE opportunity SET name=?,position_level=?,salary=?,job_scope=?,description=?,additional_requirements=? WHERE opp_id =?",
     [
@@ -359,7 +370,7 @@ app.put("/admin_update_opp", (req, res) => {
     ],
     (err, results) => {
       if (err) {
-        console.log(err);
+        //console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -370,13 +381,13 @@ app.put("/admin_update_opp", (req, res) => {
 
 app.put("/admin_delete_opp", (req, res) => {
   const opp_id = req.body.opp_id;
-  console.log(req.body);
+  //console.log(req.body);
   db.query(
     "DELETE FROM opportunity WHERE opp_id =?",
     [opp_id],
     (err, results) => {
       if (err) {
-        console.log(err);
+        //console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -398,13 +409,13 @@ app.get("/admin_get_partners", (req, res) => {
 
 app.put("/admin_verify_partner", (req, res) => {
   const partner_id = req.body.partner_id;
-  console.log(req.body);
+  //console.log(req.body);
   db.query(
     "UPDATE partners SET verified=1 WHERE partners_id =?",
     [partner_id],
     (err, results) => {
       if (err) {
-        console.log(err);
+        //console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -418,13 +429,13 @@ app.put("/admin_update_partner", (req, res) => {
   const contact_name = req.body.contact_name;
   const email = req.body.email;
   const contact_number = req.body.contact_number;
-  console.log(req.body);
+  //console.log(req.body);
   db.query(
     "UPDATE partners SET contact_name=?, email=?, contact_number=? WHERE partners_id =?",
     [contact_name, email, contact_number, partners_id],
     (err, results) => {
       if (err) {
-        console.log(err);
+        //console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -435,13 +446,13 @@ app.put("/admin_update_partner", (req, res) => {
 
 app.put("/admin_delete_partner", (req, res) => {
   const partners_id = req.body.partners_id;
-  console.log(req.body);
+  //console.log(req.body);
   db.query(
     "DELETE FROM partners WHERE partners_id =?",
     [partners_id],
     (err, results) => {
       if (err) {
-        console.log(err);
+        //console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -468,13 +479,13 @@ app.put("/admin_update_reviews", (req, res) => {
   const review_id = req.body.review_id;
   const review = req.body.review;
   const rating = req.body.rating;
-  console.log(req.body);
+  //console.log(req.body);
   db.query(
     "UPDATE review SET review=?, rating=? WHERE review_id =?",
     [review, rating, review_id],
     (err, results) => {
       if (err) {
-        console.log(err);
+        //console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -485,13 +496,13 @@ app.put("/admin_update_reviews", (req, res) => {
 
 app.put("/admin_delete_review", (req, res) => {
   const review_id = req.body.review_id;
-  console.log(req.body);
+  //console.log(req.body);
   db.query(
     "DELETE FROM review WHERE review_id =?",
     [review_id],
     (err, results) => {
       if (err) {
-        console.log(err);
+        //console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -513,13 +524,13 @@ app.get("/admin_get_reports", (req, res) => {
 
 app.put("/admin_resolve_report", (req, res) => {
   const report_id = req.body.report_id;
-  console.log(req.body);
+  //console.log(req.body);
   db.query(
     "UPDATE reports SET status='Resolved' WHERE report_id=?",
     [report_id],
     (err, results) => {
       if (err) {
-        console.log(err);
+        //console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -530,13 +541,13 @@ app.put("/admin_resolve_report", (req, res) => {
 
 app.put("/admin_delete_reports", (req, res) => {
   const report_id = req.body.report_id;
-  console.log(req.body);
+  //console.log(req.body);
   db.query(
     "DELETE FROM reports WHERE report_id =?",
     [report_id],
     (err, results) => {
       if (err) {
-        console.log(err);
+        //console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -681,13 +692,13 @@ app.post("/add_reviews", (req, res) => {
   const review = req.body.review;
   const rating = req.body.rating;
   const partners_id = req.body.partners_id;
-  console.log(req.body);
+  //console.log(req.body);
   db.query(
     "INSERT INTO review SET partners_id=?, review=?, rating=?,user_id =?",
     [partners_id, review, rating, user_id],
     (err, results) => {
       if (err) {
-        console.log(err);
+        //console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -721,7 +732,7 @@ app.post("/opportunity/:id/apply", (req, res) => {
 
   if (f == null) res.status(406).send("no file");
 
-  console.log(f.File.name);
+  //console.log(f.File.name);
 
   db.query(
     "INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
@@ -867,7 +878,7 @@ app.post("/opportunity/:id/apply", (req, res) => {
 
   if (f == null) res.status(406).send("no file");
 
-  console.log(f.File.name);
+  //console.log(f.File.name);
 
   db.query(
     "INSERT INTO application (file, status, user_id, opp_id) VALUES (?,?,?,?)",
@@ -980,12 +991,12 @@ app.post("/YouthConfirmation", (req, res) => {
         postalcode,
       ],
       (err, result) => {
-        console.log("2");
+        //console.log("2");
         const Uid = result.insertId;
         const token = jwt.sign({ Uid }, "jwtSecret"); //remember to change secret! important
         const newUser = { email, fullname };
-        //sendConfirmationEmail({ toUser: newUser, ConfirmationCode: token });
-        console.log("3");
+        sendConfirmationEmail({ toUser: newUser, ConfirmationCode: token });
+        //console.log("3");
         res.send(result);
       }
     );
@@ -1451,7 +1462,7 @@ app.delete("/api/deleteListing/:opp_id", (req, res) => {
 
   db.query(sqlDelete, name, (err, result) => {
     if (err) {
-      console.log("err");
+      //.log("err");
     } else {
       res.send({ message: "Delete Successful." });
     }
@@ -1566,12 +1577,38 @@ app.post("/get_total_applied", (req, res) => {
   );
 });
 
+// user applied
+app.post("/get_user_applied", (req, res) => {
+  const OP_id = req.body.OP_id;
+  db.query(
+    "SELECT applied FROM opportunity WHERE opp_id = ?;",
+    [OP_id],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      } else {
+        let results = JSON.parse(JSON.stringify(result));
+        res.send(results);
+      }
+    }
+  );
+});
+
+//view_count_add
+//Please dont delete this nehal! - Nicholas
+app.post("/view_count_add", (req, res) => {
+  const id = req.body.Op_id;
+  db.query("UPDATE opportunity SET views = views + 1 WHERE opp_id = ?", [
+    id,
+  ]);
+});
+
 app.post("/users/save", verifyJWT, (req, res) => {
-  console.log(req.body);
-  console.log(req.userId);
+  //console.log(req.body);
+  //console.log(req.userId);
 
   var decoded = jwt.decode(req.headers["x-access-token"]);
-  console.log(decoded.Uid);
+  //console.log(decoded.Uid);
 
   db.query(
     "UPDATE users SET full_name=?, dob=?, gender=?, contact_number=?, user_bio=?, education=?, citizenship=?, address=?, country=?, postalcode=? WHERE user_id=?;",
@@ -1600,7 +1637,7 @@ app.post("/users/save", verifyJWT, (req, res) => {
 
 app.post("/partners/save", verifyJWT, (req, res) => {
   var decoded = jwt.decode(req.headers["x-access-token"]);
-  console.log(decoded.id);
+  //console.log(decoded.id);
 
   db.query(
     "UPDATE partners SET company_name=?, contact_name=?, contact_number=?, UEN=?, company_industry=?, company_overview=? WHERE partners_id=?;",

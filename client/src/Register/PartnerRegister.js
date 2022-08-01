@@ -34,7 +34,7 @@ class PartnerRegister extends Component {
       this.state.num.match(/[6|8|9][0-9]{7}/) !== null
 
     ) {
-      console.log(this.state.num.match(/[6|8|9][0-9]{7}/))
+      //console.log(this.state.num.match(/[6|8|9][0-9]{7}/))
 
       e.preventDefault();
       //console.log(this.state)

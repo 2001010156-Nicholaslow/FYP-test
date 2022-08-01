@@ -71,3 +71,14 @@
     font-size: 18px;
 }
 
+.JobAd_Nav_Body_search{
+    position: relative;
+    display: flex;
+    padding: 0.5rem 1rem;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-around;
+    text-align: left;
+    color: #ffffff;
+}
+
