@@ -48,8 +48,13 @@ function Home() {
         appData.map((x) => (
           <div className="parent">
             <div className="child">
-              <h4>{x.status}</h4>
-              <div>{x.company_name}</div>
+              <h3>{x.status}</h3>
+              <div class="container p-5 my-5 bg-dark  text-white">
+                <div>Company Name: {x.company_name}</div>
+                <div>position: {x.position_level}</div>
+                <div>ID: {x.opp_id}</div>
+              </div>
+              _________________________________________________________________________________________________
             </div>
           </div>
         ))}
