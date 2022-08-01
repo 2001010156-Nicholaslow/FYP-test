@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
 import Axios from "axios";
-import 'react-bootstrap-typeahead/css/Typeahead.css';
+import "react-bootstrap-typeahead/css/Typeahead.css";
 import NavbarComp from "./Components/NavBar/NavbarComp";
 
-
 function Home() {
-  const [Application,setapplication ] = useState([]);
-
-
+  const [appData, setapplication] = useState([]);
 
   useEffect(() => {
     Axios.get("http://localhost:3001/opportunity/application", {
@@ -17,19 +14,19 @@ function Home() {
         "x-access-token": localStorage.getItem("token"),
       },
     }).then((response) => {
-      setapplication(response.data);
       window.localStorage.setItem("Application", JSON.stringify(response.data));
-      console.log(Application);
+      const userId = JSON.parse(localStorage.getItem("user_data")).result[0]
+        .user_id;
+      const jobStaus = response.data.filter((x) => x.user_id === userId);
+      setapplication(jobStaus);
+      console.log(appData);
       console.log(response);
-
     });
-  }, []); 
-  const onChange = () => {
-
-  }
+  }, []);
+  const onChange = () => {};
   const user_data = JSON.parse(window.localStorage.getItem("user_data"));
   const user = user_data?.result[0];
-  
+
   console.log("user_data", user);
   return (
     <div classNameName="Home_page">
@@ -37,11 +34,11 @@ function Home() {
         <div>
           <NavbarComp />
         </div>
-        <h2>
-          Welcome
-        </h2>
+        <h2>Welcome</h2>
         <h3>{user?.full_name}</h3>
       </div>
+      {appData && appData.map((x) => <div>{x.status}</div>)}
+      <div></div>
       <br></br>
       <br></br>
       <br></br>

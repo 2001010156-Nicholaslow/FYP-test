@@ -30,6 +30,7 @@ import Welcome2 from "./Login/Welcome2";
 import ResetPassword from "./Login/ResetPassword";
 import Succes from "./success";
 import JobDiscription from "./jobDiscription";
+import Review from "./Review";
 //admin
 import AdminLogin from "./Pages/Login/Login";
 import User from "./Pages/User/User";
@@ -91,6 +92,7 @@ ReactDOM.render(
       <Route path="/confirm/:ConfirmationCode" element={<Welcome2 />} />
       <Route path="/reset/:PasswordReset" element={<ResetPassword />} />
       <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path ="/Review" element={<Review />}/>
       <Route element={<Requiredlogin />}>
         <Route path="/admin/mainpage" element={<MainPage />} />
         <Route path="/admin/users" element={<Users />} />
@@ -100,6 +102,7 @@ ReactDOM.render(
         <Route path="/admin/reviews" element={<Reviews />} />
         <Route path="/admin/reports" element={<Reports />} />
         <Route path="/admin/stats" element={<Stats />} />
+
       </Route>
     </Routes>
   </BrowserRouter>,

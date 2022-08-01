@@ -492,12 +492,19 @@ app.get("/partners/:id", (req, res) => {
   );
 });
 
-// get reviews
-app.get("/get_reviews", (req, res) => {
+//add reviews
+app.post("/add_reviews", (req, res) => {
+  const user_id = req.body.user_id;
+  const review = req.body.review;
+  const rating = req.body.rating;
+  const partners_id = req.body.partners_id;
+  console.log(req.body);
   db.query(
-    "SELECT r.review_id,r.review,r.rating,u.full_name,p.company_name FROM review r,users u,partners p WHERE u.user_id=r.user_id AND p.partners_id=r.partners_id",
+    "INSERT INTO review SET partners_id=?, review=?, rating=?,user_id =?",
+    [partners_id, review, rating, user_id],
     (err, results) => {
       if (err) {
+        console.log(err);
         res.status(401).send({ err: err });
       } else {
         res.status(200).send(results);
@@ -1006,15 +1013,6 @@ app.post("/PartnerEmailVerify", (req, res) => {
     id,
   ]);
 });
-
-//view count add
-app.post("/view_count_add", (req, res) => {
-  const id = req.body.Op_id;
-  db.query("UPDATE opportunity SET views = views + 1 WHERE opp_id = ?", [
-    id,
-  ]);
-});
-
 
 //User verify email
 app.post("/UserEmailVerify", (req, res) => {
