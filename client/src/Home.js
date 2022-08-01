@@ -3,7 +3,6 @@ import "./Home.css";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-
 import NavbarComp from "./Components/NavBar/NavbarComp";
 
 
