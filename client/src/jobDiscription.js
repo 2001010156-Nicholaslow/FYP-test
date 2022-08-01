@@ -4,10 +4,6 @@ import { Link, useNavigate} from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Axios from "axios";
 
-
-
-
-
 function JobDiscription() {
     // const [jobData, setJobData] = useState({});
     const jobs = JSON.parse(window.localStorage.getItem("jobData"));

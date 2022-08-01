@@ -7,7 +7,6 @@ import NavbarComp from "./Components/NavBar/NavbarComp";
 
 
 function Home() {
-  const [jobData, setJobData] = useState([]);
   const [Application,setapplication ] = useState([]);
 
 
