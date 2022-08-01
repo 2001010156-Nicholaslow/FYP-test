@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-exports.sendNotifaEmail = function({toUser,ConfirmationCode}) {
+exports.sendNotifaEmail = function({toUser}) {
     return new Promise((res,rej) => {
         const transport = nodemailer.createTransport({
             service: "gmail",
@@ -16,9 +16,9 @@ exports.sendNotifaEmail = function({toUser,ConfirmationCode}) {
             subject: 'Job Alert',
             html:`
             <h3>Hello ${toUser.fullname} </h3>
-            <p>Thank you!</p>
-            <p>To activate your account please follw this link: <a target="_" href="${[process.env.DOMAIN]}/confirm/${ConfirmationCode}</p>
-            <p>Cheers,</p>
+            <p>Your application has been review!
+            \nTo View your application status.Please login to view status: ${[process.env.DOMAIN]}/Login/login
+            \nCheers,
             `
         }
 
