@@ -46,34 +46,48 @@ function PartnerLogin() {
                         email: email,
                         password: password
                     }).then((response) => {
-                        if (response.data.result[0].verified == 0) {
-
-                            if (!response.data.auth) {
-                                SetLoginStatus(true)
-                                SetLoginMSG("Invalid Password/Email")
-                            } else {
-                                //if(response.data.result[0].emailverify)
-                                localStorage.setItem("token", response.data.token)
-                                sess = response.data.result[0]
-                                localStorage.setItem("user_id", sess.partners_id)
-                                nav("../Partner/Partner")
-
-                                //check auth
-                                Axios.get("http://localhost:3001/isAuth", {
-                                    headers: {
-                                        "x-access-token": localStorage.getItem("token"),
-                                    },
-                                }).then((response) => {
-                                    console.log(response);
-                                });
-                            }
+                        //console.log(response.data.message)
+                        if (response.data.message) {
+                            SetLoginStatus(true)
+                            SetLoginMSG("Invalid Password/Email")
 
                         } else {
-                            SetLoginStatus(true)
-                            SetLoginMSG("Your Account has been locked. Please contact us")
+
+
+                            if (response.data.result[0].verified == 0) {
+
+                                if (!response.data.auth) {
+                                    SetLoginStatus(true)
+                                    SetLoginMSG("Invalid Password/Email")
+
+                                } else {
+                                    //if(response.data.result[0].emailverify)
+                                    localStorage.setItem("token", response.data.token)
+                                    sess = response.data.result[0]
+                                    localStorage.setItem("user_id", sess.partners_id)
+                                    nav("../Partner/Partner")
+
+                                    //check auth
+                                    Axios.get("http://localhost:3001/isAuth", {
+                                        headers: {
+                                            "x-access-token": localStorage.getItem("token"),
+                                        },
+                                    }).then((response) => {
+                                        console.log(response);
+                                    });
+                                }
+
+                            }
+                            else {
+                                SetLoginStatus(true)
+                                SetLoginMSG("Your Account has been locked. Please contact us")
+                            }
                         }
-                    });
+                    }
+
+                    );
                 }
+
             });
 
         } else {

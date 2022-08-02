@@ -117,7 +117,7 @@ function EditPartnerProfile() {
                         </Navbar>
                     </div>
                 </div>
-                <div className="editProfile" style={{marginTop : 20}}>
+                <div className="editProfilePartner" style={{marginTop : 0}}>
                     {isUpdatedBefore && isUpdateSuccess && <Alert variant="success">Profile Updated!</Alert>}
                     {isUpdatedBefore && isUpdateFailed && <Alert variant="danger">Profile failed to update</Alert>}
                     <h1>Edit Partner Profile</h1>
